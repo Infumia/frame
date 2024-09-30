@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 final class Internal {
 
     private static final String DEFAULT_FACTORY_CLASS =
-        "net.infumia.frame.InventoryManagerFactoryImpl";
+        "net.infumia.frame.FrameFactoryImpl";
 
     @Nullable
     private static FrameFactory factory;

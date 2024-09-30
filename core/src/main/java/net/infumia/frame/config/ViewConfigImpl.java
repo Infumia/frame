@@ -39,7 +39,7 @@ final class ViewConfigImpl implements ViewConfigRich {
     @NotNull
     @Override
     public Object title() {
-        return this.size;
+        return this.title;
     }
 
     @NotNull
