@@ -74,10 +74,34 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
 
     @NotNull
     @Override
+    public View view() {
+        return this.view;
+    }
+
+    @NotNull
+    @Override
+    public ViewConfig initialConfig() {
+        return this.initialConfig;
+    }
+
+    @NotNull
+    @Override
+    public TypedKeyStorageImmutable initialData() {
+        return this.initialData;
+    }
+
+    @NotNull
+    @Override
     public Collection<Viewer> viewers() {
         synchronized (this.viewers) {
             return Collections.unmodifiableCollection(this.viewers);
         }
+    }
+
+    @NotNull
+    @Override
+    public Viewer viewer() {
+        return this.viewerOrThrow("viewer");
     }
 
     @Override
@@ -129,24 +153,6 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
             .open(this.viewerOrThrow("openForViewer").player(), viewClass, initialData);
     }
 
-    @NotNull
-    @Override
-    public View view() {
-        return this.view;
-    }
-
-    @NotNull
-    @Override
-    public ViewConfig initialConfig() {
-        return this.initialConfig;
-    }
-
-    @NotNull
-    @Override
-    public Viewer viewer() {
-        return this.viewerOrThrow("viewer");
-    }
-
     @Override
     public void addViewer(@NotNull final Viewer viewer) {
         synchronized (this.viewers) {
@@ -173,12 +179,6 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
             this.singleViewer,
             "Viewer not set even tough it's not a shared view!"
         );
-    }
-
-    @NotNull
-    @Override
-    public TypedKeyStorageImmutable initialData() {
-        return this.initialData;
     }
 
     @Override

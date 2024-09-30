@@ -2,7 +2,7 @@ package net.infumia.frame.pipeline.service.render;
 
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
-import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.ElementBuilderRich;
 import net.infumia.frame.element.ElementItemBuilder;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
@@ -25,7 +25,7 @@ public final class ServiceFirstRenderLayout
 
     @Override
     public void accept(@NotNull final PipelineContextRender.FirstRender ctx) {
-        final ContextRenderRich context = (ContextRenderRich) ctx.context();
+        final ContextRender context = ctx.context();
         for (final LayoutSlot layout : context.layouts().values()) {
             final IntFunction<ElementItemBuilder> builderFactory = layout.builderFactory();
             if (builderFactory == null) {

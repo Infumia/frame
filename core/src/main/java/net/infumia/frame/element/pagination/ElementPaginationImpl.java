@@ -13,7 +13,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
-import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
@@ -42,7 +41,7 @@ public final class ElementPaginationImpl<T>
     private final ElementEventHandler eventHandler = ElementEventHandlerPagination.INSTANCE;
     private LayoutSlot currentLayoutSlot;
     final SourceProvider<T> sourceProvider;
-    final Function<ElementPaginationBuilderRich<T>, StatePagination> stateFactory;
+    final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory;
     final char layout;
     final BiConsumer<ContextBase, ElementPagination> onPageSwitch;
     final ElementConfigurer<T> elementConfigurer;
@@ -219,7 +218,7 @@ public final class ElementPaginationImpl<T>
         }
         this.currentPageIndex = pageIndex;
         this.pageWasChanged = true;
-        final ContextRenderRich host = (ContextRenderRich) this.parent();
+        final ContextRender host = (ContextRender) this.parent();
         if (this.onPageSwitch != null) {
             this.onPageSwitch.accept(host, this);
         }

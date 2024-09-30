@@ -7,7 +7,6 @@ import net.infumia.frame.context.element.ContextElementRenderImpl;
 import net.infumia.frame.context.element.ContextElementUpdateImpl;
 import net.infumia.frame.context.view.ContextClick;
 import net.infumia.frame.context.view.ContextRender;
-import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.pipeline.context.PipelineContextElement;
 import net.infumia.frame.pipeline.context.PipelineContextElements;
@@ -33,7 +32,7 @@ public final class PipelineExecutorElementImpl implements PipelineExecutorElemen
         return this.pipelines.render()
             .completeWith(
                 new PipelineContextElements.Render(
-                    new ContextElementRenderImpl((ContextRenderRich) context, this.element)
+                    new ContextElementRenderImpl(context, this.element)
                 )
             );
     }
@@ -47,7 +46,7 @@ public final class PipelineExecutorElementImpl implements PipelineExecutorElemen
         return this.pipelines.update()
             .completeWith(
                 new PipelineContextElements.Update(
-                    new ContextElementUpdateImpl((ContextRenderRich) context, this.element, forced)
+                    new ContextElementUpdateImpl(context, this.element, forced)
                 )
             );
     }
@@ -73,7 +72,7 @@ public final class PipelineExecutorElementImpl implements PipelineExecutorElemen
         return this.pipelines.clear()
             .completeWith(
                 new PipelineContextElements.Clear(
-                    new ContextElementClearImpl((ContextRenderRich) context, this.element)
+                    new ContextElementClearImpl(context, this.element)
                 )
             );
     }

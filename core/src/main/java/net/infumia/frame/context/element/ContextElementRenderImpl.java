@@ -1,7 +1,7 @@
 package net.infumia.frame.context.element;
 
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderImpl;
-import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.element.Element;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,7 +10,7 @@ public class ContextElementRenderImpl extends ContextRenderImpl implements Conte
     private final Element element;
 
     public ContextElementRenderImpl(
-        @NotNull final ContextRenderRich context,
+        @NotNull final ContextRender context,
         @NotNull final Element element
     ) {
         super(context);
@@ -24,6 +24,6 @@ public class ContextElementRenderImpl extends ContextRenderImpl implements Conte
     }
 
     public ContextElementRenderImpl(@NotNull final ContextElementRender context) {
-        this((ContextRenderRich) context, context.element());
+        this(context, context.element());
     }
 }

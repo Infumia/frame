@@ -77,11 +77,11 @@ public final class ViewImpl implements View, ViewEventHandler {
     @NotNull
     @Override
     public CompletableFuture<@Nullable ContextRender> simulateOpenActive(
-        @NotNull final ContextRenderRich activeContext,
+        @NotNull final ContextRender activeContext,
         @NotNull final Collection<Player> viewers
     ) {
         return this.pipelines.executeCreateViewers(viewers)
-            .thenCompose(activeContext::simulateNavigate)
+            .thenCompose(((ContextRenderRich) activeContext)::simulateNavigate)
             .thenApply(__ -> activeContext);
     }
 
@@ -207,8 +207,8 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ViewContainer container,
         @NotNull final Map<Character, LayoutSlot> layouts
     ) {
-        return this.pipelines.executeCreateRender(context, config, container, layouts)
-            .thenApply(ContextRenderRich.class::cast)
-            .thenCompose(render -> render.simulateFirstRender().thenApply(__ -> render));
+        return this.pipelines.executeCreateRender(context, config, container, layouts).thenCompose(
+                render -> ((ContextRenderRich) render).simulateFirstRender().thenApply(__ -> render)
+            );
     }
 }

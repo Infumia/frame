@@ -3,7 +3,6 @@ package net.infumia.frame.view;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.view.ContextRender;
-import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
 import net.infumia.frame.viewer.ContextualViewer;
@@ -27,7 +26,7 @@ public interface ViewEventHandler {
 
     @NotNull
     CompletableFuture<ContextRender> simulateOpenActive(
-        @NotNull ContextRenderRich activeContext,
+        @NotNull ContextRender activeContext,
         @NotNull Collection<Player> viewers
     );
 

@@ -1,6 +1,6 @@
 package net.infumia.frame.pipeline.service.render;
 
-import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import net.infumia.frame.state.value.StateValue;
@@ -22,7 +22,7 @@ public final class ServiceFirstRenderInitializeState
 
     @Override
     public void accept(@NotNull final PipelineContextRender.FirstRender ctx) {
-        final ContextRenderRich context = (ContextRenderRich) ctx.context();
+        final ContextRender context = ctx.context();
         final StateValueHostRich host = (StateValueHostRich) context.stateValueHost();
         host
             .stateValues()

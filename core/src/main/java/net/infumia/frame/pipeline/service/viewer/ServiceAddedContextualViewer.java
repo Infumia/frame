@@ -1,6 +1,6 @@
 package net.infumia.frame.pipeline.service.viewer;
 
-import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.metadata.MetadataKeyHolder;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextViewer;
@@ -23,7 +23,7 @@ public final class ServiceAddedContextualViewer
 
     @Override
     public void accept(@NotNull final PipelineContextViewer.Added ctx) {
-        final ContextRenderRich context = (ContextRenderRich) ctx.context();
+        final ContextRender context = ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
             viewer
                 .metadata()

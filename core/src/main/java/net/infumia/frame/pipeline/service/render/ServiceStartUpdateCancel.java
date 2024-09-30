@@ -1,7 +1,7 @@
 package net.infumia.frame.pipeline.service.render;
 
 import java.time.Duration;
-import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ public final class ServiceStartUpdateCancel
 
     @Override
     public void accept(@NotNull final PipelineContextRender.StartUpdate ctx) {
-        final ContextRenderRich context = (ContextRenderRich) ctx.context();
+        final ContextRender context = ctx.context();
         final Duration updateInterval = context.config().updateInterval();
 
         if (

@@ -86,55 +86,6 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
 
     @NotNull
     @Override
-    public SlotFinder slotFinder() {
-        return this.slotFinder;
-    }
-
-    @Override
-    public void updateTask(@Nullable final Closeable task) {
-        this.updateTask = task;
-    }
-
-    @Nullable
-    @Override
-    public Closeable updateTask() {
-        return this.updateTask;
-    }
-
-    @Override
-    public void addElement(@NotNull final Element element) {
-        this.elements.add(element);
-    }
-
-    @NotNull
-    @Override
-    public CompletableFuture<ConsumerService.State> simulateFirstRender() {
-        return this.pipelines.executeFirstRender()
-            .thenCompose(__ -> this.simulateNavigate(this.viewers()));
-    }
-
-    @NotNull
-    @Override
-    public CompletableFuture<ConsumerService.State> simulateNavigate(
-        @NotNull final Collection<Viewer> viewers
-    ) {
-        return this.pipelines.executeTransition(viewers)
-            .thenCompose(__ -> this.pipelinesViewer.executeAdded(viewers))
-            .thenCompose(__ -> this.pipelines.executeOpenContainer(viewers))
-            .thenCompose(__ -> this.pipelines.executeStartUpdate());
-    }
-
-    @NotNull
-    @Override
-    public CompletableFuture<ConsumerService.State> simulateResume(
-        @NotNull final ContextRender from,
-        @NotNull final Collection<Viewer> viewers
-    ) {
-        return this.pipelines.executeResume(from, viewers);
-    }
-
-    @NotNull
-    @Override
     public Map<Character, LayoutSlot> layouts() {
         return this.layouts;
     }
@@ -213,6 +164,55 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
     @Override
     public PipelineExecutorViewer pipelinesViewer() {
         return this.pipelinesViewer;
+    }
+
+    @NotNull
+    @Override
+    public SlotFinder slotFinder() {
+        return this.slotFinder;
+    }
+
+    @Override
+    public void updateTask(@Nullable final Closeable task) {
+        this.updateTask = task;
+    }
+
+    @Nullable
+    @Override
+    public Closeable updateTask() {
+        return this.updateTask;
+    }
+
+    @Override
+    public void addElement(@NotNull final Element element) {
+        this.elements.add(element);
+    }
+
+    @NotNull
+    @Override
+    public CompletableFuture<ConsumerService.State> simulateFirstRender() {
+        return this.pipelines.executeFirstRender()
+            .thenCompose(__ -> this.simulateNavigate(this.viewers()));
+    }
+
+    @NotNull
+    @Override
+    public CompletableFuture<ConsumerService.State> simulateNavigate(
+        @NotNull final Collection<Viewer> viewers
+    ) {
+        return this.pipelines.executeTransition(viewers)
+            .thenCompose(__ -> this.pipelinesViewer.executeAdded(viewers))
+            .thenCompose(__ -> this.pipelines.executeOpenContainer(viewers))
+            .thenCompose(__ -> this.pipelines.executeStartUpdate());
+    }
+
+    @NotNull
+    @Override
+    public CompletableFuture<ConsumerService.State> simulateResume(
+        @NotNull final ContextRender from,
+        @NotNull final Collection<Viewer> viewers
+    ) {
+        return this.pipelines.executeResume(from, viewers);
     }
 
     @NotNull

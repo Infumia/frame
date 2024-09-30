@@ -42,7 +42,7 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilderImpl item(final @Nullable ItemStack item) {
+    public ElementItemBuilderImpl item(@Nullable final ItemStack item) {
         this.item = item;
         return this;
     }
@@ -70,7 +70,7 @@ public final class ElementItemBuilderImpl
     @NotNull
     @Override
     public ElementItemBuilderImpl onRender(
-        final @Nullable Consumer<ContextElementItemRender> onRender
+        @Nullable final Consumer<ContextElementItemRender> onRender
     ) {
         this.onRender = onRender;
         return this;
@@ -87,7 +87,7 @@ public final class ElementItemBuilderImpl
     @NotNull
     @Override
     public ElementItemBuilderImpl onUpdate(
-        final @Nullable Consumer<ContextElementItemUpdate> onUpdate
+        @Nullable final Consumer<ContextElementItemUpdate> onUpdate
     ) {
         this.onUpdate = onUpdate;
         return this;
@@ -95,7 +95,7 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilderRich root(final @NotNull ElementRich root) {
+    public ElementItemBuilderRich root(@NotNull final ElementRich root) {
         super.root(root);
         return this;
     }

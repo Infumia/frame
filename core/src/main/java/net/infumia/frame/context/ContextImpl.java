@@ -37,12 +37,6 @@ public class ContextImpl implements ContextRich {
 
     @NotNull
     @Override
-    public StateRegistry stateRegistry() {
-        return this.stateRegistry;
-    }
-
-    @NotNull
-    @Override
     public TypedKeyStorage instances() {
         return this.instances;
     }
@@ -51,5 +45,11 @@ public class ContextImpl implements ContextRich {
     @Override
     public StateFactory stateFactory() {
         return this.stateFactory;
+    }
+
+    @NotNull
+    @Override
+    public StateRegistry stateRegistry() {
+        return this.stateRegistry;
     }
 }

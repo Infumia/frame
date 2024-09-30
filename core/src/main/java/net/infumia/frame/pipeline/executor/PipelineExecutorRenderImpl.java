@@ -3,7 +3,6 @@ package net.infumia.frame.pipeline.executor;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.view.ContextRender;
-import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.context.view.ContextResumeImpl;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import net.infumia.frame.pipeline.context.PipelineContextRenders;
@@ -18,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
 public final class PipelineExecutorRenderImpl implements PipelineExecutorRender {
 
     private final PipelineHolderRender pipelines = PipelineHolderRender.BASE.createNew();
-    private final ContextRenderRich context;
+    private final ContextRender context;
 
-    public PipelineExecutorRenderImpl(@NotNull final ContextRenderRich context) {
+    public PipelineExecutorRenderImpl(@NotNull final ContextRender context) {
         this.context = context;
     }
 
@@ -65,7 +64,7 @@ public final class PipelineExecutorRenderImpl implements PipelineExecutorRender 
         return this.pipelines.resume()
             .completeWith(
                 new PipelineContextRenders.Resume(
-                    new ContextResumeImpl(this.context, (ContextRenderRich) from, viewers)
+                    new ContextResumeImpl(this.context, from, viewers)
                 )
             );
     }

@@ -19,11 +19,19 @@ public final class ElementPaginationBuilderImpl<T>
     implements ElementPaginationBuilderRich<T> {
 
     final SourceProvider<T> sourceProvider;
-    final Function<ElementPaginationBuilderRich<T>, StatePagination> stateFactory;
+    final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory;
     char layout = '0';
     BiConsumer<ContextBase, ElementPagination> onPageSwitch;
     ElementConfigurer<T> elementConfigurer;
     State<ElementPagination> associated;
+
+    public ElementPaginationBuilderImpl(
+        @NotNull final SourceProvider<T> sourceProvider,
+        @NotNull final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory
+    ) {
+        this.sourceProvider = sourceProvider;
+        this.stateFactory = stateFactory;
+    }
 
     ElementPaginationBuilderImpl(@NotNull final ElementPaginationImpl<T> element) {
         super(element);
@@ -84,7 +92,7 @@ public final class ElementPaginationBuilderImpl<T>
 
     @NotNull
     @Override
-    public ElementPaginationBuilderRich<T> root(final @NotNull ElementRich root) {
+    public ElementPaginationBuilderRich<T> root(@NotNull final ElementRich root) {
         super.root(root);
         return this;
     }
@@ -185,13 +193,5 @@ public final class ElementPaginationBuilderImpl<T>
     public ElementPaginationBuilder<T> hideIf(@NotNull final BooleanSupplier condition) {
         super.hideIf(condition);
         return this;
-    }
-
-    public ElementPaginationBuilderImpl(
-        @NotNull final SourceProvider<T> sourceProvider,
-        @NotNull final Function<ElementPaginationBuilderRich<T>, StatePagination> stateFactory
-    ) {
-        this.sourceProvider = sourceProvider;
-        this.stateFactory = stateFactory;
     }
 }

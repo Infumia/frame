@@ -315,11 +315,13 @@ public final class StateFactoryImpl implements StateFactory {
 
     @NotNull
     private <T> StatePagination createPaginationState(
-        @NotNull final ElementPaginationBuilderRich<T> builder
+        @NotNull final ElementPaginationBuilder<T> builder
     ) {
         return this.registered(
                 new StatePaginationImpl(StateFactoryImpl.nextStateId(), (host, state) ->
-                    new StateValueImmutable<>(builder.associated(state).build(host))
+                    new StateValueImmutable<>(
+                        ((ElementPaginationBuilderRich<T>) builder).associated(state).build(host)
+                    )
                 )
             );
     }

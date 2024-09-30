@@ -94,15 +94,15 @@ public final class ViewContainerImpl implements ViewContainerRich {
         return this.inventory instanceof PlayerInventory;
     }
 
-    @NotNull
-    @Override
-    public InvTypeRich typeRich() {
-        return this.type;
-    }
-
     @Nullable
     @Override
     public ViewContainerRich at(final int slot) {
         return slot >= this.firstSlot() && slot <= this.lastSlot() ? this : null;
+    }
+
+    @NotNull
+    @Override
+    public InvTypeRich typeRich() {
+        return this.type;
     }
 }

@@ -1,7 +1,7 @@
 package net.infumia.frame.pipeline.service.render;
 
 import java.util.Collection;
-import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementContainer;
 import net.infumia.frame.element.ElementRich;
@@ -26,14 +26,14 @@ public final class ServiceFirstRenderWatchState
 
     @Override
     public void accept(@NotNull final PipelineContextRender.FirstRender ctx) {
-        final ContextRenderRich context = (ContextRenderRich) ctx.context();
+        final ContextRender context = ctx.context();
         for (final Element element : ctx.elements()) {
             ServiceFirstRenderWatchState.watch(context, (ElementRich) element);
         }
     }
 
     private static void watch(
-        @NotNull final ContextRenderRich context,
+        @NotNull final ContextRender context,
         @NotNull final ElementRich element
     ) {
         ServiceFirstRenderWatchState.updateOnStateAccess(context, element);
@@ -46,7 +46,7 @@ public final class ServiceFirstRenderWatchState
     }
 
     private static void updateOnStateAccess(
-        @NotNull final ContextRenderRich context,
+        @NotNull final ContextRender context,
         @NotNull final ElementRich element
     ) {
         final Collection<net.infumia.frame.state.State<?>> states = element.updateOnStateAccess();
@@ -67,7 +67,7 @@ public final class ServiceFirstRenderWatchState
     }
 
     private static void updateOnStateChange(
-        @NotNull final ContextRenderRich context,
+        @NotNull final ContextRender context,
         @NotNull final ElementRich element
     ) {
         final Collection<net.infumia.frame.state.State<?>> states = element.updateOnStateChange();

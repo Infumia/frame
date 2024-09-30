@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextResume;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementRich;
@@ -15,15 +15,15 @@ public interface PipelineContextRenders {
     final class FirstRender implements PipelineContextRender.FirstRender {
 
         private final List<ElementRich> elements = new ArrayList<>();
-        private final ContextRenderRich context;
+        private final ContextRender context;
 
-        public FirstRender(@NotNull final ContextRenderRich context) {
+        public FirstRender(@NotNull final ContextRender context) {
             this.context = context;
         }
 
         @NotNull
         @Override
-        public ContextRenderRich context() {
+        public ContextRender context() {
             return this.context;
         }
 
@@ -41,11 +41,11 @@ public interface PipelineContextRenders {
 
     final class OpenContainer implements PipelineContextRender.OpenContainer {
 
-        private final ContextRenderRich context;
+        private final ContextRender context;
         private final Collection<Viewer> viewers;
 
         public OpenContainer(
-            @NotNull final ContextRenderRich context,
+            @NotNull final ContextRender context,
             @NotNull final Collection<Viewer> viewers
         ) {
             this.context = context;
@@ -54,7 +54,7 @@ public interface PipelineContextRenders {
 
         @NotNull
         @Override
-        public ContextRenderRich context() {
+        public ContextRender context() {
             return this.context;
         }
 
@@ -82,11 +82,11 @@ public interface PipelineContextRenders {
 
     final class CloseContainer implements PipelineContextRender.CloseContainer {
 
-        private final ContextRenderRich context;
+        private final ContextRender context;
         private final Collection<Viewer> viewers;
 
         public CloseContainer(
-            @NotNull final ContextRenderRich context,
+            @NotNull final ContextRender context,
             @NotNull final Collection<Viewer> viewers
         ) {
             this.context = context;
@@ -95,7 +95,7 @@ public interface PipelineContextRenders {
 
         @NotNull
         @Override
-        public ContextRenderRich context() {
+        public ContextRender context() {
             return this.context;
         }
 
@@ -108,16 +108,16 @@ public interface PipelineContextRenders {
 
     final class StartUpdate implements PipelineContextRender.StartUpdate {
 
-        private final ContextRenderRich context;
+        private final ContextRender context;
         private boolean cancelled;
 
-        public StartUpdate(@NotNull final ContextRenderRich context) {
+        public StartUpdate(@NotNull final ContextRender context) {
             this.context = context;
         }
 
         @NotNull
         @Override
-        public ContextRenderRich context() {
+        public ContextRender context() {
             return this.context;
         }
 
@@ -134,30 +134,30 @@ public interface PipelineContextRenders {
 
     final class StopUpdate implements PipelineContextRender.StopUpdate {
 
-        private final ContextRenderRich context;
+        private final ContextRender context;
 
-        public StopUpdate(@NotNull final ContextRenderRich context) {
+        public StopUpdate(@NotNull final ContextRender context) {
             this.context = context;
         }
 
         @NotNull
         @Override
-        public ContextRenderRich context() {
+        public ContextRender context() {
             return this.context;
         }
     }
 
     final class Update implements PipelineContextRender.Update {
 
-        private final ContextRenderRich context;
+        private final ContextRender context;
 
-        public Update(@NotNull final ContextRenderRich context) {
+        public Update(@NotNull final ContextRender context) {
             this.context = context;
         }
 
         @NotNull
         @Override
-        public ContextRenderRich context() {
+        public ContextRender context() {
             return this.context;
         }
     }

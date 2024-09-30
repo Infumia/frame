@@ -12,7 +12,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import net.infumia.frame.context.view.ContextRender;
-import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.listener.InventoryListener;
 import net.infumia.frame.logger.Logger;
@@ -241,10 +240,7 @@ final class FrameImpl implements FrameRich {
             return CompletableFuture.completedFuture(null);
         }
         return CompletableFutureExtensions.logError(
-            ((ViewEventHandler) view).simulateOpenActive(
-                    (ContextRenderRich) activeContext,
-                    players
-                ),
+            ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
             this.logger,
             "Error occurred while opening an active view '%s'!",
             view.instance()

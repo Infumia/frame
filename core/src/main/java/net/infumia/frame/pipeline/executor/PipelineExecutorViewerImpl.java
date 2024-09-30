@@ -2,7 +2,7 @@ package net.infumia.frame.pipeline.executor;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.pipeline.context.PipelineContextViewer;
 import net.infumia.frame.pipeline.context.PipelineContextViewers;
 import net.infumia.frame.pipeline.holder.PipelineHolderViewer;
@@ -14,9 +14,9 @@ import org.jetbrains.annotations.NotNull;
 public final class PipelineExecutorViewerImpl implements PipelineExecutorViewer {
 
     private final PipelineHolderViewer pipelines = PipelineHolderViewer.BASE.createNew();
-    private final ContextRenderRich context;
+    private final ContextRender context;
 
-    public PipelineExecutorViewerImpl(@NotNull final ContextRenderRich context) {
+    public PipelineExecutorViewerImpl(@NotNull final ContextRender context) {
         this.context = context;
     }
 
