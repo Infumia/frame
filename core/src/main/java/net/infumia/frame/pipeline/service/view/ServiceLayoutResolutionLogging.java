@@ -19,7 +19,7 @@ public final class ServiceLayoutResolutionLogging
 
     @Override
     public void accept(@NotNull final PipelineContextView.LayoutResolution ctx) {
-        ctx.context().manager().logger().debug("Layout '%s' resolved.", ctx.layouts());
+        ctx.context().frame().logger().debug("Layout '%s' resolved.", ctx.layouts());
     }
 
     private ServiceLayoutResolutionLogging() {}

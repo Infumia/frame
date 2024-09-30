@@ -1,15 +1,15 @@
-package net.infumia.frame.pipeline.service.manager;
+package net.infumia.frame.pipeline.service.frame;
 
 import net.infumia.frame.FrameRich;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
-import net.infumia.frame.pipeline.context.PipelineContextManager;
+import net.infumia.frame.pipeline.context.PipelineContextFrame;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceListenerRegistered
-    implements PipelineServiceConsumer<PipelineContextManager.ListenerRegistered> {
+    implements PipelineServiceConsumer<PipelineContextFrame.ListenerRegistered> {
 
     public static final PipelineServiceConsumer<
-        PipelineContextManager.ListenerRegistered
+        PipelineContextFrame.ListenerRegistered
     > INSTANCE = new ServiceListenerRegistered();
 
     public static final String KEY = "register";
@@ -20,7 +20,7 @@ public final class ServiceListenerRegistered
     }
 
     @Override
-    public void accept(@NotNull final PipelineContextManager.ListenerRegistered ctx) {
+    public void accept(@NotNull final PipelineContextFrame.ListenerRegistered ctx) {
         ((FrameRich) ctx.frame()).listener().register();
     }
 

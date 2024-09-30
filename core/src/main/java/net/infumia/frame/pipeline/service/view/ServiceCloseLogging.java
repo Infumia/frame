@@ -22,7 +22,7 @@ public final class ServiceCloseLogging
     public void accept(@NotNull final PipelineContextView.Close ctx) {
         final ContextClose context = ctx.context();
         context
-            .manager()
+            .frame()
             .logger()
             .debug(
                 "View '%s' closed for viewer '%s'.",

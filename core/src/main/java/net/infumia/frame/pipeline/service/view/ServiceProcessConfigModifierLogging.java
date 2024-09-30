@@ -20,7 +20,7 @@ public final class ServiceProcessConfigModifierLogging
 
     @Override
     public void accept(@NotNull final PipelineContextView.ProcessConfigModifier ctx) {
-        ctx.context().manager().logger().debug("Config modifiers are proceed.");
+        ctx.context().frame().logger().debug("Config modifiers are proceed.");
     }
 
     private ServiceProcessConfigModifierLogging() {}

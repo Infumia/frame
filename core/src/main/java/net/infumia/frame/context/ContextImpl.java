@@ -8,29 +8,29 @@ import org.jetbrains.annotations.NotNull;
 
 public class ContextImpl extends StateFactoryImpl implements ContextRich {
 
-    private final Frame manager;
+    private final Frame frame;
     private final TypedKeyStorage instances;
     private final StateRegistry stateRegistry;
 
     public ContextImpl(
-        @NotNull final Frame manager,
+        @NotNull final Frame frame,
         @NotNull final TypedKeyStorage instances,
         @NotNull final StateRegistry stateRegistry
     ) {
         super(stateRegistry);
-        this.manager = manager;
+        this.frame = frame;
         this.instances = instances;
         this.stateRegistry = stateRegistry;
     }
 
     public ContextImpl(@NotNull final Context context) {
-        this(context.manager(), context.instances(), ((ContextRich) context).stateRegistry());
+        this(context.frame(), context.instances(), ((ContextRich) context).stateRegistry());
     }
 
     @NotNull
     @Override
-    public Frame manager() {
-        return this.manager;
+    public Frame frame() {
+        return this.frame;
     }
 
     @NotNull

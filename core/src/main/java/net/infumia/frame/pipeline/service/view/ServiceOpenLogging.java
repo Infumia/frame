@@ -21,7 +21,7 @@ public final class ServiceOpenLogging implements PipelineServiceConsumer<Pipelin
     public void accept(@NotNull final PipelineContextView.Open ctx) {
         final ContextOpen context = ctx.context();
         context
-            .manager()
+            .frame()
             .logger()
             .debug("View '%s' is opening for players '%s'", context.view(), context.viewers());
     }

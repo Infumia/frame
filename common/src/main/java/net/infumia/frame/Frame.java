@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.pipeline.Pipelined;
-import net.infumia.frame.pipeline.executor.PipelineExecutorManager;
+import net.infumia.frame.pipeline.executor.PipelineExecutorFrame;
 import net.infumia.frame.task.TaskFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
@@ -18,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface Frame extends Pipelined<PipelineExecutorManager> {
+public interface Frame extends Pipelined<PipelineExecutorFrame> {
     @NotNull
     static Frame create(@NotNull final Plugin plugin) {
         return Internal.factory().create(plugin);

@@ -64,7 +64,7 @@ public final class ServiceCreateContainer
         return CompletableFuture.completedFuture(
             new ViewContainerImpl(
                 context
-                    .manager()
+                    .frame()
                     .inventoryCreator()
                     .create(
                         instance instanceof InventoryHolder ? (InventoryHolder) instance : null,

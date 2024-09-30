@@ -42,7 +42,7 @@ public final class ServiceProcessConfigModifierAddSizeModifier
                     size
                 );
                 context
-                    .manager()
+                    .frame()
                     .logger()
                     .debug(
                         "View's '%s' size modified according to the layout length '%s'.",

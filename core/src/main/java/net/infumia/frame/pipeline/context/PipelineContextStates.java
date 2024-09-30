@@ -9,24 +9,24 @@ import org.jetbrains.annotations.Nullable;
 public interface PipelineContextStates {
     final class Access implements PipelineContextState.Access {
 
-        public final Frame manager;
+        public final Frame frame;
         private final State<?> state;
         private final StateValue<?> value;
 
         public Access(
-            @NotNull final Frame manager,
+            @NotNull final Frame frame,
             @NotNull final State<?> state,
             @NotNull final StateValue<?> value
         ) {
-            this.manager = manager;
+            this.frame = frame;
             this.state = state;
             this.value = value;
         }
 
         @NotNull
         @Override
-        public Frame manager() {
-            return this.manager;
+        public Frame frame() {
+            return this.frame;
         }
 
         @NotNull
@@ -44,18 +44,18 @@ public interface PipelineContextStates {
 
     final class Update implements PipelineContextState.Update {
 
-        public final Frame manager;
+        public final Frame frame;
         private final State<?> state;
         private final Object oldValue;
         private final StateValue<?> value;
 
         public Update(
-            @NotNull final Frame manager,
+            @NotNull final Frame frame,
             @NotNull final State<?> state,
             @Nullable final Object oldValue,
             @NotNull final StateValue<?> value
         ) {
-            this.manager = manager;
+            this.frame = frame;
             this.state = state;
             this.oldValue = oldValue;
             this.value = value;
@@ -63,8 +63,8 @@ public interface PipelineContextStates {
 
         @NotNull
         @Override
-        public Frame manager() {
-            return this.manager;
+        public Frame frame() {
+            return this.frame;
         }
 
         @NotNull

@@ -1,13 +1,13 @@
-package net.infumia.frame.pipeline.service.manager;
+package net.infumia.frame.pipeline.service.frame;
 
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
-import net.infumia.frame.pipeline.context.PipelineContextManager;
+import net.infumia.frame.pipeline.context.PipelineContextFrame;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceViewUnregisteredLogging
-    implements PipelineServiceConsumer<PipelineContextManager.ViewUnregistered> {
+    implements PipelineServiceConsumer<PipelineContextFrame.ViewUnregistered> {
 
-    public static final PipelineServiceConsumer<PipelineContextManager.ViewUnregistered> INSTANCE =
+    public static final PipelineServiceConsumer<PipelineContextFrame.ViewUnregistered> INSTANCE =
         new ServiceViewUnregisteredLogging();
 
     public static final String KEY = "logging";
@@ -18,7 +18,7 @@ public final class ServiceViewUnregisteredLogging
     }
 
     @Override
-    public void accept(@NotNull final PipelineContextManager.ViewUnregistered ctx) {
+    public void accept(@NotNull final PipelineContextFrame.ViewUnregistered ctx) {
         ctx.frame().logger().debug("View classes are unregistered '%s'", ctx.unregisteredViews());
     }
 

@@ -1,4 +1,4 @@
-package net.infumia.frame.pipeline.service.manager;
+package net.infumia.frame.pipeline.service.frame;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,7 +10,7 @@ import net.infumia.frame.config.ViewConfigBuilderRich;
 import net.infumia.frame.context.ContextImpl;
 import net.infumia.frame.context.view.ContextInitImpl;
 import net.infumia.frame.pipeline.PipelineService;
-import net.infumia.frame.pipeline.context.PipelineContextManager;
+import net.infumia.frame.pipeline.context.PipelineContextFrame;
 import net.infumia.frame.state.StateRegistry;
 import net.infumia.frame.typedkey.TypedKeyStorage;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
@@ -20,10 +20,10 @@ import net.infumia.frame.view.ViewImpl;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceViewRegistered
-    implements PipelineService<PipelineContextManager.ViewRegistered, Collection<View>> {
+    implements PipelineService<PipelineContextFrame.ViewRegistered, Collection<View>> {
 
     public static final PipelineService<
-        PipelineContextManager.ViewRegistered,
+        PipelineContextFrame.ViewRegistered,
         Collection<View>
     > INSTANCE = new ServiceViewRegistered();
 
@@ -38,7 +38,7 @@ public final class ServiceViewRegistered
     @Override
     @SuppressWarnings("unchecked")
     public CompletableFuture<Collection<View>> handle(
-        @NotNull final PipelineContextManager.ViewRegistered ctx
+        @NotNull final PipelineContextFrame.ViewRegistered ctx
     ) {
         final Frame frame = ctx.frame();
         final CompletableFuture<View>[] futures = ctx

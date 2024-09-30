@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface PipelineContextState extends PipelineContext {
     @NotNull
-    Frame manager();
+    Frame frame();
 
     @NotNull
     State<?> state();

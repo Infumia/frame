@@ -33,7 +33,7 @@ public final class ServiceTransitionLogging
                 continue;
             }
             context
-                .manager()
+                .frame()
                 .logger()
                 .debug(
                     "Player '%s' is transitioning from view '%s' to view '%s'.",

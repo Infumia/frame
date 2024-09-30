@@ -8,16 +8,16 @@ import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineContextManager extends PipelineContext {
+public interface PipelineContextFrame extends PipelineContext {
     @NotNull
     Frame frame();
 
-    interface ViewCreated extends PipelineContextManager {
+    interface ViewCreated extends PipelineContextFrame {
         @NotNull
         Collection<Class<?>> registeredViews();
     }
 
-    interface ViewRegistered extends PipelineContextManager {
+    interface ViewRegistered extends PipelineContextFrame {
         @NotNull
         Collection<Object> registeredViews();
 
@@ -25,9 +25,9 @@ public interface PipelineContextManager extends PipelineContext {
         Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer();
     }
 
-    interface ListenerRegistered extends PipelineContextManager {}
+    interface ListenerRegistered extends PipelineContextFrame {}
 
-    interface ViewUnregistered extends PipelineContextManager {
+    interface ViewUnregistered extends PipelineContextFrame {
         @NotNull
         Collection<View> unregisteredViews();
     }

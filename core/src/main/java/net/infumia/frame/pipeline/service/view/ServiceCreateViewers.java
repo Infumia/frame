@@ -31,7 +31,7 @@ public final class ServiceCreateViewers
         @NotNull final PipelineContextView.CreateViewers ctx
     ) {
         final View view = ctx.view();
-        final ViewerCreator viewerCreator = view.context().manager().viewerCreator();
+        final ViewerCreator viewerCreator = view.context().frame().viewerCreator();
         return CompletableFuture.completedFuture(
             ctx
                 .viewers()

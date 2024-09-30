@@ -24,7 +24,7 @@ public final class ServiceAddedLogging
         final ContextRender context = ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
             context
-                .manager()
+                .frame()
                 .logger()
                 .debug("Viewer '%s' added to view '%s'.", viewer, context.view().instance());
         }

@@ -28,7 +28,7 @@ public final class PipelineExecutorStateImpl implements PipelineExecutorState {
         @NotNull final StateValue<?> value
     ) {
         return this.pipelines.access()
-            .completeWith(new PipelineContextStates.Access(this.context.manager(), state, value));
+            .completeWith(new PipelineContextStates.Access(this.context.frame(), state, value));
     }
 
     @NotNull
@@ -40,7 +40,7 @@ public final class PipelineExecutorStateImpl implements PipelineExecutorState {
     ) {
         return this.pipelines.update()
             .completeWith(
-                new PipelineContextStates.Update(this.context.manager(), state, oldValue, value)
+                new PipelineContextStates.Update(this.context.frame(), state, oldValue, value)
             );
     }
 

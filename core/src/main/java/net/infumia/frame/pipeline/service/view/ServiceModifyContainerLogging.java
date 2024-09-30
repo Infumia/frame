@@ -19,7 +19,7 @@ public final class ServiceModifyContainerLogging
 
     @Override
     public void accept(@NotNull final PipelineContextView.ModifyContainer ctx) {
-        ctx.context().manager().logger().debug("View container successfully modified.");
+        ctx.context().frame().logger().debug("View container successfully modified.");
     }
 
     private ServiceModifyContainerLogging() {}

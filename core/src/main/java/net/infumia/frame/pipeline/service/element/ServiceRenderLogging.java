@@ -24,7 +24,7 @@ public final class ServiceRenderLogging
         final ContextElementRender context = ctx.context();
         final String key = ((ElementRich) context.element()).key();
         // TODO: portlek, Add more detailed message.
-        context.manager().logger().debug("Element '%s' is rendered.", key == null ? "null" : key);
+        context.frame().logger().debug("Element '%s' is rendered.", key == null ? "null" : key);
     }
 
     private ServiceRenderLogging() {}

@@ -23,7 +23,7 @@ public final class ServiceResumeLogging
         // TODO: portlek, More detailed message.
         final ContextResume context = ctx.context();
         context
-            .manager()
+            .frame()
             .logger()
             .debug(
                 "Viewers '%s' resumed from view '%s'.",

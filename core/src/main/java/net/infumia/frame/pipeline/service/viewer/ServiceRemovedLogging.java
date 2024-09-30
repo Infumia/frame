@@ -24,7 +24,7 @@ public final class ServiceRemovedLogging
         final ContextRender context = ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
             context
-                .manager()
+                .frame()
                 .logger()
                 .debug("Viewer '%s' removed from view '%s'.", viewer, context.view().instance());
         }

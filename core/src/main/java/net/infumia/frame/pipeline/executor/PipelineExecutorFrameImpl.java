@@ -5,22 +5,22 @@ import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import net.infumia.frame.Frame;
-import net.infumia.frame.pipeline.context.PipelineContextManager;
-import net.infumia.frame.pipeline.context.PipelineContextManagers;
-import net.infumia.frame.pipeline.holder.PipelineHolderManager;
+import net.infumia.frame.pipeline.context.PipelineContextFrame;
+import net.infumia.frame.pipeline.context.PipelineContextFrames;
+import net.infumia.frame.pipeline.holder.PipelineHolderFrame;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.service.Implementation;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineExecutorManagerImpl implements PipelineExecutorManager {
+public final class PipelineExecutorFrameImpl implements PipelineExecutorFrame {
 
-    private final PipelineHolderManager pipelines = PipelineHolderManager.BASE.createNew();
-    private final Frame manager;
+    private final PipelineHolderFrame pipelines = PipelineHolderFrame.BASE.createNew();
+    private final Frame frame;
 
-    public PipelineExecutorManagerImpl(@NotNull final Frame manager) {
-        this.manager = manager;
+    public PipelineExecutorFrameImpl(@NotNull final Frame frame) {
+        this.frame = frame;
     }
 
     @NotNull
@@ -30,8 +30,8 @@ public final class PipelineExecutorManagerImpl implements PipelineExecutorManage
     ) {
         return this.pipelines.viewCreated()
             .completeWith(
-                new PipelineContextManagers.ViewCreated(
-                    this.manager,
+                new PipelineContextFrames.ViewCreated(
+                    this.frame,
                     Collections.unmodifiableCollection(registeredViews)
                 )
             );
@@ -45,8 +45,8 @@ public final class PipelineExecutorManagerImpl implements PipelineExecutorManage
     ) {
         return this.pipelines.viewRegistered()
             .completeWith(
-                new PipelineContextManagers.ViewRegistered(
-                    this.manager,
+                new PipelineContextFrames.ViewRegistered(
+                    this.frame,
                     Collections.unmodifiableCollection(registeredViews),
                     instanceConfigurer
                 )
@@ -57,7 +57,7 @@ public final class PipelineExecutorManagerImpl implements PipelineExecutorManage
     @Override
     public CompletableFuture<ConsumerService.State> executeListenersRegistered() {
         return this.pipelines.listenersRegistered()
-            .completeWith(new PipelineContextManagers.ListenerRegistered(this.manager));
+            .completeWith(new PipelineContextFrames.ListenerRegistered(this.frame));
     }
 
     @NotNull
@@ -67,8 +67,8 @@ public final class PipelineExecutorManagerImpl implements PipelineExecutorManage
     ) {
         return this.pipelines.viewUnregistered()
             .completeWith(
-                new PipelineContextManagers.ViewUnregistered(
-                    this.manager,
+                new PipelineContextFrames.ViewUnregistered(
+                    this.frame,
                     Collections.unmodifiableCollection(unregisteredViews)
                 )
             );
@@ -77,7 +77,7 @@ public final class PipelineExecutorManagerImpl implements PipelineExecutorManage
     @Override
     public void applyViewCreated(
         @NotNull final Implementation<
-            PipelineContextManager.ViewCreated,
+            PipelineContextFrame.ViewCreated,
             Collection<Object>
         > implementation
     ) {
@@ -87,7 +87,7 @@ public final class PipelineExecutorManagerImpl implements PipelineExecutorManage
     @Override
     public void applyViewRegistered(
         @NotNull final Implementation<
-            PipelineContextManager.ViewRegistered,
+            PipelineContextFrame.ViewRegistered,
             Collection<View>
         > implementation
     ) {
@@ -97,7 +97,7 @@ public final class PipelineExecutorManagerImpl implements PipelineExecutorManage
     @Override
     public void applyListenersRegistered(
         @NotNull final Implementation<
-            PipelineContextManager.ListenerRegistered,
+            PipelineContextFrame.ListenerRegistered,
             ConsumerService.State
         > implementation
     ) {
@@ -107,7 +107,7 @@ public final class PipelineExecutorManagerImpl implements PipelineExecutorManage
     @Override
     public void applyViewUnregistered(
         @NotNull final Implementation<
-            PipelineContextManager.ViewUnregistered,
+            PipelineContextFrame.ViewUnregistered,
             ConsumerService.State
         > implementation
     ) {

@@ -33,7 +33,7 @@ public final class ServiceStartUpdateInvalidate
             context.updateTask(null);
         } catch (final Throwable e) {
             context
-                .manager()
+                .frame()
                 .logger()
                 .error(
                     e,

@@ -22,7 +22,7 @@ public final class ServiceUpdateLogging
         final Object oldValue = ctx.oldValue();
         final Object newValue = ctx.value().value();
         ctx
-            .manager()
+            .frame()
             .logger()
             .debug(
                 "State '%s' has been updated from '%s' to '%s'.",

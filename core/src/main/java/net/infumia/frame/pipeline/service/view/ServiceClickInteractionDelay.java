@@ -50,7 +50,7 @@ public final class ServiceClickInteractionDelay
             lastInteractions.put(key, now);
         } else {
             context
-                .manager()
+                .frame()
                 .logger()
                 .debug("Click event of viewer '%s' cancelled due to interaction delay.", clicker);
             ctx.cancelled(true);

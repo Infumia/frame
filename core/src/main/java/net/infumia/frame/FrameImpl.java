@@ -17,8 +17,8 @@ import net.infumia.frame.listener.InventoryListener;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.metadata.MetadataAccessFactory;
 import net.infumia.frame.metadata.MetadataAccessFactoryImpl;
-import net.infumia.frame.pipeline.executor.PipelineExecutorManager;
-import net.infumia.frame.pipeline.executor.PipelineExecutorManagerImpl;
+import net.infumia.frame.pipeline.executor.PipelineExecutorFrame;
+import net.infumia.frame.pipeline.executor.PipelineExecutorFrameImpl;
 import net.infumia.frame.task.TaskFactory;
 import net.infumia.frame.task.TaskFactoryImpl;
 import net.infumia.frame.typedkey.TypedKeyStorageFactory;
@@ -44,7 +44,7 @@ final class FrameImpl implements FrameRich {
     private final Collection<Class<?>> unregisteredViews = ConcurrentHashMap.newKeySet();
     private final Map<Class<?>, View> registeredViews = new ConcurrentHashMap<>();
     private final AtomicBoolean registered = new AtomicBoolean(false);
-    private final PipelineExecutorManager pipelines = new PipelineExecutorManagerImpl(this);
+    private final PipelineExecutorFrame pipelines = new PipelineExecutorFrameImpl(this);
     private final ViewCreator viewCreator = new ViewCreatorImpl();
     private final Logger logger;
     private final TaskFactory taskFactory;
@@ -256,7 +256,7 @@ final class FrameImpl implements FrameRich {
 
     @NotNull
     @Override
-    public PipelineExecutorManager pipelines() {
+    public PipelineExecutorFrame pipelines() {
         return this.pipelines;
     }
 

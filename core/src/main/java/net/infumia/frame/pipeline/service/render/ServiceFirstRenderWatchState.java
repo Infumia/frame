@@ -57,7 +57,7 @@ public final class ServiceFirstRenderWatchState
             state.watchAccess(context, update ->
                 CompletableFutureExtensions.logError(
                     element.pipelines().executeUpdate(context, false),
-                    context.manager().logger(),
+                    context.frame().logger(),
                     "An error occurred while updating element '%s' due to state '%s' access!",
                     element.key(),
                     state
@@ -78,7 +78,7 @@ public final class ServiceFirstRenderWatchState
             state.watchUpdate(context, update ->
                 CompletableFutureExtensions.logError(
                     element.pipelines().executeUpdate(context, false),
-                    context.manager().logger(),
+                    context.frame().logger(),
                     "An error occurred while updating element '%s' due to state '%s' change!",
                     element.key(),
                     state

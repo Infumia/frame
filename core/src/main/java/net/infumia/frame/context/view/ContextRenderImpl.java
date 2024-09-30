@@ -108,7 +108,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
             metadata.remove(MetadataKeyHolder.PREVIOUS_VIEWS);
         }
         CompletableFutureExtensions.logError(
-            this.manager()
+            this.frame()
                 .openActive(viewer.player(), previousContext)
                 .thenCompose(__ ->
                     ((ContextRenderRich) previousContext).simulateResume(
@@ -116,7 +116,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
                             Collections.singleton(viewer)
                         )
                 ),
-            this.manager().logger(),
+            this.frame().logger(),
             "An error occurred while going back to view '%s'.",
             previousContext.view().instance()
         );

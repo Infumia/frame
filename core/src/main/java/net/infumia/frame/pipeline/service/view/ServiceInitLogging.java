@@ -21,7 +21,7 @@ public final class ServiceInitLogging implements PipelineServiceConsumer<Pipelin
         ctx
             .view()
             .context()
-            .manager()
+            .frame()
             .logger()
             .debug("onInit ran successfully for view '%s'.", ctx.view().instance());
     }

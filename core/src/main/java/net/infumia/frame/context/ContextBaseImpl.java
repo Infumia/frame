@@ -114,7 +114,7 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
     public CompletableFuture<@Nullable ContextRender> openForEveryone(
         @NotNull final Class<?> viewClass
     ) {
-        return this.manager()
+        return this.frame()
             .open(
                 this.viewers().stream().map(Viewer::player).collect(Collectors.toSet()),
                 viewClass
@@ -127,7 +127,7 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
         @NotNull final Class<?> viewClass,
         @NotNull final Consumer<TypedKeyStorageImmutableBuilder> initialDataConfigurer
     ) {
-        return this.manager()
+        return this.frame()
             .open(
                 this.viewers().stream().map(Viewer::player).collect(Collectors.toSet()),
                 viewClass,
@@ -140,7 +140,7 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
     public CompletableFuture<@Nullable ContextRender> openForViewer(
         @NotNull final Class<?> viewClass
     ) {
-        return this.manager().open(this.viewerOrThrow("openForViewer").player(), viewClass);
+        return this.frame().open(this.viewerOrThrow("openForViewer").player(), viewClass);
     }
 
     @NotNull
@@ -149,7 +149,7 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
         @NotNull final Class<?> viewClass,
         @NotNull final Consumer<TypedKeyStorageImmutableBuilder> initialData
     ) {
-        return this.manager()
+        return this.frame()
             .open(this.viewerOrThrow("openForViewer").player(), viewClass, initialData);
     }
 

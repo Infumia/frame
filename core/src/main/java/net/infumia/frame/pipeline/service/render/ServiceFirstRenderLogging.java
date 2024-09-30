@@ -21,7 +21,7 @@ public final class ServiceFirstRenderLogging
     public void accept(@NotNull final PipelineContextRender.FirstRender ctx) {
         ctx
             .context()
-            .manager()
+            .frame()
             .logger()
             .debug(
                 "onFirstRender ran successfully for view '%s'.",

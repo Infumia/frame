@@ -22,7 +22,7 @@ public final class ServiceUpdateLogging
         // TODO: portlek, More detailed message.
         ctx
             .context()
-            .manager()
+            .frame()
             .logger()
             .debug("View '%s' updated.", ctx.context().view().instance());
     }

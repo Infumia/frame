@@ -23,7 +23,7 @@ public final class ServiceClickLogging
         // TODO: portlek, More detailed message.
         final ContextClick context = ctx.context();
         context
-            .manager()
+            .frame()
             .logger()
             .debug(
                 "Player '%s' clicked on view '%s'.",

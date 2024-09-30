@@ -30,15 +30,15 @@ public final class ServiceStartUpdate
             "Update interval cannot be null in start-update service!"
         );
 
-        final Frame manager = context.manager();
+        final Frame frame = context.frame();
         context.updateTask(
-            manager
+            frame
                 .taskFactory()
                 .sync(
                     () ->
                         CompletableFutureExtensions.logError(
                             context.pipelines().executeUpdate(),
-                            manager.logger(),
+                            frame.logger(),
                             "An error occurred while running the update task of view '%s'.",
                             context.view().instance()
                         ),

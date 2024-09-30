@@ -24,7 +24,7 @@ public final class ServiceUpdateLogging
         final ContextElementUpdate context = ctx.context();
         final String key = ((ElementRich) context.element()).key();
         // TODO: portlek, Add more detailed message.
-        context.manager().logger().debug("Element '%s' is updated.", key == null ? "null" : key);
+        context.frame().logger().debug("Element '%s' is updated.", key == null ? "null" : key);
     }
 
     private ServiceUpdateLogging() {}

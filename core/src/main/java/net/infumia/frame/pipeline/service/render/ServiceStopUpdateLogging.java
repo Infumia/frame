@@ -22,7 +22,7 @@ public final class ServiceStopUpdateLogging
         // TODO: portlek, More detailed message.
         ctx
             .context()
-            .manager()
+            .frame()
             .logger()
             .debug("Update task stopped for view '%s'.", ctx.context().view().instance());
     }

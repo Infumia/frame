@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Context extends StateFactory {
     @NotNull
-    Frame manager();
+    Frame frame();
 
     @NotNull
     TypedKeyStorage instances();

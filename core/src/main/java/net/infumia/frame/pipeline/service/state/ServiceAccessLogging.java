@@ -21,7 +21,7 @@ public final class ServiceAccessLogging
     public void accept(@NotNull final PipelineContextState.Access ctx) {
         final Object value = ctx.value().value();
         ctx
-            .manager()
+            .frame()
             .logger()
             .debug(
                 "State '%s' has been accessed for value '%s'.",

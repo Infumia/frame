@@ -20,7 +20,7 @@ public final class ServiceOpenContainerLogging
     @Override
     public void accept(@NotNull final PipelineContextRender.OpenContainer ctx) {
         // TODO: portlek, More detailed message.
-        ctx.context().manager().logger().debug("Container opened for viewers '%s'.", ctx.viewers());
+        ctx.context().frame().logger().debug("Container opened for viewers '%s'.", ctx.viewers());
     }
 
     private ServiceOpenContainerLogging() {}
