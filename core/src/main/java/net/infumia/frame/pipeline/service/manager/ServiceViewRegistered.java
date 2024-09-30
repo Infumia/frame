@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import net.infumia.frame.Frame;
 import net.infumia.frame.config.ViewConfigBuilderRich;
+import net.infumia.frame.context.ContextImpl;
 import net.infumia.frame.context.view.ContextInitImpl;
 import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.context.PipelineContextManager;
@@ -44,9 +45,11 @@ public final class ServiceViewRegistered
             .map(instance -> {
                 final View view = new ViewImpl(
                     new ContextInitImpl(
-                        frame,
-                        frame.storageFactory().create(new ConcurrentHashMap<>()),
-                        new StateRegistry(frame.logger()),
+                        new ContextImpl(
+                            frame,
+                            frame.storageFactory().create(new ConcurrentHashMap<>()),
+                            new StateRegistry(frame.logger())
+                        ),
                         ViewConfigBuilderRich.create()
                     ),
                     instance

@@ -1,9 +1,8 @@
 package net.infumia.frame.state.value;
 
 import java.util.function.BiFunction;
-import net.infumia.frame.context.ContextBaseRich;
-import net.infumia.frame.state.StateRich;
+import net.infumia.frame.context.ContextBase;
+import net.infumia.frame.state.State;
 
 @FunctionalInterface
-public interface StateValueFactory<T>
-    extends BiFunction<ContextBaseRich, StateRich<T>, StateValue<T>> {}
+public interface StateValueFactory<T> extends BiFunction<ContextBase, State<T>, StateValue<T>> {}

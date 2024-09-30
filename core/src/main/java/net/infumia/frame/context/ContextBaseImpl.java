@@ -8,12 +8,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import net.infumia.frame.Frame;
 import net.infumia.frame.context.view.ContextRender;
-import net.infumia.frame.state.StateRegistry;
 import net.infumia.frame.state.value.StateValueHost;
 import net.infumia.frame.state.value.StateValueHostImpl;
-import net.infumia.frame.typedkey.TypedKeyStorage;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.util.Preconditions;
@@ -34,9 +31,7 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
     private final Viewer singleViewer;
 
     public ContextBaseImpl(
-        @NotNull final Frame manager,
-        @NotNull final TypedKeyStorage instances,
-        @NotNull final StateRegistry stateRegistry,
+        @NotNull final Context context,
         @NotNull final UUID id,
         @NotNull final View view,
         @NotNull final ViewConfig initialConfig,
@@ -44,7 +39,7 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
         @NotNull final TypedKeyStorageImmutable initialData,
         @Nullable final Viewer singleViewer
     ) {
-        super(manager, instances, stateRegistry);
+        super(context);
         this.id = id;
         this.view = view;
         this.initialConfig = initialConfig;

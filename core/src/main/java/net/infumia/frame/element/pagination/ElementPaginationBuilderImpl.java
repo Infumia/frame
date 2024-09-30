@@ -10,7 +10,6 @@ import net.infumia.frame.element.ElementBuilderImpl;
 import net.infumia.frame.element.ElementItemBuilder;
 import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.state.State;
-import net.infumia.frame.state.StateRich;
 import net.infumia.frame.state.pagination.ElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +23,7 @@ public final class ElementPaginationBuilderImpl<T>
     char layout = '0';
     BiConsumer<ContextBase, ElementPagination> onPageSwitch;
     ElementConfigurer<T> elementConfigurer;
-    StateRich<ElementPagination> associated;
+    State<ElementPagination> associated;
 
     ElementPaginationBuilderImpl(@NotNull final ElementPaginationImpl<T> element) {
         super(element);
@@ -38,7 +37,7 @@ public final class ElementPaginationBuilderImpl<T>
     @NotNull
     @Override
     public ElementPaginationBuilderRich<T> associated(
-        @NotNull final StateRich<ElementPagination> associated
+        @NotNull final State<ElementPagination> associated
     ) {
         this.associated = associated;
         return this;

@@ -5,13 +5,12 @@ import net.infumia.frame.config.ViewConfigBuilderRich;
 import net.infumia.frame.config.ViewConfigRich;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.ContextBaseImpl;
-import net.infumia.frame.context.ContextBaseRich;
 import net.infumia.frame.view.config.ViewConfig;
 import net.infumia.frame.view.config.ViewConfigBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class ContextOpenImpl extends ContextBaseImpl implements ContextBaseRich, ContextOpen {
+public final class ContextOpenImpl extends ContextBaseImpl implements ContextOpen {
 
     private ViewConfigBuilder modifiedConfig;
     private CompletableFuture<?> waitUntil;

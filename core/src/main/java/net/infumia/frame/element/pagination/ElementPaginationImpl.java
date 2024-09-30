@@ -25,6 +25,7 @@ import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
 import net.infumia.frame.slot.LayoutSlot;
+import net.infumia.frame.state.State;
 import net.infumia.frame.state.StateRich;
 import net.infumia.frame.state.pagination.ElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
@@ -45,7 +46,7 @@ public final class ElementPaginationImpl<T>
     final char layout;
     final BiConsumer<ContextBase, ElementPagination> onPageSwitch;
     final ElementConfigurer<T> elementConfigurer;
-    final StateRich<ElementPagination> associated;
+    final State<ElementPagination> associated;
     private final Function<ContextBase, CompletableFuture<List<T>>> sourceFactory;
     private List<ElementRich> elements = new ArrayList<>();
     private int currentPageIndex = 0;
@@ -84,7 +85,7 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     @Override
-    public StateRich<ElementPagination> associated() {
+    public State<ElementPagination> associated() {
         return this.associated;
     }
 
@@ -400,7 +401,9 @@ public final class ElementPaginationImpl<T>
         }
 
         this.loading = true;
-        return this.associated.manualUpdateWait(context).thenCompose(__ -> {
+        return ((StateRich<ElementPagination>) this.associated).manualUpdateWait(
+                context
+            ).thenCompose(__ -> {
                 if (this.sourceFactory == null) {
                     return CompletableFuture.completedFuture(Collections.emptyList());
                 }
@@ -408,7 +411,9 @@ public final class ElementPaginationImpl<T>
                         this.currentSource = result;
                         this.pageCount = this.calculatePagesCount(result);
                         this.loading = false;
-                        return this.associated.manualUpdateWait(context).thenApply(value ->
+                        return ((StateRich<ElementPagination>) this.associated).manualUpdateWait(
+                                context
+                            ).thenApply(value ->
                                 !isLazy
                                     ? result
                                     : ElementPaginationImpl.splitSourceForPage(

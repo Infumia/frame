@@ -6,7 +6,6 @@ import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.config.ViewConfigBuilderRich;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.ContextBaseImpl;
-import net.infumia.frame.context.ContextRich;
 import net.infumia.frame.context.view.ContextInit;
 import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.context.PipelineContextView;
@@ -37,9 +36,7 @@ public final class ServiceCreateContext
         final Collection<Viewer> viewers = ctx.viewers();
         return CompletableFuture.completedFuture(
             new ContextBaseImpl(
-                context.manager(),
-                context.instances(),
-                ((ContextRich) context).stateRegistry(),
+                context,
                 UUID.randomUUID(),
                 view,
                 ((ViewConfigBuilderRich) context.configBuilder()).build(),

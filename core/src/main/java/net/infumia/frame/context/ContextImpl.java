@@ -14,7 +14,7 @@ public class ContextImpl implements ContextRich {
     private final StateRegistry stateRegistry;
     private final StateFactory stateFactory;
 
-    protected ContextImpl(
+    public ContextImpl(
         @NotNull final Frame manager,
         @NotNull final TypedKeyStorage instances,
         @NotNull final StateRegistry stateRegistry
@@ -25,7 +25,7 @@ public class ContextImpl implements ContextRich {
         this.stateFactory = new StateFactoryImpl(stateRegistry);
     }
 
-    protected ContextImpl(@NotNull final Context context) {
+    public ContextImpl(@NotNull final Context context) {
         this(context.manager(), context.instances(), ((ContextRich) context).stateRegistry());
     }
 

@@ -1,7 +1,7 @@
 package net.infumia.frame.pipeline.executor;
 
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.context.ContextBaseRich;
+import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.pipeline.context.PipelineContextState;
 import net.infumia.frame.pipeline.context.PipelineContextStates;
 import net.infumia.frame.pipeline.holder.PipelineHolderState;
@@ -16,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 public final class PipelineExecutorStateImpl implements PipelineExecutorState {
 
     private final PipelineHolderState pipelines = PipelineHolderState.BASE.createNew();
-    private final ContextBaseRich context;
+    private final ContextBase context;
 
-    public PipelineExecutorStateImpl(@NotNull final ContextBaseRich context) {
+    public PipelineExecutorStateImpl(@NotNull final ContextBase context) {
         this.context = context;
     }
 

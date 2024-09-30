@@ -14,6 +14,7 @@ import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.pipeline.context.PipelineContextElement;
 import net.infumia.frame.service.ConsumerService;
+import net.infumia.frame.state.StateRich;
 import org.jetbrains.annotations.NotNull;
 
 final class ElementEventHandlerPagination implements ElementEventHandler {
@@ -42,7 +43,11 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
                 pagination.visible(true);
                 pagination.initialized(true);
                 return this.renderChild(context, pagination)
-                    .thenCompose(s -> pagination.associated().manualUpdateWait(context))
+                    .thenCompose(s ->
+                        ((StateRich<ElementPagination>) pagination.associated()).manualUpdateWait(
+                                context
+                            )
+                    )
                     .thenApply(v -> ConsumerService.State.CONTINUE);
             });
     }

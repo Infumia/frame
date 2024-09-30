@@ -5,13 +5,13 @@ import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.ElementEventHandlerHolder;
 import net.infumia.frame.element.ElementRich;
-import net.infumia.frame.state.StateRich;
+import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
 
 public interface ElementPaginationRich<T>
     extends ElementRich, ElementPagination, ElementEventHandlerHolder {
     @NotNull
-    StateRich<ElementPagination> associated();
+    State<ElementPagination> associated();
 
     boolean pageWasChanged();
 

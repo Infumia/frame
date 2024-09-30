@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.context.ContextBaseRich;
+import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextState;
 import net.infumia.frame.pipeline.executor.PipelineExecutorState;
@@ -20,10 +20,10 @@ import org.jetbrains.annotations.Nullable;
 public final class StateValueHostImpl implements StateValueHostRich {
 
     private final Map<StateRich<Object>, StateValue<Object>> values = new HashMap<>();
-    private final ContextBaseRich context;
+    private final ContextBase context;
     private final PipelineExecutorState pipelines;
 
-    public StateValueHostImpl(@NotNull final ContextBaseRich context) {
+    public StateValueHostImpl(@NotNull final ContextBase context) {
         this.context = context;
         this.pipelines = new PipelineExecutorStateImpl(context);
     }
