@@ -28,7 +28,11 @@ public final class SlotFinder {
 
     @Nullable
     public LayoutSlot findLayoutSlot(final char character) {
-        return this.context.layouts().get(character);
+        return this.context.layouts()
+            .stream()
+            .filter(slot -> slot.character() == character)
+            .findFirst()
+            .orElse(null);
     }
 
     public int findFirstSlot() {

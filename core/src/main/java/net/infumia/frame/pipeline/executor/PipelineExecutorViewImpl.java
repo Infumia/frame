@@ -1,7 +1,6 @@
 package net.infumia.frame.pipeline.executor;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextClickImpl;
@@ -115,7 +114,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
     @NotNull
     @Override
     public CompletableFuture<
-        Pair<ConsumerService.State, Map<Character, LayoutSlot>>
+        Pair<ConsumerService.State, Collection<LayoutSlot>>
     > executeLayoutResolution(
         @NotNull final ContextBase context,
         @NotNull final ViewConfig config,
@@ -134,7 +133,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
         @NotNull final ContextBase context,
         @NotNull final ViewConfig config,
         @NotNull final ViewContainer container,
-        @NotNull final Map<Character, LayoutSlot> layouts
+        @NotNull final Collection<LayoutSlot> layouts
     ) {
         return this.pipelines.createRender()
             .completeWith(

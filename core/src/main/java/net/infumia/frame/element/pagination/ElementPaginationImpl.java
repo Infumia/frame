@@ -462,11 +462,16 @@ public final class ElementPaginationImpl<T>
         if (this.currentLayoutSlot != null) {
             return this.currentLayoutSlot;
         }
-        final LayoutSlot layoutSlot = Preconditions.argumentNotNull(
-            context.layouts().get(this.layout),
-            "Layout slot target not found: %c",
-            this.layout
-        );
+        final LayoutSlot layoutSlot = context
+            .layouts()
+            .stream()
+            .filter(slot -> slot.character() == this.layout)
+            .findFirst()
+            .orElseThrow(() ->
+                new IllegalArgumentException(
+                    String.format("Layout slot target not found: %c", this.layout)
+                )
+            );
         return this.currentLayoutSlot = layoutSlot;
     }
 

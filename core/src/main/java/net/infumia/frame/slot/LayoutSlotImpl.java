@@ -12,9 +12,18 @@ public final class LayoutSlotImpl implements LayoutSlot {
     private final int@NotNull[] slots;
     private IntFunction<ElementItemBuilder> builderFactory;
 
-    public LayoutSlotImpl(final char character, final int@NotNull[] slots) {
+    private LayoutSlotImpl(
+        final char character,
+        final int@NotNull[] slots,
+        @Nullable final IntFunction<ElementItemBuilder> builderFactory
+    ) {
         this.character = character;
         this.slots = slots;
+        this.builderFactory = builderFactory;
+    }
+
+    public LayoutSlotImpl(final char character, final int@NotNull[] slots) {
+        this(character, slots, null);
     }
 
     @Override
@@ -33,9 +42,12 @@ public final class LayoutSlotImpl implements LayoutSlot {
         return this.builderFactory;
     }
 
+    @NotNull
     @Override
-    public void builderFactory(@Nullable final IntFunction<ElementItemBuilder> builderFactory) {
-        this.builderFactory = builderFactory;
+    public LayoutSlot withBuilderFactory(
+        @Nullable final IntFunction<ElementItemBuilder> builderFactory
+    ) {
+        return new LayoutSlotImpl(this.character, this.slots, builderFactory);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package net.infumia.frame.context.view;
 
-import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.viewer.ContextualViewer;
 import org.bukkit.event.inventory.ClickType;
@@ -105,16 +104,17 @@ public class ContextClickImpl extends ContextRenderImpl implements ContextClick 
 
     @Override
     public boolean isLayoutSlot() {
-        return this.layouts().values().stream().anyMatch(slot -> slot.contains(this.clickedSlot()));
+        return this.layouts().stream().anyMatch(slot -> slot.contains(this.clickedSlot()));
     }
 
     @Override
     public boolean isLayoutSlot(final char character) {
-        final LayoutSlot slot = this.layouts().get(character);
-        if (slot == null) {
-            return false;
-        }
-        return slot.contains(this.clickedSlot());
+        return this.layouts()
+            .stream()
+            .filter(slot -> slot.character() == character)
+            .findFirst()
+            .map(slot -> slot.contains(this.clickedSlotRaw()))
+            .orElse(false);
     }
 
     @Override

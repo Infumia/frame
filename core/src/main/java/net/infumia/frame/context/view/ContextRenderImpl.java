@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import net.infumia.frame.context.ContextBase;
@@ -41,14 +40,14 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
     private final List<Element> elements;
     private final ViewContainer container;
     private final ViewConfig config;
-    private final Map<Character, LayoutSlot> layouts;
+    private final Collection<LayoutSlot> layouts;
     private Closeable updateTask;
 
     public ContextRenderImpl(
         @NotNull final ContextBase context,
         @NotNull final ViewContainer container,
         @NotNull final ViewConfig config,
-        @NotNull final Map<Character, LayoutSlot> layouts
+        @NotNull final Collection<LayoutSlot> layouts
     ) {
         super(context);
         this.container = container;
@@ -86,8 +85,8 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
 
     @NotNull
     @Override
-    public Map<Character, LayoutSlot> layouts() {
-        return this.layouts;
+    public Collection<LayoutSlot> layouts() {
+        return Collections.unmodifiableCollection(this.layouts);
     }
 
     @Override
@@ -242,7 +241,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
             layout
         );
         final ElementItemBuilder builder = this.newUnregisteredBuilder();
-        layoutSlot.builderFactory(__ -> builder);
+        this.layouts.add(layoutSlot.withBuilderFactory(value -> builder));
         return builder;
     }
 
@@ -262,7 +261,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
             "Missing layout character '%s'",
             layout
         );
-        layoutSlot.builderFactory(index -> {
+        layoutSlot.withBuilderFactory(index -> {
             final ElementItemBuilder builder = this.newUnregisteredBuilder();
             configurer.accept(index, builder);
             return builder;

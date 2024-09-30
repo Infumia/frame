@@ -1,7 +1,6 @@
 package net.infumia.frame.view;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import net.infumia.frame.config.ViewConfigRich;
@@ -205,7 +204,7 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ContextBase context,
         @NotNull final ViewConfig config,
         @NotNull final ViewContainer container,
-        @NotNull final Map<Character, LayoutSlot> layouts
+        @NotNull final Collection<LayoutSlot> layouts
     ) {
         return this.pipelines.executeCreateRender(context, config, container, layouts).thenCompose(
                 render -> ((ContextRenderRich) render).simulateFirstRender().thenApply(__ -> render)

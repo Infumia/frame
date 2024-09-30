@@ -13,7 +13,8 @@ public interface LayoutSlot {
     @Nullable
     IntFunction<ElementItemBuilder> builderFactory();
 
-    void builderFactory(@Nullable IntFunction<ElementItemBuilder> builderFactory);
+    @NotNull
+    LayoutSlot withBuilderFactory(@Nullable IntFunction<ElementItemBuilder> builderFactory);
 
     boolean contains(int slot);
 }

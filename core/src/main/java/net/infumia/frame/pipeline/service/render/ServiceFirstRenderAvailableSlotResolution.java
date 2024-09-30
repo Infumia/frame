@@ -1,7 +1,7 @@
 package net.infumia.frame.pipeline.service.render;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiFunction;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderRich;
@@ -39,10 +39,14 @@ public final class ServiceFirstRenderAvailableSlotResolution
 
     private void fromAvailableSlots(@NotNull final PipelineContextRender.FirstRender ctx) {
         final ContextRenderRich context = (ContextRenderRich) ctx.context();
-        final Map<Character, LayoutSlot> layouts = context.layouts();
-        final LayoutSlot layout = layouts.get(
-            ServiceFirstRenderAvailableSlotResolution.AVAILABLE_SLOT
-        );
+        final Collection<LayoutSlot> layouts = context.layouts();
+        final LayoutSlot layout = layouts
+            .stream()
+            .filter(
+                slot -> slot.character() == ServiceFirstRenderAvailableSlotResolution.AVAILABLE_SLOT
+            )
+            .findFirst()
+            .orElse(null);
         if (layout == null) {
             return;
         }

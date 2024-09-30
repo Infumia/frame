@@ -1,6 +1,6 @@
 package net.infumia.frame.context.view;
 
-import java.util.Map;
+import java.util.Collection;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.element.ElementContainer;
 import net.infumia.frame.element.ElementItemBuilderFactory;
@@ -11,6 +11,7 @@ import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.config.ViewConfig;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
 public interface ContextRender
     extends
@@ -25,7 +26,8 @@ public interface ContextRender
     ViewConfig config();
 
     @NotNull
-    Map<Character, LayoutSlot> layouts();
+    @UnmodifiableView
+    Collection<LayoutSlot> layouts();
 
     void back();
 

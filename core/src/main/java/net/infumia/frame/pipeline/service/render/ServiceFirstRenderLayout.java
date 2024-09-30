@@ -26,7 +26,7 @@ public final class ServiceFirstRenderLayout
     @Override
     public void accept(@NotNull final PipelineContextRender.FirstRender ctx) {
         final ContextRender context = ctx.context();
-        for (final LayoutSlot layout : context.layouts().values()) {
+        for (final LayoutSlot layout : context.layouts()) {
             final IntFunction<ElementItemBuilder> builderFactory = layout.builderFactory();
             if (builderFactory == null) {
                 continue;

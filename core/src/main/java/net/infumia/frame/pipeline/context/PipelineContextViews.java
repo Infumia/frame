@@ -1,9 +1,8 @@
 package net.infumia.frame.pipeline.context;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextClick;
 import net.infumia.frame.context.view.ContextClose;
@@ -224,7 +223,7 @@ public interface PipelineContextViews {
 
     final class LayoutResolution implements PipelineContextView.LayoutResolution {
 
-        private final Map<Character, LayoutSlot> layouts = new ConcurrentHashMap<>();
+        private final Collection<LayoutSlot> layouts = new ArrayList<>();
         private final ContextBase context;
         private final ViewConfig config;
         private final ViewContainer container;
@@ -259,13 +258,13 @@ public interface PipelineContextViews {
 
         @NotNull
         @Override
-        public Map<Character, LayoutSlot> layouts() {
-            return Collections.unmodifiableMap(this.layouts);
+        public Collection<LayoutSlot> layouts() {
+            return Collections.unmodifiableCollection(this.layouts);
         }
 
         @Override
         public void addLayout(final char character, @NotNull final Collection<Integer> indexes) {
-            this.layouts.computeIfAbsent(character, __ ->
+            this.layouts.add(
                     new LayoutSlotImpl(
                         character,
                         indexes.stream().mapToInt(value -> value).toArray()
@@ -279,13 +278,13 @@ public interface PipelineContextViews {
         private final ContextBase context;
         private final ViewConfig config;
         private final ViewContainer container;
-        private final Map<Character, LayoutSlot> layouts;
+        private final Collection<LayoutSlot> layouts;
 
         public CreateRender(
             @NotNull final ContextBase context,
             @NotNull final ViewConfig config,
             @NotNull final ViewContainer container,
-            @NotNull final Map<Character, LayoutSlot> layouts
+            @NotNull final Collection<LayoutSlot> layouts
         ) {
             this.context = context;
             this.config = config;
@@ -313,7 +312,7 @@ public interface PipelineContextViews {
 
         @NotNull
         @Override
-        public Map<Character, LayoutSlot> layouts() {
+        public Collection<LayoutSlot> layouts() {
             return this.layouts;
         }
     }

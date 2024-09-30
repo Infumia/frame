@@ -1,7 +1,6 @@
 package net.infumia.frame.pipeline.context;
 
 import java.util.Collection;
-import java.util.Map;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextClick;
 import net.infumia.frame.context.view.ContextClose;
@@ -92,7 +91,7 @@ public interface PipelineContextView extends PipelineContext {
         ViewContainer container();
 
         @NotNull
-        Map<Character, LayoutSlot> layouts();
+        Collection<LayoutSlot> layouts();
 
         void addLayout(char character, @NotNull Collection<Integer> indexes);
     }
@@ -108,7 +107,7 @@ public interface PipelineContextView extends PipelineContext {
         ViewContainer container();
 
         @NotNull
-        Map<Character, LayoutSlot> layouts();
+        Collection<LayoutSlot> layouts();
     }
 
     interface Click extends PipelineContextView, Cancellable {
