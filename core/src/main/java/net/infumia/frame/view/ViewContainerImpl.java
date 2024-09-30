@@ -96,7 +96,7 @@ public final class ViewContainerImpl implements ViewContainerRich {
 
     @Nullable
     @Override
-    public ViewContainerRich at(final int slot) {
+    public ViewContainer at(final int slot) {
         return slot >= this.firstSlot() && slot <= this.lastSlot() ? this : null;
     }
 

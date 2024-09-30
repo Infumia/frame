@@ -173,9 +173,9 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ContextBase context,
         @NotNull final ViewConfig config
     ) {
-        return this.pipelines.executeCreateContainer(context, config)
-            .thenApply(ViewContainerRich.class::cast)
-            .thenCompose(container -> this.executeModifyContainer(context, config, container));
+        return this.pipelines.executeCreateContainer(context, config).thenCompose(container ->
+                this.executeModifyContainer(context, config, container)
+            );
     }
 
     @NotNull
