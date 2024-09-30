@@ -52,7 +52,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
         super(context);
         this.container = container;
         this.config = config;
-        this.layouts = layouts;
+        this.layouts = new ArrayList<>(layouts);
         this.slotFinder = new SlotFinder(this);
         this.elements = new ArrayList<>();
         this.pipelines = new PipelineExecutorRenderImpl(this);
@@ -63,7 +63,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
         super(context);
         this.container = context.container();
         this.config = context.config();
-        this.layouts = context.layouts();
+        this.layouts = new ArrayList<>(context.layouts());
         this.slotFinder = ((ContextRenderRich) context).slotFinder();
         this.elements = new ArrayList<>(context.elements());
         this.pipelines = context.pipelines();
