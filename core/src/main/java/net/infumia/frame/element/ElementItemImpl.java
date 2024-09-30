@@ -1,12 +1,15 @@
 package net.infumia.frame.element;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
+import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.util.Preconditions;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -86,6 +89,17 @@ public class ElementItemImpl extends ElementImpl implements ElementItemRich {
     @Override
     public ElementItemBuilderRich toBuilder() {
         return new ElementItemBuilderImpl(this);
+    }
+
+    @NotNull
+    @Override
+    public CompletableFuture<ConsumerService.State> update() {
+        Preconditions.state(
+            this.parent instanceof ContextRender,
+            "You cannot update the element '%s' when the parent is not a ContextRender!",
+            this
+        );
+        return this.pipelines.executeUpdate((ContextRender) this.parent, false);
     }
 
     @NotNull

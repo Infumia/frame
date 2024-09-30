@@ -2,10 +2,12 @@ package net.infumia.frame.element;
 
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
+import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -112,6 +114,12 @@ public class ElementImpl implements ElementRich {
     @Override
     public Collection<State<?>> updateOnStateAccess() {
         return this.updateOnStateAccess;
+    }
+
+    @NotNull
+    @Override
+    public CompletableFuture<ConsumerService.State> update() {
+        throw new UnsupportedOperationException("This element cannot be updated!");
     }
 
     @Override

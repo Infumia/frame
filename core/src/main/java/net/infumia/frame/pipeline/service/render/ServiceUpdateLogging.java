@@ -20,11 +20,7 @@ public final class ServiceUpdateLogging
     @Override
     public void accept(@NotNull final PipelineContextRender.Update ctx) {
         // TODO: portlek, More detailed message.
-        ctx
-            .context()
-            .frame()
-            .logger()
-            .debug("View '%s' updated.", ctx.context().view().instance());
+        ctx.context().frame().logger().debug("View '%s' updated.", ctx.context().view().instance());
     }
 
     private ServiceUpdateLogging() {}

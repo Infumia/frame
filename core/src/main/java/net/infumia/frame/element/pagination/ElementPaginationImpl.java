@@ -24,6 +24,7 @@ import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
+import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.state.State;
 import net.infumia.frame.state.StateRich;
@@ -319,6 +320,17 @@ public final class ElementPaginationImpl<T>
     @Override
     public ElementPaginationBuilderRich<T> toBuilder() {
         return new ElementPaginationBuilderImpl<>(this);
+    }
+
+    @NotNull
+    @Override
+    public CompletableFuture<ConsumerService.State> update() {
+        Preconditions.state(
+            this.parent() instanceof ContextRender,
+            "You cannot update the element '%s' when the parent is not a ContextRender!",
+            this
+        );
+        return this.pipelines.executeUpdate((ContextRender) this.parent(), false);
     }
 
     @NotNull

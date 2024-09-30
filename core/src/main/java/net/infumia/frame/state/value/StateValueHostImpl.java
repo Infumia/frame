@@ -216,9 +216,7 @@ public final class StateValueHostImpl implements StateValueHostRich {
         @NotNull final StateValue<T> value
     ) {
         this.values.put((StateRich<Object>) state, (StateValue<Object>) value);
-        this.context.frame()
-            .logger()
-            .debug("State '%s' initialized with value '%s'", state, value);
+        this.context.frame().logger().debug("State '%s' initialized with value '%s'", state, value);
     }
 
     @NotNull

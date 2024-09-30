@@ -7,9 +7,8 @@ import org.jetbrains.annotations.NotNull;
 public final class ServiceListenerRegisteredLogging
     implements PipelineServiceConsumer<PipelineContextFrame.ListenerRegistered> {
 
-    public static final PipelineServiceConsumer<
-        PipelineContextFrame.ListenerRegistered
-    > INSTANCE = new ServiceListenerRegisteredLogging();
+    public static final PipelineServiceConsumer<PipelineContextFrame.ListenerRegistered> INSTANCE =
+        new ServiceListenerRegisteredLogging();
 
     public static final String KEY = "logging";
 

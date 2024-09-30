@@ -31,10 +31,7 @@ public interface PipelineExecutorFrame {
     );
 
     void applyViewCreated(
-        @NotNull Implementation<
-            PipelineContextFrame.ViewCreated,
-            Collection<Object>
-        > implementation
+        @NotNull Implementation<PipelineContextFrame.ViewCreated, Collection<Object>> implementation
     );
 
     void applyViewRegistered(
