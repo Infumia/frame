@@ -1,10 +1,9 @@
 package net.infumia.frame.pipeline.service.render;
 
 import java.util.function.IntFunction;
-import java.util.stream.IntStream;
 import net.infumia.frame.context.view.ContextRender;
-import net.infumia.frame.element.ElementBuilderRich;
 import net.infumia.frame.element.ElementItemBuilder;
+import net.infumia.frame.element.ElementItemBuilderRich;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import net.infumia.frame.slot.LayoutSlot;
@@ -31,13 +30,13 @@ public final class ServiceFirstRenderLayout
             if (builderFactory == null) {
                 continue;
             }
-            final int[] slots = layout.slots();
-            IntStream.range(0, slots.length)
-                .mapToObj(index ->
-                    (ElementBuilderRich) builderFactory.apply(index).slot(slots[index])
-                )
-                .map(element -> element.build(context))
-                .forEach(ctx::addElement);
+            int index = 0;
+            for (final int slot : layout.slots()) {
+                ctx.addElement(
+                    ((ElementItemBuilderRich) builderFactory.apply(index).slot(slot)).build(context)
+                );
+                index++;
+            }
         }
     }
 
