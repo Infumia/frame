@@ -29,7 +29,7 @@ public final class ServiceFirstRenderInitializeState
             .forEach((state, value) -> {
                 final StateValue<Object> newValue = state.valueFactory().apply(context, state);
                 if (newValue.mutable()) {
-                    newValue.value(value);
+                    newValue.value(value.value());
                 }
                 host.initializeState(state, newValue);
             });
