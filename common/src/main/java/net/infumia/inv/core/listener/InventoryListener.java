@@ -1,0 +1,124 @@
+package net.infumia.inv.core.listener;
+
+import java.util.function.Consumer;
+import net.infumia.inv.api.logger.Logger;
+import net.infumia.inv.api.metadata.MetadataAccessFactory;
+import net.infumia.inv.core.extension.CompletableFutureExtensions;
+import net.infumia.inv.core.metadata.MetadataKeyHolder;
+import net.infumia.inv.core.viewer.ContextualViewerRich;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.metadata.Metadatable;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+
+public final class InventoryListener implements Listener {
+
+    private final Plugin plugin;
+    private final Logger logger;
+    private final MetadataAccessFactory metadataAccessFactory;
+    private final Runnable onUnregister;
+
+    public InventoryListener(
+        @NotNull final Plugin plugin,
+        @NotNull final Logger logger,
+        @NotNull final MetadataAccessFactory metadataAccessFactory,
+        @NotNull final Runnable onUnregister
+    ) {
+        this.plugin = plugin;
+        this.logger = logger;
+        this.metadataAccessFactory = metadataAccessFactory;
+        this.onUnregister = onUnregister;
+    }
+
+    public void register() {
+        Bukkit.getPluginManager().registerEvents(this, this.plugin);
+    }
+
+    @EventHandler
+    public void onPluginDisable(final PluginDisableEvent event) {
+        if (event.getPlugin().getName().equals(this.plugin.getName())) {
+            this.onUnregister.run();
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onInventoryClick(final InventoryClickEvent event) {
+        this.ifContextualViewer(event.getWhoClicked(), viewer ->
+                CompletableFutureExtensions.logError(
+                    viewer.view().simulateClick(viewer, event),
+                    this.logger,
+                    "Error occurred while viewer '%s' clicks an inventory!",
+                    viewer
+                )
+            );
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onInventoryClose(final InventoryCloseEvent event) {
+        this.transitioningOrCurrent(event.getPlayer(), viewer ->
+                CompletableFutureExtensions.logError(
+                    viewer.view().simulateClose(viewer),
+                    this.logger,
+                    "Error occurred while viewer '%s' closes an inventory",
+                    viewer
+                )
+            );
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemPickup(final PlayerPickupItemEvent event) {
+        this.ifContextualViewer(event.getPlayer(), viewer ->
+                viewer.view().handleItemPickup(viewer, event)
+            );
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemDrop(final PlayerDropItemEvent event) {
+        this.ifContextualViewer(event.getPlayer(), viewer ->
+                viewer.view().handleItemDrop(viewer, event)
+            );
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onInventoryDrag(final InventoryDragEvent event) {
+        this.ifContextualViewer(event.getWhoClicked(), viewer ->
+                viewer.view().handleInventoryDrag(viewer, event)
+            );
+    }
+
+    private void ifContextualViewer(
+        @NotNull final Metadatable metadatable,
+        @NotNull final Consumer<ContextualViewerRich> consumer
+    ) {
+        final ContextualViewerRich viewer =
+            this.metadataAccessFactory.getOrCreate(metadatable).get(
+                    MetadataKeyHolder.CONTEXTUAL_VIEWER
+                );
+        if (viewer != null) {
+            consumer.accept(viewer);
+        }
+    }
+
+    private void transitioningOrCurrent(
+        @NotNull final Metadatable metadatable,
+        @NotNull final Consumer<ContextualViewerRich> consumer
+    ) {
+        final ContextualViewerRich transitioningFrom =
+            this.metadataAccessFactory.getOrCreate(metadatable).get(
+                    MetadataKeyHolder.TRANSITIONING_FROM
+                );
+        if (transitioningFrom == null) {
+            this.ifContextualViewer(metadatable, consumer);
+        } else {
+            consumer.accept(transitioningFrom);
+        }
+    }
+}
