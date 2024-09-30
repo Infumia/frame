@@ -36,6 +36,7 @@ final class ElementEventHandlerItem implements ElementEventHandler {
             this.forceRender(element, context);
             return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
         }
+        element.visible(false);
         return this.checkOverlapping(element, context);
     }
 
@@ -87,7 +88,6 @@ final class ElementEventHandlerItem implements ElementEventHandler {
         @NotNull final ElementRich compareTo,
         @NotNull final ContextElementRender context
     ) {
-        compareTo.visible(false);
         final Optional<ElementRich> overlappingOptional =
             this.findOverlappingElement(compareTo, context);
         if (!overlappingOptional.isPresent()) {
