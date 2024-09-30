@@ -8,8 +8,9 @@ repositories {
 }
 
 dependencies {
-    // Base module
+    // Base modules
     implementation "net.infumia:frame:VERSION"
+    implementation "net.infumia:frame-core:VERSION"
 }
 ```
 ### Code
