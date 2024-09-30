@@ -1,0 +1,486 @@
+package net.infumia.frame.element.pagination;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import net.infumia.frame.context.ContextBase;
+import net.infumia.frame.context.view.ContextRender;
+import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.element.Element;
+import net.infumia.frame.element.ElementEventHandler;
+import net.infumia.frame.element.ElementImpl;
+import net.infumia.frame.element.ElementItem;
+import net.infumia.frame.element.ElementItemBuilderImpl;
+import net.infumia.frame.element.ElementItemBuilderRich;
+import net.infumia.frame.element.ElementRich;
+import net.infumia.frame.extension.CompletableFutureExtensions;
+import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
+import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
+import net.infumia.frame.slot.LayoutSlot;
+import net.infumia.frame.state.StateRich;
+import net.infumia.frame.state.pagination.ElementConfigurer;
+import net.infumia.frame.state.pagination.StatePagination;
+import net.infumia.frame.util.Preconditions;
+import net.infumia.frame.view.ViewContainer;
+import org.jetbrains.annotations.NotNull;
+
+public final class ElementPaginationImpl<T>
+    extends ElementImpl
+    implements ElementPaginationRich<T> {
+
+    private final ReadWriteLock elementLock = new ReentrantReadWriteLock();
+    private final PipelineExecutorElement pipelines = new PipelineExecutorElementImpl(this);
+    private final ElementEventHandler eventHandler = ElementEventHandlerPagination.INSTANCE;
+    private LayoutSlot currentLayoutSlot;
+    final SourceProvider<T> sourceProvider;
+    final Function<ElementPaginationBuilderRich<T>, StatePagination> stateFactory;
+    final char layout;
+    final BiConsumer<ContextBase, ElementPagination> onPageSwitch;
+    final ElementConfigurer<T> elementConfigurer;
+    final StateRich<ElementPagination> associated;
+    private final Function<ContextBase, CompletableFuture<List<T>>> sourceFactory;
+    private List<ElementRich> elements = new ArrayList<>();
+    private int currentPageIndex = 0;
+    private boolean pageWasChanged;
+    private boolean initialized = false;
+    private int pageCount;
+    private List<T> currentSource;
+    private boolean loading;
+    private int pageSize = -1;
+
+    ElementPaginationImpl(
+        @NotNull final ElementPaginationBuilderImpl<T> builder,
+        @NotNull final ContextBase parent
+    ) {
+        super(builder, parent);
+        this.associated = Preconditions.argumentNotNull(
+            builder.associated,
+            "Associated state cannot be null for ElementPagination!"
+        );
+        this.elementConfigurer = Preconditions.argumentNotNull(
+            builder.elementConfigurer,
+            "Element configurer cannot be null for ElementPagination!"
+        );
+        this.sourceProvider = builder.sourceProvider;
+        this.stateFactory = builder.stateFactory;
+        this.layout = builder.layout;
+        this.onPageSwitch = builder.onPageSwitch;
+
+        if (this.sourceProvider instanceof SourceProvider.Immutable) {
+            this.currentSource = this.sourceProvider.apply(this.parent()).join();
+            this.sourceFactory = null;
+        } else {
+            this.sourceFactory = this.sourceProvider;
+        }
+    }
+
+    @NotNull
+    @Override
+    public StateRich<ElementPagination> associated() {
+        return this.associated;
+    }
+
+    @Override
+    public boolean pageWasChanged() {
+        return this.pageWasChanged;
+    }
+
+    @Override
+    public void pageWasChanged(final boolean pageWasChanged) {
+        this.pageWasChanged = pageWasChanged;
+    }
+
+    @Override
+    public boolean initialized() {
+        return this.initialized;
+    }
+
+    @Override
+    public void initialized(final boolean initialized) {
+        this.initialized = initialized;
+    }
+
+    @Override
+    public void updatePageSize(@NotNull final ContextRender context) {
+        final String[] layout = context.config().layout();
+        if (layout == null) {
+            this.pageSize = context.container().size();
+        } else {
+            this.pageSize = this.layoutSlotFor(context).slots().length;
+        }
+    }
+
+    @NotNull
+    @Override
+    public CompletableFuture<?> loadCurrentPage(@NotNull final ContextRender context) {
+        return this.loadSourceForTheCurrentPage(context).thenAccept(pageContents -> {
+                if (pageContents.isEmpty()) {
+                    return;
+                }
+                if (context.layouts().isEmpty()) {
+                    this.addComponentsForUnconstrainedPagination(context, pageContents);
+                } else {
+                    this.addComponentsForLayeredPagination(context, pageContents);
+                }
+            });
+    }
+
+    @NotNull
+    @Override
+    public Collection<ElementRich> modifiableElements() {
+        try {
+            this.elementLock.readLock().lock();
+            return this.elements;
+        } finally {
+            this.elementLock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public void clearElements() {
+        try {
+            this.elementLock.writeLock().lock();
+            this.elements = new ArrayList<>();
+        } finally {
+            this.elementLock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public int currentPageIndex() {
+        return this.currentPageIndex;
+    }
+
+    @Override
+    public int nextPageIndex() {
+        return Math.max(0, Math.min(this.pageCount, this.currentPageIndex + 1));
+    }
+
+    @Override
+    public int previousPageIndex() {
+        return Math.max(0, Math.min(this.pageCount, this.currentPageIndex - 1));
+    }
+
+    @Override
+    public int lastPageIndex() {
+        return Math.max(0, this.pageCount - 1);
+    }
+
+    @Override
+    public boolean isFirstPage() {
+        return this.currentPageIndex == 0;
+    }
+
+    @Override
+    public boolean isLastPage() {
+        return !this.canAdvance();
+    }
+
+    @Override
+    public int elementCount() {
+        return this.currentSource == null ? 0 : this.currentSource.size();
+    }
+
+    @Override
+    public int pageCount() {
+        return this.pageCount;
+    }
+
+    @Override
+    public boolean hasPage(final int pageIndex) {
+        if (this.sourceProvider.computed()) {
+            return true;
+        } else if (pageIndex < 0) {
+            return false;
+        } else {
+            return pageIndex < this.pageCount;
+        }
+    }
+
+    @Override
+    public void switchTo(final int pageIndex) {
+        Preconditions.argumentNotNull(
+            this.hasPage(pageIndex),
+            "Page index not found (%d > %d)",
+            pageIndex,
+            this.pageCount
+        );
+        if (this.loading) {
+            return;
+        }
+        this.currentPageIndex = pageIndex;
+        this.pageWasChanged = true;
+        final ContextRenderRich host = (ContextRenderRich) this.parent();
+        if (this.onPageSwitch != null) {
+            this.onPageSwitch.accept(host, this);
+        }
+        CompletableFutureExtensions.logError(
+            this.pipelines.executeUpdate(host, false),
+            this.parent().manager().logger(),
+            "An error occurred while updating the pagination '%s'.",
+            this
+        );
+    }
+
+    @Override
+    public void advance() {
+        if (this.canAdvance()) {
+            this.switchTo(this.currentPageIndex + 1);
+        }
+    }
+
+    @Override
+    public boolean canAdvance() {
+        return this.hasPage(this.currentPageIndex + 1);
+    }
+
+    @Override
+    public void back() {
+        if (this.canBack()) {
+            this.switchTo(this.currentPageIndex - 1);
+        }
+    }
+
+    @Override
+    public boolean canBack() {
+        return this.hasPage(this.currentPageIndex - 1);
+    }
+
+    @NotNull
+    @Override
+    public ElementEventHandler eventHandler() {
+        return this.eventHandler;
+    }
+
+    @Override
+    public void visible(final boolean visible) {
+        try {
+            this.elementLock.readLock().lock();
+            super.visible(visible);
+            for (final ElementRich child : this.elements) {
+                child.visible(visible);
+            }
+        } finally {
+            this.elementLock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public boolean containedWithin(final int position) {
+        try {
+            this.elementLock.readLock().lock();
+            if (this.currentLayoutSlot != null) {
+                return Arrays.stream(this.currentLayoutSlot.slots()).anyMatch(
+                    slot -> slot == position
+                );
+            }
+            return this.elements.stream().anyMatch(element -> element.containedWithin(position));
+        } finally {
+            this.elementLock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public boolean intersects(@NotNull final ElementRich element) {
+        try {
+            this.elementLock.readLock().lock();
+            for (final ElementRich child : this.elements) {
+                if (child.intersects(element)) {
+                    return true;
+                }
+                if (child instanceof ElementItem) {
+                    final int slot = ((ElementItem) child).slot();
+                    if (this.currentLayoutSlot != null) {
+                        return Arrays.stream(this.currentLayoutSlot.slots()).anyMatch(
+                            s -> s == slot
+                        );
+                    }
+                    return child.containedWithin(slot);
+                }
+            }
+            return false;
+        } finally {
+            this.elementLock.readLock().unlock();
+        }
+    }
+
+    @NotNull
+    @Override
+    public ElementPaginationBuilderRich<T> toBuilder() {
+        return new ElementPaginationBuilderImpl<>(this);
+    }
+
+    @NotNull
+    @Override
+    public List<Element> elements() {
+        try {
+            this.elementLock.readLock().lock();
+            return Collections.unmodifiableList(this.elements);
+        } finally {
+            this.elementLock.readLock().unlock();
+        }
+    }
+
+    private void addComponentsForUnconstrainedPagination(
+        @NotNull final ContextRender context,
+        @NotNull final List<T> contents
+    ) {
+        final ViewContainer container = context.container();
+
+        /*if (this.pageSize == -1) {
+            this.updatePageSize(context);
+        }*/
+
+        final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
+        for (int i = container.firstSlot(); i < lastSlot; i++) {
+            final T value = contents.get(i);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl().slot(i).root(this);
+            this.elementConfigurer.configure(context, builder, i, i, value);
+            this.elements.add(builder.build(context));
+        }
+    }
+
+    private void addComponentsForLayeredPagination(
+        @NotNull final ContextRender context,
+        @NotNull final List<T> contents
+    ) {
+        final LayoutSlot layoutSLot = this.layoutSlotFor(context);
+        final int elementCount = contents.size();
+        int index = 0;
+        for (final int slot : layoutSLot.slots()) {
+            final T value = contents.get(index++);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
+                .slot(slot)
+                .root(this);
+            this.elementConfigurer.configure(context, builder, index, slot, value);
+            this.elements.add(builder.build(context));
+            if (index == elementCount) {
+                break;
+            }
+        }
+    }
+
+    @NotNull
+    private CompletableFuture<List<T>> loadSourceForTheCurrentPage(
+        @NotNull final ContextBase context
+    ) {
+        final boolean isLazy = this.sourceProvider.lazy();
+        final boolean reuseLazy = isLazy && this.initialized;
+        final boolean force = false; // TODO: portlek, Implement this.
+        if (
+            (this.sourceProvider.provided() || reuseLazy) &&
+            !this.sourceProvider.computed() &&
+            !force
+        ) {
+            final List<T> currentSource = Preconditions.stateNotNull(
+                this.currentSource,
+                "Current source cannot be null in this stage"
+            );
+
+            if (!isLazy) {
+                this.pageCount = this.calculatePagesCount(currentSource);
+            }
+
+            return CompletableFuture.completedFuture(
+                ElementPaginationImpl.splitSourceForPage(
+                    this.currentPageIndex,
+                    this.pageSize(),
+                    this.pageCount,
+                    currentSource
+                )
+            );
+        }
+
+        this.loading = true;
+        return this.associated.manualUpdateWait(context).thenCompose(__ -> {
+                if (this.sourceFactory == null) {
+                    return CompletableFuture.completedFuture(Collections.emptyList());
+                }
+                return this.sourceFactory.apply(context).thenCompose(result -> {
+                        this.currentSource = result;
+                        this.pageCount = this.calculatePagesCount(result);
+                        this.loading = false;
+                        return this.associated.manualUpdateWait(context).thenApply(value ->
+                                !isLazy
+                                    ? result
+                                    : ElementPaginationImpl.splitSourceForPage(
+                                        this.currentPageIndex,
+                                        this.pageSize(),
+                                        this.pageCount,
+                                        result
+                                    )
+                            );
+                    });
+            });
+    }
+
+    private int calculatePagesCount(@NotNull final List<T> source) {
+        return (int) Math.ceil((double) source.size() / this.pageSize());
+    }
+
+    private int pageSize() {
+        Preconditions.state(
+            this.pageSize != -1,
+            "Page size need to be updated before try to get it"
+        );
+        return this.pageSize;
+    }
+
+    @NotNull
+    private LayoutSlot layoutSlotFor(@NotNull final ContextRender context) {
+        if (this.currentLayoutSlot != null) {
+            return this.currentLayoutSlot;
+        }
+        final LayoutSlot layoutSlot = Preconditions.argumentNotNull(
+            context.layouts().get(this.layout),
+            "Layout slot target not found: %c",
+            this.layout
+        );
+        return this.currentLayoutSlot = layoutSlot;
+    }
+
+    @NotNull
+    private static <T> List<T> splitSourceForPage(
+        final int index,
+        final int pageSize,
+        final int pagesCount,
+        @NotNull final List<T> src
+    ) {
+        if (src.isEmpty()) {
+            return Collections.emptyList();
+        }
+        if (src.size() <= pageSize) {
+            return new ArrayList<>(src);
+        }
+        if (index < 0 || (pagesCount > 0 && index > pagesCount)) {
+            throw new IndexOutOfBoundsException(
+                String.format(
+                    "Page index must be between the range of 0 and %d. Given: %d",
+                    pagesCount - 1,
+                    index
+                )
+            );
+        }
+
+        final List<T> contents = new LinkedList<>();
+        final int base = index * pageSize;
+        int until = base + pageSize;
+        if (until > src.size()) {
+            until = src.size();
+        }
+
+        for (int i = base; i < until; i++) {
+            contents.add(src.get(i));
+        }
+
+        return contents;
+    }
+}
