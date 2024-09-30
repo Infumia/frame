@@ -33,6 +33,7 @@ public final class ServiceClickElement
         final Optional<ElementRich> found = elements
             .stream()
             .map(ElementRich.class::cast)
+            .filter(ElementRich::visible)
             .filter(e -> e.containedWithin(clickedSlot))
             .findFirst();
         return found
