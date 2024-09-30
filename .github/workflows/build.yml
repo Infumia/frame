@@ -1,0 +1,27 @@
+---
+name: "Build"
+"on":
+  pull_request:
+    branches:
+    - "master"
+jobs:
+  build:
+    name: "Build"
+    runs-on: "ubuntu-latest"
+    steps:
+    - uses: "actions/checkout@master"
+    - uses: "actions/setup-java@master"
+      with:
+        distribution: "adopt"
+        java-version: "11"
+    - uses: "actions/cache@master"
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    - run: |
+        chmod +x gradlew
+        ./gradlew build
