@@ -27,10 +27,4 @@ final class TypedKeyStorageFactoryImpl implements TypedKeyStorageFactory {
     ) {
         return new TypedKeyStorageImmutableBuilderImpl(base);
     }
-
-    @NotNull
-    @Override
-    public TypedKeyStorageImmutable createImmutableEmpty() {
-        return TypedKeyStorageImmutableEmpty.INSTANCE;
-    }
 }

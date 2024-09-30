@@ -3,6 +3,7 @@ package net.infumia.frame.typedkey;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import net.infumia.frame.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +44,24 @@ class TypedKeyStorageImmutableImpl implements TypedKeyStorageImmutable {
             .findFirst()
             .map(this::get)
             .orElse(null);
+    }
+
+    @NotNull
+    @Override
+    public <T> T getOrThrow(@NotNull final TypedKey<T> key) {
+        return Preconditions.argumentNotNull(this.get(key), "Key '%s' not found!", key);
+    }
+
+    @NotNull
+    @Override
+    public Object getOrThrow(@NotNull final String key) {
+        return Preconditions.argumentNotNull(this.get(key), "Key '%s' not found!", key);
+    }
+
+    @NotNull
+    @Override
+    public <T> T getUncheckedOrThrow(@NotNull final String key) {
+        return Preconditions.argumentNotNull(this.getUnchecked(key), "Key '%s' not found!", key);
     }
 
     @Override
