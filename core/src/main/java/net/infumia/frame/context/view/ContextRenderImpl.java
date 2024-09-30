@@ -235,7 +235,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
 
     @NotNull
     @Override
-    public ElementItemBuilder layout(final char layout) {
+    public ElementItemBuilder layoutSlot(final char layout) {
         final LayoutSlot layoutSlot = Preconditions.argumentNotNull(
             this.slotFinder.findLayoutSlot(layout),
             "Missing layout character '%s'",
@@ -248,12 +248,12 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
 
     @NotNull
     @Override
-    public ElementItemBuilder layout(final char layout, @NotNull final ItemStack item) {
-        return this.layout(layout).item(item);
+    public ElementItemBuilder layoutSlot(final char layout, @NotNull final ItemStack item) {
+        return this.layoutSlot(layout).item(item);
     }
 
     @Override
-    public void layout(
+    public void layoutSlot(
         final char layout,
         @NotNull final BiConsumer<Integer, ElementItemBuilder> configurer
     ) {

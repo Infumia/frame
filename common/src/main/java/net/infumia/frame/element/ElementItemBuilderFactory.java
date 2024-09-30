@@ -9,12 +9,12 @@ public interface ElementItemBuilderFactory {
     ElementItemBuilder unsetSlot();
 
     @NotNull
-    ElementItemBuilder layout(char layout);
+    ElementItemBuilder layoutSlot(char layout);
 
     @NotNull
-    ElementItemBuilder layout(char layout, @NotNull ItemStack item);
+    ElementItemBuilder layoutSlot(char layout, @NotNull ItemStack item);
 
-    void layout(char layout, @NotNull BiConsumer<Integer, ElementItemBuilder> configurer);
+    void layoutSlot(char layout, @NotNull BiConsumer<Integer, ElementItemBuilder> configurer);
 
     @NotNull
     ElementItemBuilder slot(int slot);

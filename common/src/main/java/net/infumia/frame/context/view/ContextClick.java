@@ -43,7 +43,7 @@ public interface ContextClick extends ContextRender, Cancellable {
 
     boolean entityContainer();
 
-    boolean layoutSlot();
+    boolean isLayoutSlot();
 
-    boolean layoutSlot(char character);
+    boolean isLayoutSlot(char character);
 }
