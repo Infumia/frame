@@ -13,6 +13,9 @@ public interface TypedKeyStorageImmutable {
     @Nullable
     Object get(@NotNull String key);
 
+    @Nullable
+    <T> T getUnchecked(@NotNull String key);
+
     boolean contains(@NotNull TypedKey<?> key);
 
     @NotNull

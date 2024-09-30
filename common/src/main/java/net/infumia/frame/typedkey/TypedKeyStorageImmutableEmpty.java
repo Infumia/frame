@@ -25,6 +25,12 @@ final class TypedKeyStorageImmutableEmpty implements TypedKeyStorageImmutable {
         return null;
     }
 
+    @Nullable
+    @Override
+    public <T> T getUnchecked(@NotNull final String key) {
+        return null;
+    }
+
     @Override
     public boolean contains(@NotNull final TypedKey<?> key) {
         return false;

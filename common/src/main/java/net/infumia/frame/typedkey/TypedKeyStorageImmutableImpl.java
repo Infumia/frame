@@ -33,6 +33,18 @@ class TypedKeyStorageImmutableImpl implements TypedKeyStorageImmutable {
             .orElse(null);
     }
 
+    @Nullable
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getUnchecked(@NotNull final String key) {
+        return (T) this.map.keySet()
+            .stream()
+            .filter(k -> k.key().equals(key))
+            .findFirst()
+            .map(this::get)
+            .orElse(null);
+    }
+
     @Override
     public boolean contains(@NotNull final TypedKey<?> key) {
         return this.map.containsKey(key);
