@@ -10,7 +10,7 @@ repositories {
 dependencies {
     // Base modules
     implementation "net.infumia:frame:VERSION"
-    implementation "net.infumia:frame-core:VERSION"
+    runtimeOnly "net.infumia:frame-core:VERSION"
 }
 ```
 ### Code
