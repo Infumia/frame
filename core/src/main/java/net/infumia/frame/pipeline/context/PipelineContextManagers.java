@@ -1,7 +1,9 @@
 package net.infumia.frame.pipeline.context;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 import net.infumia.frame.Frame;
+import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,13 +38,16 @@ public interface PipelineContextManagers {
 
         private final Frame manager;
         private final Collection<Object> registeredViews;
+        private final Consumer<TypedKeyStorageImmutableBuilder> storageConfigurer;
 
         public ViewRegistered(
             @NotNull final Frame manager,
-            @NotNull final Collection<Object> registeredViews
+            @NotNull final Collection<Object> registeredViews,
+            @NotNull final Consumer<TypedKeyStorageImmutableBuilder> storageConfigurer
         ) {
             this.manager = manager;
             this.registeredViews = registeredViews;
+            this.storageConfigurer = storageConfigurer;
         }
 
         @NotNull
@@ -55,6 +60,12 @@ public interface PipelineContextManagers {
         @Override
         public Collection<Object> registeredViews() {
             return this.registeredViews;
+        }
+
+        @NotNull
+        @Override
+        public Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer() {
+            return this.storageConfigurer;
         }
     }
 

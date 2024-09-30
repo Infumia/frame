@@ -38,4 +38,8 @@ public interface TypedKeyStorageImmutable {
     @NotNull
     @UnmodifiableView
     Collection<Map.Entry<TypedKey<?>, Object>> entries();
+
+    @NotNull
+    @UnmodifiableView
+    Map<TypedKey<?>, Object> map();
 }

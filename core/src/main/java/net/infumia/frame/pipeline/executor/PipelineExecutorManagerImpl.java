@@ -3,12 +3,14 @@ package net.infumia.frame.pipeline.executor;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import net.infumia.frame.Frame;
 import net.infumia.frame.pipeline.context.PipelineContextManager;
 import net.infumia.frame.pipeline.context.PipelineContextManagers;
 import net.infumia.frame.pipeline.holder.PipelineHolderManager;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.service.Implementation;
+import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,13 +40,15 @@ public final class PipelineExecutorManagerImpl implements PipelineExecutorManage
     @NotNull
     @Override
     public CompletableFuture<Collection<View>> executeViewRegistered(
-        @NotNull final Collection<Object> registeredViews
+        @NotNull final Collection<Object> registeredViews,
+        @NotNull final Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer
     ) {
         return this.pipelines.viewRegistered()
             .completeWith(
                 new PipelineContextManagers.ViewRegistered(
                     this.manager,
-                    Collections.unmodifiableCollection(registeredViews)
+                    Collections.unmodifiableCollection(registeredViews),
+                    instanceConfigurer
                 )
             );
     }

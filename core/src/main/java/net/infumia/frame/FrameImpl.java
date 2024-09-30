@@ -125,12 +125,19 @@ final class FrameImpl implements FrameRich {
 
     @Override
     public void register() {
+        this.register(builder -> {});
+    }
+
+    @Override
+    public void register(
+        @NotNull final Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer
+    ) {
         Preconditions.state(
             !this.registered.get(),
             "This inventory manager is already registered! #register() method cannot be called twice!"
         );
         this.registered.set(true);
-        this.executeViewCreation(this.unregisteredViews)
+        this.executeViewCreation(this.unregisteredViews, instanceConfigurer)
             .thenCompose(views -> {
                 this.registeredViews.clear();
                 this.registeredViews.putAll(
@@ -210,7 +217,7 @@ final class FrameImpl implements FrameRich {
             return CompletableFuture.completedFuture(null);
         }
         final TypedKeyStorageImmutableBuilder builder =
-            this.storageFactory.createImmutableBuilder();
+            this.storageFactory.createImmutableBuilder(new HashMap<>());
         initialDataConfigurer.accept(builder);
         return CompletableFutureExtensions.logError(
             ((ViewEventHandler) view).simulateOpen(players, builder.build()),
@@ -278,10 +285,11 @@ final class FrameImpl implements FrameRich {
 
     @NotNull
     private CompletableFuture<Collection<View>> executeViewCreation(
-        @NotNull final Collection<Class<?>> views
+        @NotNull final Collection<Class<?>> views,
+        @NotNull final Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer
     ) {
-        return this.pipelines.executeViewCreated(views).thenCompose(
-                this.pipelines::executeViewRegistered
+        return this.pipelines.executeViewCreated(views).thenCompose(instances ->
+                this.pipelines.executeViewRegistered(instances, instanceConfigurer)
             );
     }
 

@@ -67,6 +67,8 @@ public interface Frame extends Pipelined<PipelineExecutorManager> {
 
     void register();
 
+    void register(@NotNull Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer);
+
     void unregister();
 
     @NotNull

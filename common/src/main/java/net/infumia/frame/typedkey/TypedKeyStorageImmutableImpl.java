@@ -6,6 +6,7 @@ import java.util.Map;
 import net.infumia.frame.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnmodifiableView;
 
 class TypedKeyStorageImmutableImpl implements TypedKeyStorageImmutable {
 
@@ -85,6 +86,13 @@ class TypedKeyStorageImmutableImpl implements TypedKeyStorageImmutable {
     @Override
     public Collection<Map.Entry<TypedKey<?>, Object>> entries() {
         return Collections.unmodifiableCollection(this.map.entrySet());
+    }
+
+    @NotNull
+    @Override
+    @UnmodifiableView
+    public Map<TypedKey<?>, Object> map() {
+        return Collections.unmodifiableMap(this.map);
     }
 
     @Override

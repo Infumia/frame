@@ -13,8 +13,5 @@ public interface TypedKeyStorageFactory {
     TypedKeyStorage create(@NotNull Map<TypedKey<?>, Object> base);
 
     @NotNull
-    TypedKeyStorageImmutableBuilder createImmutableBuilder();
-
-    @NotNull
     TypedKeyStorageImmutableBuilder createImmutableBuilder(@NotNull Map<TypedKey<?>, Object> base);
 }
