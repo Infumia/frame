@@ -323,6 +323,12 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     @Override
+    public PipelineExecutorElement pipelines() {
+        return this.pipelines;
+    }
+
+    @NotNull
+    @Override
     public List<Element> elements() {
         try {
             this.elementLock.readLock().lock();
