@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
+import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.state.State;
 import org.bukkit.inventory.ItemStack;
@@ -64,7 +65,7 @@ public interface ElementItemBuilder extends ElementBuilder {
 
     @NotNull
     @Override
-    ElementItemBuilder displayIf(@NotNull Predicate<ContextRender> condition);
+    ElementItemBuilder displayIf(@NotNull Predicate<ContextElementRender> condition);
 
     @NotNull
     @Override
@@ -72,7 +73,7 @@ public interface ElementItemBuilder extends ElementBuilder {
 
     @NotNull
     @Override
-    ElementItemBuilder hideIf(@NotNull Predicate<ContextRender> condition);
+    ElementItemBuilder hideIf(@NotNull Predicate<ContextElementRender> condition);
 
     @NotNull
     @Override

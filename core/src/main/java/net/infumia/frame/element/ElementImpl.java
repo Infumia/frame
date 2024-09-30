@@ -5,7 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
-import net.infumia.frame.context.view.ContextRender;
+import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.state.State;
@@ -20,7 +20,7 @@ public class ElementImpl implements ElementRich {
     final boolean cancelOnClick;
     final boolean updateOnClick;
     final boolean closeOnClick;
-    final Predicate<ContextRender> displayIf;
+    final Predicate<ContextElementRender> displayIf;
     final Collection<State<?>> updateOnStateChange;
     final Collection<State<?>> updateOnStateAccess;
     private boolean visible = true;
@@ -63,7 +63,7 @@ public class ElementImpl implements ElementRich {
     }
 
     @Override
-    public boolean shouldRender(@NotNull final ContextRender context) {
+    public boolean shouldRender(@NotNull final ContextElementRender context) {
         return this.displayIf == null || this.displayIf.test(context);
     }
 
@@ -100,7 +100,7 @@ public class ElementImpl implements ElementRich {
 
     @Nullable
     @Override
-    public Predicate<ContextRender> displayIf() {
+    public Predicate<ContextElementRender> displayIf() {
         return this.displayIf;
     }
 

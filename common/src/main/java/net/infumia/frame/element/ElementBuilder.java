@@ -2,7 +2,7 @@ package net.infumia.frame.element;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
-import net.infumia.frame.context.view.ContextRender;
+import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,13 +32,13 @@ public interface ElementBuilder {
     ElementBuilder updateOnStateAccess(@NotNull State<?> state, @NotNull State<?>... otherStates);
 
     @NotNull
-    ElementBuilder displayIf(@NotNull Predicate<ContextRender> condition);
+    ElementBuilder displayIf(@NotNull Predicate<ContextElementRender> condition);
 
     @NotNull
     ElementBuilder displayIf(@NotNull BooleanSupplier condition);
 
     @NotNull
-    ElementBuilder hideIf(@NotNull Predicate<ContextRender> condition);
+    ElementBuilder hideIf(@NotNull Predicate<ContextElementRender> condition);
 
     @NotNull
     ElementBuilder hideIf(@NotNull BooleanSupplier condition);

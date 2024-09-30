@@ -8,6 +8,7 @@ import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
+import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.state.State;
 import org.bukkit.inventory.ItemStack;
@@ -170,7 +171,7 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilder displayIf(@NotNull final Predicate<ContextRender> condition) {
+    public ElementItemBuilder displayIf(@NotNull final Predicate<ContextElementRender> condition) {
         super.displayIf(condition);
         return this;
     }
@@ -184,7 +185,7 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilder hideIf(@NotNull final Predicate<ContextRender> condition) {
+    public ElementItemBuilder hideIf(@NotNull final Predicate<ContextElementRender> condition) {
         super.hideIf(condition);
         return this;
     }

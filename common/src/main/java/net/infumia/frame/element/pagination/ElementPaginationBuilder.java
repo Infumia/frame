@@ -4,6 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
+import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.ElementBuilder;
 import net.infumia.frame.element.ElementItemBuilder;
@@ -72,7 +73,7 @@ public interface ElementPaginationBuilder<T> extends ElementBuilder {
 
     @NotNull
     @Override
-    ElementPaginationBuilder<T> displayIf(@NotNull Predicate<ContextRender> condition);
+    ElementPaginationBuilder<T> displayIf(@NotNull Predicate<ContextElementRender> condition);
 
     @NotNull
     @Override
@@ -80,7 +81,7 @@ public interface ElementPaginationBuilder<T> extends ElementBuilder {
 
     @NotNull
     @Override
-    ElementPaginationBuilder<T> hideIf(@NotNull Predicate<ContextRender> condition);
+    ElementPaginationBuilder<T> hideIf(@NotNull Predicate<ContextElementRender> condition);
 
     @NotNull
     @Override

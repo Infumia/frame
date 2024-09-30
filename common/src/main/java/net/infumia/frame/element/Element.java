@@ -3,7 +3,7 @@ package net.infumia.frame.element;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
-import net.infumia.frame.context.view.ContextRender;
+import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ public interface Element {
     boolean updateOnClick();
 
     @Nullable
-    Predicate<ContextRender> displayIf();
+    Predicate<ContextElementRender> displayIf();
 
     @Nullable
     Collection<State<?>> updateOnStateChange();

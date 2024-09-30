@@ -5,6 +5,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
+import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementBuilderImpl;
@@ -168,7 +169,7 @@ public final class ElementPaginationBuilderImpl<T>
     @NotNull
     @Override
     public ElementPaginationBuilder<T> displayIf(
-        @NotNull final Predicate<ContextRender> condition
+        @NotNull final Predicate<ContextElementRender> condition
     ) {
         super.displayIf(condition);
         return this;
@@ -183,7 +184,7 @@ public final class ElementPaginationBuilderImpl<T>
 
     @NotNull
     @Override
-    public ElementPaginationBuilder<T> hideIf(@NotNull final Predicate<ContextRender> condition) {
+    public ElementPaginationBuilder<T> hideIf(@NotNull final Predicate<ContextElementRender> condition) {
         super.hideIf(condition);
         return this;
     }

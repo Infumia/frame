@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
-import net.infumia.frame.context.view.ContextRender;
+import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +16,7 @@ public class ElementBuilderImpl implements ElementBuilderRich {
     boolean cancelOnClick;
     boolean closeOnClick;
     boolean updateOnClick;
-    Predicate<ContextRender> displayIf;
+    Predicate<ContextElementRender> displayIf;
     Collection<State<?>> updateOnStateChange;
     Collection<State<?>> updateOnStateAccess;
 
@@ -114,7 +114,7 @@ public class ElementBuilderImpl implements ElementBuilderRich {
 
     @NotNull
     @Override
-    public ElementBuilder displayIf(@NotNull final Predicate<ContextRender> condition) {
+    public ElementBuilder displayIf(@NotNull final Predicate<ContextElementRender> condition) {
         this.displayIf = condition;
         return this;
     }
@@ -127,7 +127,7 @@ public class ElementBuilderImpl implements ElementBuilderRich {
 
     @NotNull
     @Override
-    public ElementBuilder hideIf(@NotNull final Predicate<ContextRender> condition) {
+    public ElementBuilder hideIf(@NotNull final Predicate<ContextElementRender> condition) {
         return this.displayIf(ctx -> condition.negate().test(ctx));
     }
 
