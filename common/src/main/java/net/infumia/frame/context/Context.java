@@ -5,13 +5,10 @@ import net.infumia.frame.state.StateFactory;
 import net.infumia.frame.typedkey.TypedKeyStorage;
 import org.jetbrains.annotations.NotNull;
 
-public interface Context {
+public interface Context extends StateFactory {
     @NotNull
     Frame manager();
 
     @NotNull
     TypedKeyStorage instances();
-
-    @NotNull
-    StateFactory stateFactory();
 }

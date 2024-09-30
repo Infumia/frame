@@ -21,7 +21,7 @@ import net.infumia.frame.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class StateFactoryImpl implements StateFactory {
+public class StateFactoryImpl implements StateFactory {
 
     private static final AtomicLong COUNTER = new AtomicLong();
 
