@@ -6,9 +6,5 @@ import org.jetbrains.annotations.NotNull;
 
 public interface ViewConfigRich extends ViewConfig, ViewConfigOptionController {
     @NotNull
-    @Override
-    Object title();
-
-    @NotNull
     ViewConfigBuilderRich toBuilder();
 }

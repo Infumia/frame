@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import net.infumia.frame.type.InvType;
-import net.infumia.frame.util.Preconditions;
 import net.infumia.frame.view.config.ViewConfigModifier;
 import net.infumia.frame.view.config.option.ViewConfigOption;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +24,6 @@ final class ViewConfigImpl implements ViewConfigRich {
     final Duration interactionDelay;
 
     ViewConfigImpl(@NotNull final ViewConfigBuilderImpl builder) {
-        Preconditions.argumentNotNull(builder.title, "Title cannot be null!");
         this.options = Collections.unmodifiableMap(builder.options);
         this.modifiers = Collections.unmodifiableCollection(builder.modifiers);
         this.title = builder.title;
@@ -36,7 +34,7 @@ final class ViewConfigImpl implements ViewConfigRich {
         this.interactionDelay = builder.interactionDelay;
     }
 
-    @NotNull
+    @Nullable
     @Override
     public Object title() {
         return this.title;
