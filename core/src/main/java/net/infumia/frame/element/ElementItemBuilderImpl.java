@@ -9,7 +9,6 @@ import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
 import net.infumia.frame.context.element.ContextElementRender;
-import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.state.State;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

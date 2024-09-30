@@ -6,7 +6,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.element.ContextElementRender;
-import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementBuilderImpl;
 import net.infumia.frame.element.ElementItemBuilder;
@@ -184,7 +183,9 @@ public final class ElementPaginationBuilderImpl<T>
 
     @NotNull
     @Override
-    public ElementPaginationBuilder<T> hideIf(@NotNull final Predicate<ContextElementRender> condition) {
+    public ElementPaginationBuilder<T> hideIf(
+        @NotNull final Predicate<ContextElementRender> condition
+    ) {
         super.hideIf(condition);
         return this;
     }

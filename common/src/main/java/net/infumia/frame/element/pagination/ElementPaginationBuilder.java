@@ -5,7 +5,6 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.element.ContextElementRender;
-import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.ElementBuilder;
 import net.infumia.frame.element.ElementItemBuilder;
 import net.infumia.frame.state.State;
