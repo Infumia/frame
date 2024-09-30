@@ -4,7 +4,7 @@ import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.metadata.MetadataKeyHolder;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextView;
-import net.infumia.frame.viewer.ContextualViewerRich;
+import net.infumia.frame.viewer.ContextualViewer;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +26,7 @@ public final class ServiceTransitionLogging
         // TODO: portlek, More detailed message.
         final ContextBase context = ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
-            final ContextualViewerRich transitioningFrom = viewer
+            final ContextualViewer transitioningFrom = viewer
                 .metadata()
                 .get(MetadataKeyHolder.TRANSITIONING_FROM);
             if (transitioningFrom == null) {

@@ -2,7 +2,6 @@ package net.infumia.frame.viewer;
 
 import net.infumia.frame.metadata.MetadataAccessFactory;
 import net.infumia.frame.view.View;
-import net.infumia.frame.view.ViewRich;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,10 +16,6 @@ public final class ViewerCreatorImpl implements ViewerCreator {
     @NotNull
     @Override
     public Viewer create(@NotNull final Player player, @NotNull final View view) {
-        return new ViewerImpl(
-            player,
-            (ViewRich) view,
-            this.metadataAccessFactory.getOrCreate(player)
-        );
+        return new ViewerImpl(player, view, this.metadataAccessFactory.getOrCreate(player));
     }
 }

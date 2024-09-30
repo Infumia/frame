@@ -1,24 +1,25 @@
 package net.infumia.frame.context.view;
 
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.FrameRich;
-import net.infumia.frame.config.ViewConfigBuilderRich;
+import net.infumia.frame.Frame;
 import net.infumia.frame.context.ContextImpl;
+import net.infumia.frame.context.ContextRich;
 import net.infumia.frame.state.StateRegistry;
 import net.infumia.frame.typedkey.TypedKeyStorage;
+import net.infumia.frame.view.config.ViewConfigBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class ContextInitImpl extends ContextImpl implements ContextInitRich {
+public final class ContextInitImpl extends ContextImpl implements ContextRich, ContextInit {
 
-    private final ViewConfigBuilderRich configBuilder;
+    private final ViewConfigBuilder configBuilder;
     private CompletableFuture<?> waitUntil;
 
     public ContextInitImpl(
-        @NotNull final FrameRich manager,
+        @NotNull final Frame manager,
         @NotNull final TypedKeyStorage instances,
         @NotNull final StateRegistry stateRegistry,
-        @NotNull final ViewConfigBuilderRich configBuilder
+        @NotNull final ViewConfigBuilder configBuilder
     ) {
         super(manager, instances, stateRegistry);
         this.configBuilder = configBuilder;
@@ -26,7 +27,7 @@ public final class ContextInitImpl extends ContextImpl implements ContextInitRic
 
     @NotNull
     @Override
-    public ViewConfigBuilderRich configBuilder() {
+    public ViewConfigBuilder configBuilder() {
         return this.configBuilder;
     }
 

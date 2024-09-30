@@ -32,13 +32,13 @@ public final class ServiceViewCreated
         final CompletableFuture<Object>[] created = ctx
             .registeredViews()
             .stream()
-            .map(ctx.manager().viewCreator()::create)
+            .map(ctx.frame().viewCreator()::create)
             .toArray(CompletableFuture[]::new);
         return CompletableFuture.allOf(created).thenApply(__ -> {
             final Collection<Object> views = Arrays.stream(created)
                 .map(CompletableFuture::join)
                 .collect(Collectors.toSet());
-            ctx.manager().logger().debug("View classes are created '%s'", ctx.registeredViews());
+            ctx.frame().logger().debug("View classes are created '%s'", ctx.registeredViews());
             return views;
         });
     }

@@ -6,7 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import net.infumia.frame.config.ViewConfigRich;
 import net.infumia.frame.context.ContextBase;
-import net.infumia.frame.context.view.ContextInitRich;
+import net.infumia.frame.context.view.ContextInit;
 import net.infumia.frame.context.view.ContextOpen;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderRich;
@@ -19,7 +19,7 @@ import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
 import net.infumia.frame.util.Pair;
 import net.infumia.frame.view.config.ViewConfig;
 import net.infumia.frame.view.config.option.ViewConfigOptions;
-import net.infumia.frame.viewer.ContextualViewerRich;
+import net.infumia.frame.viewer.ContextualViewer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -28,20 +28,20 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class ViewImpl implements ViewRich {
+public final class ViewImpl implements View, ViewEventHandler {
 
     private final PipelineExecutorView pipelines = new PipelineExecutorViewImpl(this);
     private final Object instance;
-    private final ContextInitRich context;
+    private final ContextInit context;
 
-    public ViewImpl(@NotNull final ContextInitRich context, @NotNull final Object instance) {
+    public ViewImpl(@NotNull final ContextInit context, @NotNull final Object instance) {
         this.context = context;
         this.instance = instance;
     }
 
     @NotNull
     @Override
-    public ContextInitRich context() {
+    public ContextInit context() {
         return this.context;
     }
 
@@ -88,7 +88,7 @@ public final class ViewImpl implements ViewRich {
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> simulateClick(
-        @NotNull final ContextualViewerRich viewer,
+        @NotNull final ContextualViewer viewer,
         @NotNull final InventoryClickEvent event
     ) {
         return this.pipelines.executeClick(viewer, event);
@@ -97,9 +97,9 @@ public final class ViewImpl implements ViewRich {
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> simulateClose(
-        @NotNull final ContextualViewerRich viewer
+        @NotNull final ContextualViewer viewer
     ) {
-        final ContextualViewerRich transitioning = viewer
+        final ContextualViewer transitioning = viewer
             .metadata()
             .remove(MetadataKeyHolder.TRANSITIONING_FROM);
         final Boolean forcedClose = viewer.metadata().remove(MetadataKeyHolder.FORCED_CLOSE);
@@ -109,11 +109,11 @@ public final class ViewImpl implements ViewRich {
 
     @Override
     public void handleItemPickup(
-        @NotNull final ContextualViewerRich viewer,
+        @NotNull final ContextualViewer viewer,
         @NotNull final PlayerPickupItemEvent event
     ) {
-        final ContextRenderRich context = viewer.context();
-        final ViewConfigRich config = context.config();
+        final ContextRender context = viewer.context();
+        final ViewConfigRich config = (ViewConfigRich) context.config();
         config
             .option(ViewConfigOptions.CANCEL_ON_PICKUP)
             .filter(l -> l)
@@ -122,11 +122,11 @@ public final class ViewImpl implements ViewRich {
 
     @Override
     public void handleItemDrop(
-        @NotNull final ContextualViewerRich viewer,
+        @NotNull final ContextualViewer viewer,
         @NotNull final PlayerDropItemEvent event
     ) {
-        final ContextRenderRich context = viewer.context();
-        final ViewConfigRich config = context.config();
+        final ContextRender context = viewer.context();
+        final ViewConfigRich config = (ViewConfigRich) context.config();
         config
             .option(ViewConfigOptions.CANCEL_ON_DROP)
             .filter(l -> l)
@@ -135,11 +135,11 @@ public final class ViewImpl implements ViewRich {
 
     @Override
     public void handleInventoryDrag(
-        @NotNull final ContextualViewerRich viewer,
+        @NotNull final ContextualViewer viewer,
         @NotNull final InventoryDragEvent event
     ) {
-        final ContextRenderRich context = viewer.context();
-        final ViewConfigRich config = context.config();
+        final ContextRender context = viewer.context();
+        final ViewConfigRich config = (ViewConfigRich) context.config();
         config
             .option(ViewConfigOptions.CANCEL_ON_DRAG)
             .filter(l -> l)

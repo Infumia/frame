@@ -20,7 +20,7 @@ public final class ServiceListenerRegisteredLogging
 
     @Override
     public void accept(@NotNull final PipelineContextManager.ListenerRegistered ctx) {
-        ctx.manager().logger().debug("All the listeners are registered!");
+        ctx.frame().logger().debug("All the listeners are registered!");
     }
 
     private ServiceListenerRegisteredLogging() {}

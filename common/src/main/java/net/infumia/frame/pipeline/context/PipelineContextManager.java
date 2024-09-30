@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PipelineContextManager extends PipelineContext {
     @NotNull
-    Frame manager();
+    Frame frame();
 
     interface ViewCreated extends PipelineContextManager {
         @NotNull

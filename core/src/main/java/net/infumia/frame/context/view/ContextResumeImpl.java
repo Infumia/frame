@@ -6,12 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 public final class ContextResumeImpl extends ContextRenderImpl implements ContextResume {
 
-    private final ContextRenderRich from;
+    private final ContextRender from;
     private final Collection<Viewer> resumedViewers;
 
     public ContextResumeImpl(
-        @NotNull final ContextRenderRich context,
-        @NotNull final ContextRenderRich from,
+        @NotNull final ContextRender context,
+        @NotNull final ContextRender from,
         @NotNull final Collection<Viewer> resumedViewers
     ) {
         super(context);
@@ -21,7 +21,7 @@ public final class ContextResumeImpl extends ContextRenderImpl implements Contex
 
     @NotNull
     @Override
-    public ContextRenderRich from() {
+    public ContextRender from() {
         return this.from;
     }
 

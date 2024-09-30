@@ -1,6 +1,6 @@
 package net.infumia.frame.context.element;
 
-import net.infumia.frame.element.ElementItemRich;
+import net.infumia.frame.element.ElementItem;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,13 +8,13 @@ public final class ContextElementItemRenderImpl
     extends ContextElementRenderImpl
     implements ContextElementItemRender {
 
-    private final ElementItemRich element;
+    private final ElementItem element;
     private int modifiedSlot;
     private ItemStack modifiedItem;
 
     public ContextElementItemRenderImpl(
         @NotNull final ContextElementRender context,
-        @NotNull final ElementItemRich element
+        @NotNull final ElementItem element
     ) {
         super(context);
         this.element = element;
@@ -24,7 +24,7 @@ public final class ContextElementItemRenderImpl
 
     @NotNull
     @Override
-    public ElementItemRich element() {
+    public ElementItem element() {
         return this.element;
     }
 

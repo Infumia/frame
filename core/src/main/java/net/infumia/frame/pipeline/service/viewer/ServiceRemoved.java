@@ -23,7 +23,7 @@ public final class ServiceRemoved
     public void accept(@NotNull final PipelineContextViewer.Removed ctx) {
         final ContextRenderRich context = (ContextRenderRich) ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
-            context.removeViewer((ViewerRich) viewer);
+            context.removeViewer(viewer);
         }
     }
 

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
-import net.infumia.frame.config.ViewConfigRich;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.ContextBaseImpl;
 import net.infumia.frame.element.Element;
@@ -28,7 +27,6 @@ import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.slot.SlotFinder;
 import net.infumia.frame.util.Preconditions;
 import net.infumia.frame.view.ViewContainer;
-import net.infumia.frame.view.ViewContainerRich;
 import net.infumia.frame.view.config.ViewConfig;
 import net.infumia.frame.viewer.Viewer;
 import org.bukkit.inventory.ItemStack;
@@ -67,22 +65,22 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
         this.container = context.container();
         this.config = context.config();
         this.layouts = context.layouts();
-        this.slotFinder = context.slotFinder();
+        this.slotFinder = ((ContextRenderRich) context).slotFinder();
         this.elements = new ArrayList<>(context.elements());
         this.pipelines = context.pipelines();
         this.pipelinesViewer = context.pipelinesViewer();
-        this.updateTask = context.updateTask();
+        this.updateTask = ((ContextRenderRich) context).updateTask();
     }
 
     @NotNull
     @Override
-    public ViewContainerRich container() {
+    public ViewContainer container() {
         return this.container;
     }
 
     @NotNull
     @Override
-    public ViewConfigRich config() {
+    public ViewConfig config() {
         return this.config;
     }
 
@@ -143,15 +141,15 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
 
     @Override
     public void back() {
-        final ViewerRich viewer = this.viewerOrThrow("back");
+        final Viewer viewer = this.viewerOrThrow("back");
         final MetadataAccess metadata = viewer.metadata();
-        final Deque<ContextRenderRich> previousContexts = metadata.get(
+        final Deque<ContextRender> previousContexts = metadata.get(
             MetadataKeyHolder.PREVIOUS_VIEWS
         );
         if (previousContexts == null) {
             return;
         }
-        final ContextRenderRich previousContext = previousContexts.pollLast();
+        final ContextRender previousContext = previousContexts.pollLast();
         if (previousContext == null) {
             metadata.remove(MetadataKeyHolder.PREVIOUS_VIEWS);
             return;
@@ -162,7 +160,10 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
             this.manager()
                 .openActive(viewer.player(), previousContext)
                 .thenCompose(__ ->
-                    previousContext.simulateResume(this, Collections.singleton(viewer))
+                    ((ContextRenderRich) previousContext).simulateResume(
+                            this,
+                            Collections.singleton(viewer)
+                        )
                 ),
             this.manager().logger(),
             "An error occurred while going back to view '%s'.",
@@ -172,7 +173,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
 
     @Override
     public boolean canBack() {
-        final Deque<ContextRenderRich> previousViews =
+        final Deque<ContextRender> previousViews =
             this.viewerOrThrow("canBack").metadata().get(MetadataKeyHolder.PREVIOUS_VIEWS);
         return previousViews != null && !previousViews.isEmpty();
     }
@@ -201,7 +202,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
             !this.sharedView(),
             "You cannot use #closeForViewer() method if it's a shared view!"
         );
-        final ViewerRich viewer = this.viewer();
+        final Viewer viewer = this.viewer();
         if (forced) {
             viewer.metadata().setFixed(MetadataKeyHolder.FORCED_CLOSE, true);
         }

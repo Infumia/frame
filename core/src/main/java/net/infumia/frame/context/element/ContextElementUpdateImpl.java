@@ -1,19 +1,19 @@
 package net.infumia.frame.context.element;
 
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderImpl;
-import net.infumia.frame.context.view.ContextRenderRich;
-import net.infumia.frame.element.ElementRich;
+import net.infumia.frame.element.Element;
 import org.jetbrains.annotations.NotNull;
 
 public class ContextElementUpdateImpl extends ContextRenderImpl implements ContextElementUpdate {
 
-    private final ElementRich element;
+    private final Element element;
     private final boolean forced;
     private boolean cancelled;
 
     public ContextElementUpdateImpl(
-        @NotNull final ContextRenderRich context,
-        @NotNull final ElementRich element,
+        @NotNull final ContextRender context,
+        @NotNull final Element element,
         final boolean forced
     ) {
         super(context);
@@ -22,13 +22,13 @@ public class ContextElementUpdateImpl extends ContextRenderImpl implements Conte
     }
 
     public ContextElementUpdateImpl(@NotNull final ContextElementUpdate context) {
-        this((ContextRenderRich) context, (ElementRich) context.element(), context.forced());
+        this(context, context.element(), context.forced());
         this.cancelled = context.cancelled();
     }
 
     @NotNull
     @Override
-    public ElementRich element() {
+    public Element element() {
         return this.element;
     }
 

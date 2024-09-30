@@ -9,7 +9,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import net.infumia.frame.Frame;
-import net.infumia.frame.config.ViewConfigRich;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.state.StateRegistry;
 import net.infumia.frame.state.value.StateValueHost;
@@ -19,7 +18,6 @@ import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.util.Preconditions;
 import net.infumia.frame.view.View;
-import net.infumia.frame.view.ViewRich;
 import net.infumia.frame.view.config.ViewConfig;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
@@ -138,31 +136,31 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
 
     @NotNull
     @Override
-    public ViewRich view() {
+    public View view() {
         return this.view;
     }
 
     @NotNull
     @Override
-    public ViewConfigRich initialConfig() {
+    public ViewConfig initialConfig() {
         return this.initialConfig;
     }
 
     @NotNull
     @Override
-    public ViewerRich viewer() {
+    public Viewer viewer() {
         return this.viewerOrThrow("viewer");
     }
 
     @Override
-    public void addViewer(@NotNull final ViewerRich viewer) {
+    public void addViewer(@NotNull final Viewer viewer) {
         synchronized (this.viewers) {
             this.viewers.add(viewer);
         }
     }
 
     @Override
-    public void removeViewer(@NotNull final ViewerRich viewer) {
+    public void removeViewer(@NotNull final Viewer viewer) {
         synchronized (this.viewers) {
             this.viewers.remove(viewer);
         }
@@ -170,7 +168,7 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
 
     @NotNull
     @Override
-    public ViewerRich viewerOrThrow(@NotNull final String methodName) {
+    public Viewer viewerOrThrow(@NotNull final String methodName) {
         Preconditions.state(
             !this.sharedView(),
             "You cannot use #%s() method if it's a shared view!",

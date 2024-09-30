@@ -4,18 +4,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import net.infumia.frame.config.ViewConfigRich;
-import net.infumia.frame.context.ContextBaseRich;
+import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextClick;
 import net.infumia.frame.context.view.ContextClose;
-import net.infumia.frame.context.view.ContextInitRich;
 import net.infumia.frame.context.view.ContextOpen;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.slot.LayoutSlotImpl;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
 import net.infumia.frame.view.View;
 import net.infumia.frame.view.ViewContainer;
-import net.infumia.frame.view.ViewContainerRich;
+import net.infumia.frame.view.config.ViewConfig;
 import net.infumia.frame.viewer.Viewer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -24,22 +22,15 @@ public interface PipelineContextViews {
     final class Init implements PipelineContextView.Init {
 
         private final View view;
-        private final ContextInitRich context;
 
-        public Init(@NotNull final View view, @NotNull final ContextInitRich context) {
+        public Init(@NotNull final View view) {
             this.view = view;
-            this.context = context;
         }
 
         @NotNull
         @Override
         public View view() {
             return this.view;
-        }
-
-        @NotNull
-        public ContextInitRich context() {
-            return this.context;
         }
     }
 
@@ -103,20 +94,17 @@ public interface PipelineContextViews {
 
     final class Transition implements PipelineContextView.Transition {
 
-        private final ContextBaseRich context;
+        private final ContextBase context;
         private final Collection<Viewer> viewers;
 
-        public Transition(
-            @NotNull final ContextBaseRich context,
-            final Collection<Viewer> viewers
-        ) {
+        public Transition(@NotNull final ContextBase context, final Collection<Viewer> viewers) {
             this.context = context;
             this.viewers = viewers;
         }
 
         @NotNull
         @Override
-        public ContextBaseRich context() {
+        public ContextBase context() {
             return this.context;
         }
 
@@ -170,12 +158,12 @@ public interface PipelineContextViews {
 
     final class CreateContainer implements PipelineContextView.CreateContainer {
 
-        private final ContextBaseRich context;
-        private final ViewConfigRich config;
+        private final ContextBase context;
+        private final ViewConfig config;
 
         public CreateContainer(
-            @NotNull final ContextBaseRich context,
-            @NotNull final ViewConfigRich config
+            @NotNull final ContextBase context,
+            @NotNull final ViewConfig config
         ) {
             this.context = context;
             this.config = config;
@@ -183,27 +171,27 @@ public interface PipelineContextViews {
 
         @NotNull
         @Override
-        public ContextBaseRich context() {
+        public ContextBase context() {
             return this.context;
         }
 
         @NotNull
         @Override
-        public ViewConfigRich config() {
+        public ViewConfig config() {
             return this.config;
         }
     }
 
     final class ModifyContainer implements PipelineContextView.ModifyContainer {
 
-        private final ContextBaseRich context;
-        private final ViewConfigRich config;
-        private ViewContainerRich container;
+        private final ContextBase context;
+        private final ViewConfig config;
+        private ViewContainer container;
 
         public ModifyContainer(
-            @NotNull final ContextBaseRich context,
-            @NotNull final ViewConfigRich config,
-            @NotNull final ViewContainerRich container
+            @NotNull final ContextBase context,
+            @NotNull final ViewConfig config,
+            @NotNull final ViewContainer container
         ) {
             this.context = context;
             this.config = config;
@@ -212,39 +200,39 @@ public interface PipelineContextViews {
 
         @NotNull
         @Override
-        public ContextBaseRich context() {
+        public ContextBase context() {
             return this.context;
         }
 
         @NotNull
         @Override
-        public ViewConfigRich config() {
+        public ViewConfig config() {
             return this.config;
         }
 
         @NotNull
         @Override
-        public ViewContainerRich container() {
+        public ViewContainer container() {
             return this.container;
         }
 
         @Override
         public void modifyContainer(@NotNull final ViewContainer newContainer) {
-            this.container = (ViewContainerRich) newContainer;
+            this.container = newContainer;
         }
     }
 
     final class LayoutResolution implements PipelineContextView.LayoutResolution {
 
         private final Map<Character, LayoutSlot> layouts = new ConcurrentHashMap<>();
-        private final ContextBaseRich context;
-        private final ViewConfigRich config;
-        private final ViewContainerRich container;
+        private final ContextBase context;
+        private final ViewConfig config;
+        private final ViewContainer container;
 
         public LayoutResolution(
-            @NotNull final ContextBaseRich context,
-            @NotNull final ViewConfigRich config,
-            @NotNull final ViewContainerRich container
+            @NotNull final ContextBase context,
+            @NotNull final ViewConfig config,
+            @NotNull final ViewContainer container
         ) {
             this.context = context;
             this.config = config;
@@ -253,19 +241,19 @@ public interface PipelineContextViews {
 
         @NotNull
         @Override
-        public ContextBaseRich context() {
+        public ContextBase context() {
             return this.context;
         }
 
         @NotNull
         @Override
-        public ViewConfigRich config() {
+        public ViewConfig config() {
             return this.config;
         }
 
         @NotNull
         @Override
-        public ViewContainerRich container() {
+        public ViewContainer container() {
             return this.container;
         }
 
@@ -288,15 +276,15 @@ public interface PipelineContextViews {
 
     final class CreateRender implements PipelineContextView.CreateRender {
 
-        private final ContextBaseRich context;
-        private final ViewConfigRich config;
-        private final ViewContainerRich container;
+        private final ContextBase context;
+        private final ViewConfig config;
+        private final ViewContainer container;
         private final Map<Character, LayoutSlot> layouts;
 
         public CreateRender(
-            @NotNull final ContextBaseRich context,
-            @NotNull final ViewConfigRich config,
-            @NotNull final ViewContainerRich container,
+            @NotNull final ContextBase context,
+            @NotNull final ViewConfig config,
+            @NotNull final ViewContainer container,
             @NotNull final Map<Character, LayoutSlot> layouts
         ) {
             this.context = context;
@@ -307,19 +295,19 @@ public interface PipelineContextViews {
 
         @NotNull
         @Override
-        public ContextBaseRich context() {
+        public ContextBase context() {
             return this.context;
         }
 
         @NotNull
         @Override
-        public ViewConfigRich config() {
+        public ViewConfig config() {
             return this.config;
         }
 
         @NotNull
         @Override
-        public ViewContainerRich container() {
+        public ViewContainer container() {
             return this.container;
         }
 

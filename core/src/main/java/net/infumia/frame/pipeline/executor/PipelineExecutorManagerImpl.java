@@ -3,7 +3,7 @@ package net.infumia.frame.pipeline.executor;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.FrameRich;
+import net.infumia.frame.Frame;
 import net.infumia.frame.pipeline.context.PipelineContextManager;
 import net.infumia.frame.pipeline.context.PipelineContextManagers;
 import net.infumia.frame.pipeline.holder.PipelineHolderManager;
@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 public final class PipelineExecutorManagerImpl implements PipelineExecutorManager {
 
     private final PipelineHolderManager pipelines = PipelineHolderManager.BASE.createNew();
-    private final FrameRich manager;
+    private final Frame manager;
 
-    public PipelineExecutorManagerImpl(@NotNull final FrameRich manager) {
+    public PipelineExecutorManagerImpl(@NotNull final Frame manager) {
         this.manager = manager;
     }
 

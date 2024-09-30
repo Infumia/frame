@@ -6,7 +6,7 @@ import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
-import net.infumia.frame.viewer.ContextualViewerRich;
+import net.infumia.frame.viewer.ContextualViewer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -33,22 +33,16 @@ public interface ViewEventHandler {
 
     @NotNull
     CompletableFuture<ConsumerService.State> simulateClick(
-        @NotNull ContextualViewerRich viewer,
+        @NotNull ContextualViewer viewer,
         @NotNull InventoryClickEvent event
     );
 
     @NotNull
-    CompletableFuture<ConsumerService.State> simulateClose(@NotNull ContextualViewerRich viewer);
+    CompletableFuture<ConsumerService.State> simulateClose(@NotNull ContextualViewer viewer);
 
-    void handleItemPickup(
-        @NotNull ContextualViewerRich viewer,
-        @NotNull PlayerPickupItemEvent event
-    );
+    void handleItemPickup(@NotNull ContextualViewer viewer, @NotNull PlayerPickupItemEvent event);
 
-    void handleItemDrop(@NotNull ContextualViewerRich viewer, @NotNull PlayerDropItemEvent event);
+    void handleItemDrop(@NotNull ContextualViewer viewer, @NotNull PlayerDropItemEvent event);
 
-    void handleInventoryDrag(
-        @NotNull ContextualViewerRich viewer,
-        @NotNull InventoryDragEvent event
-    );
+    void handleInventoryDrag(@NotNull ContextualViewer viewer, @NotNull InventoryDragEvent event);
 }

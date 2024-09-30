@@ -25,12 +25,11 @@ public final class ServiceAddedContextualViewer
     public void accept(@NotNull final PipelineContextViewer.Added ctx) {
         final ContextRenderRich context = (ContextRenderRich) ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
-            final ViewerRich rich = (ViewerRich) viewer;
-            rich
+            viewer
                 .metadata()
                 .setFixed(
                     MetadataKeyHolder.CONTEXTUAL_VIEWER,
-                    new ContextualViewerImpl(rich, context)
+                    new ContextualViewerImpl(viewer, context)
                 );
         }
     }

@@ -21,7 +21,7 @@ public final class ServiceListenerRegistered
 
     @Override
     public void accept(@NotNull final PipelineContextManager.ListenerRegistered ctx) {
-        ((FrameRich) ctx.manager()).listener().register();
+        ((FrameRich) ctx.frame()).listener().register();
     }
 
     private ServiceListenerRegistered() {}

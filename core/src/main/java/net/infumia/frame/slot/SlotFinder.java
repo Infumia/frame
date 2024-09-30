@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.function.BiFunction;
 import net.infumia.frame.InvTypeRich;
 import net.infumia.frame.SlotConverter;
-import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.ElementItemBuilder;
 import net.infumia.frame.element.ElementItemBuilderRich;
 import net.infumia.frame.util.Preconditions;
+import net.infumia.frame.view.ViewContainerRich;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,9 +20,9 @@ public final class SlotFinder {
     private final List<BiFunction<Integer, Integer, ElementItemBuilder>> availableSlotFinders =
         new ArrayList<>();
     private final Collection<ElementItemBuilderRich> nonRenderedBuilders = new ArrayList<>();
-    private final ContextRenderRich context;
+    private final ContextRender context;
 
-    public SlotFinder(@NotNull final ContextRenderRich context) {
+    public SlotFinder(@NotNull final ContextRender context) {
         this.context = context;
     }
 
@@ -39,7 +40,7 @@ public final class SlotFinder {
     }
 
     public int findResultSlot() {
-        final InvTypeRich type = this.context.container().typeRich();
+        final InvTypeRich type = ((ViewContainerRich) this.context.container()).typeRich();
         final int[] slots = type.resultSlots();
         Preconditions.state(
             slots.length != 0,

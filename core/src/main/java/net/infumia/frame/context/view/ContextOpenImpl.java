@@ -2,6 +2,7 @@ package net.infumia.frame.context.view;
 
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.config.ViewConfigBuilderRich;
+import net.infumia.frame.config.ViewConfigRich;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.ContextBaseImpl;
 import net.infumia.frame.context.ContextBaseRich;
@@ -35,7 +36,7 @@ public final class ContextOpenImpl extends ContextBaseImpl implements ContextBas
     @Override
     public ViewConfigBuilder modifyConfig() {
         if (this.modifiedConfig == null) {
-            this.modifiedConfig = this.initialConfig().toBuilder();
+            this.modifiedConfig = ((ViewConfigRich) this.initialConfig()).toBuilder();
         }
         return this.modifiedConfig;
     }

@@ -1,19 +1,19 @@
 package net.infumia.frame.context.element;
 
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderImpl;
-import net.infumia.frame.context.view.ContextRenderRich;
-import net.infumia.frame.element.ElementRich;
+import net.infumia.frame.element.Element;
 import org.jetbrains.annotations.NotNull;
 
 public final class ContextElementClearImpl
     extends ContextRenderImpl
     implements ContextElementClear {
 
-    private final ElementRich element;
+    private final Element element;
 
     public ContextElementClearImpl(
-        @NotNull final ContextRenderRich context,
-        @NotNull final ElementRich element
+        @NotNull final ContextRender context,
+        @NotNull final Element element
     ) {
         super(context);
         this.element = element;
@@ -21,7 +21,7 @@ public final class ContextElementClearImpl
 
     @NotNull
     @Override
-    public ElementRich element() {
+    public Element element() {
         return this.element;
     }
 }

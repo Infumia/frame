@@ -26,9 +26,8 @@ public final class ServiceAddedOnViewerAdded
         if (instance instanceof ViewHandler) {
             final ViewHandler handler = (ViewHandler) instance;
             for (final Viewer viewer : ctx.viewers()) {
-                final ViewerRich rich = (ViewerRich) viewer;
                 handler.onViewerAdded(
-                    rich.metadata().getOrThrow(MetadataKeyHolder.CONTEXTUAL_VIEWER)
+                    viewer.metadata().getOrThrow(MetadataKeyHolder.CONTEXTUAL_VIEWER)
                 );
             }
         }

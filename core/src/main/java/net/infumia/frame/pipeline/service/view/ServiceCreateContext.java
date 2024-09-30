@@ -3,12 +3,14 @@ package net.infumia.frame.pipeline.service.view;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import net.infumia.frame.config.ViewConfigBuilderRich;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.ContextBaseImpl;
-import net.infumia.frame.context.view.ContextInitRich;
+import net.infumia.frame.context.ContextRich;
+import net.infumia.frame.context.view.ContextInit;
 import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.context.PipelineContextView;
-import net.infumia.frame.view.ViewRich;
+import net.infumia.frame.view.View;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,20 +32,20 @@ public final class ServiceCreateContext
     public CompletableFuture<ContextBase> handle(
         @NotNull final PipelineContextView.CreateContext ctx
     ) {
-        final ViewRich view = (ViewRich) ctx.view();
-        final ContextInitRich context = view.context();
+        final View view = ctx.view();
+        final ContextInit context = view.context();
         final Collection<Viewer> viewers = ctx.viewers();
         return CompletableFuture.completedFuture(
             new ContextBaseImpl(
                 context.manager(),
                 context.instances(),
-                context.stateRegistry(),
+                ((ContextRich) context).stateRegistry(),
                 UUID.randomUUID(),
                 view,
-                context.configBuilder().build(),
+                ((ViewConfigBuilderRich) context.configBuilder()).build(),
                 viewers,
                 ctx.initialData(),
-                viewers.size() == 1 ? (ViewerRich) viewers.iterator().next() : null
+                viewers.size() == 1 ? viewers.iterator().next() : null
             )
         );
     }

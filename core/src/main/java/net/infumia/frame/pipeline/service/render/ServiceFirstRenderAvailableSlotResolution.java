@@ -3,12 +3,14 @@ package net.infumia.frame.pipeline.service.render;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.element.ElementBuilderRich;
 import net.infumia.frame.element.ElementItemBuilder;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import net.infumia.frame.slot.LayoutSlot;
+import net.infumia.frame.view.ViewContainerRich;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceFirstRenderAvailableSlotResolution
@@ -103,14 +105,13 @@ public final class ServiceFirstRenderAvailableSlotResolution
     }
 
     private boolean isSlotNotAvailableForAutoFilling(
-        @NotNull final ContextRenderRich context,
+        @NotNull final ContextRender context,
         final int slot
     ) {
         return (
-            !context.container().typeRich().canPlayerInteractOn(slot) ||
+            !((ViewContainerRich) context.container()).typeRich().canPlayerInteractOn(slot) ||
             context.container().hasItem(slot) ||
-            context
-                .slotFinder()
+            ((ContextRenderRich) context).slotFinder()
                 .nonRenderedBuilders()
                 .stream()
                 .anyMatch(builder -> builder.slot() == slot)

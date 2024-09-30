@@ -3,7 +3,7 @@ package net.infumia.frame.viewer;
 import net.infumia.frame.context.view.ContextRender;
 import org.jetbrains.annotations.NotNull;
 
-public final class ContextualViewerImpl extends ViewerImpl implements ContextualViewerRich {
+public final class ContextualViewerImpl extends ViewerImpl implements ContextualViewer, Viewer {
 
     private final ContextRender context;
 

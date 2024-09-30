@@ -22,7 +22,7 @@ public final class ServiceAdded implements PipelineServiceConsumer<PipelineConte
     public void accept(@NotNull final PipelineContextViewer.Added ctx) {
         final ContextRenderRich context = (ContextRenderRich) ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
-            context.addViewer((ViewerRich) viewer);
+            context.addViewer(viewer);
         }
     }
 

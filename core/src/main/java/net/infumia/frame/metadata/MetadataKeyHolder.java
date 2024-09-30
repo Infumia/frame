@@ -3,25 +3,25 @@ package net.infumia.frame.metadata;
 import io.leangen.geantyref.TypeToken;
 import java.util.Deque;
 import java.util.Map;
-import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.typedkey.TypedKey;
-import net.infumia.frame.viewer.ContextualViewerRich;
+import net.infumia.frame.viewer.ContextualViewer;
 
 public interface MetadataKeyHolder {
-    TypedKey<ContextualViewerRich> CONTEXTUAL_VIEWER = TypedKey.of(
-        ContextualViewerRich.class,
+    TypedKey<ContextualViewer> CONTEXTUAL_VIEWER = TypedKey.of(
+        ContextualViewer.class,
         "contextual-viewer"
     );
 
-    TypedKey<ContextualViewerRich> TRANSITIONING_FROM = TypedKey.of(
-        ContextualViewerRich.class,
+    TypedKey<ContextualViewer> TRANSITIONING_FROM = TypedKey.of(
+        ContextualViewer.class,
         "transitioning-from"
     );
 
     TypedKey<Boolean> FORCED_CLOSE = TypedKey.of(boolean.class, "forced-close");
 
-    TypedKey<Deque<ContextRenderRich>> PREVIOUS_VIEWS = TypedKey.of(
-        new TypeToken<Deque<ContextRenderRich>>() {},
+    TypedKey<Deque<ContextRender>> PREVIOUS_VIEWS = TypedKey.of(
+        new TypeToken<Deque<ContextRender>>() {},
         "previous-views"
     );
 

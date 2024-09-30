@@ -3,13 +3,10 @@ package net.infumia.frame.pipeline.executor;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.config.ViewConfigRich;
 import net.infumia.frame.context.ContextBase;
-import net.infumia.frame.context.ContextBaseRich;
 import net.infumia.frame.context.view.ContextClickImpl;
 import net.infumia.frame.context.view.ContextCloseImpl;
 import net.infumia.frame.context.view.ContextInit;
-import net.infumia.frame.context.view.ContextInitRich;
 import net.infumia.frame.context.view.ContextOpen;
 import net.infumia.frame.context.view.ContextOpenImpl;
 import net.infumia.frame.context.view.ContextRender;
@@ -21,12 +18,10 @@ import net.infumia.frame.service.Implementation;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
 import net.infumia.frame.util.Pair;
+import net.infumia.frame.view.View;
 import net.infumia.frame.view.ViewContainer;
-import net.infumia.frame.view.ViewContainerRich;
-import net.infumia.frame.view.ViewRich;
 import net.infumia.frame.view.config.ViewConfig;
 import net.infumia.frame.viewer.ContextualViewer;
-import net.infumia.frame.viewer.ContextualViewerRich;
 import net.infumia.frame.viewer.Viewer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -35,9 +30,9 @@ import org.jetbrains.annotations.NotNull;
 public final class PipelineExecutorViewImpl implements PipelineExecutorView {
 
     private final PipelineHolderView pipelines = PipelineHolderView.BASE.createNew();
-    private final ViewRich view;
+    private final View view;
 
-    public PipelineExecutorViewImpl(@NotNull final ViewRich view) {
+    public PipelineExecutorViewImpl(@NotNull final View view) {
         this.view = view;
     }
 
@@ -46,8 +41,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
     public CompletableFuture<ConsumerService.State> executeInit(
         @NotNull final ContextInit context
     ) {
-        return this.pipelines.init()
-            .completeWith(new PipelineContextViews.Init(this.view, (ContextInitRich) context));
+        return this.pipelines.init().completeWith(new PipelineContextViews.Init(this.view));
     }
 
     @NotNull
@@ -74,7 +68,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
     public CompletableFuture<Pair<ConsumerService.State, ContextOpen>> executeOpen(
         @NotNull final ContextBase context
     ) {
-        final ContextOpenImpl open = new ContextOpenImpl((ContextBaseRich) context);
+        final ContextOpenImpl open = new ContextOpenImpl(context);
         return this.pipelines.open()
             .completeWith(new PipelineContextViews.Open(open))
             .thenApply(state -> Pair.of(state, open));
@@ -96,12 +90,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
         @NotNull final ViewConfig config
     ) {
         return this.pipelines.createContainer()
-            .completeWith(
-                new PipelineContextViews.CreateContainer(
-                    (ContextBaseRich) context,
-                    (ViewConfigRich) config
-                )
-            );
+            .completeWith(new PipelineContextViews.CreateContainer(context, config));
     }
 
     @NotNull
@@ -114,9 +103,9 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
         @NotNull final ViewContainer container
     ) {
         final PipelineContextViews.ModifyContainer ctx = new PipelineContextViews.ModifyContainer(
-            (ContextBaseRich) context,
-            (ViewConfigRich) config,
-            (ViewContainerRich) container
+            context,
+            config,
+            container
         );
         return this.pipelines.modifyContainer()
             .completeWith(ctx)
@@ -133,11 +122,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
         @NotNull final ViewContainer container
     ) {
         final PipelineContextView.LayoutResolution layoutResolution =
-            new PipelineContextViews.LayoutResolution(
-                (ContextBaseRich) context,
-                (ViewConfigRich) config,
-                (ViewContainerRich) container
-            );
+            new PipelineContextViews.LayoutResolution(context, config, container);
         return this.pipelines.layoutResolution()
             .completeWith(layoutResolution)
             .thenApply(state -> Pair.of(state, layoutResolution.layouts()));
@@ -153,12 +138,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
     ) {
         return this.pipelines.createRender()
             .completeWith(
-                new PipelineContextViews.CreateRender(
-                    (ContextBaseRich) context,
-                    (ViewConfigRich) config,
-                    (ViewContainerRich) container,
-                    layouts
-                )
+                new PipelineContextViews.CreateRender(context, config, container, layouts)
             );
     }
 
@@ -169,11 +149,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
         @NotNull final InventoryClickEvent event
     ) {
         return this.pipelines.click()
-            .completeWith(
-                new PipelineContextViews.Click(
-                    new ContextClickImpl((ContextualViewerRich) clicker, event)
-                )
-            );
+            .completeWith(new PipelineContextViews.Click(new ContextClickImpl(clicker, event)));
     }
 
     @NotNull
@@ -183,11 +159,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
         final boolean forced
     ) {
         return this.pipelines.close()
-            .completeWith(
-                new PipelineContextViews.Close(
-                    new ContextCloseImpl((ContextualViewerRich) viewer, forced)
-                )
-            );
+            .completeWith(new PipelineContextViews.Close(new ContextCloseImpl(viewer, forced)));
     }
 
     @Override

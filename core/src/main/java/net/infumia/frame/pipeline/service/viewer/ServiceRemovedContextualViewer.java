@@ -1,7 +1,6 @@
 package net.infumia.frame.pipeline.service.viewer;
 
 import net.infumia.frame.context.view.ContextRender;
-import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataKeyHolder;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
@@ -27,7 +26,7 @@ public final class ServiceRemovedContextualViewer
         final ContextRender currentContext = ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
             final MetadataAccess metadata = viewer.metadata();
-            final ContextRenderRich oldOrNewContext = metadata
+            final ContextRender oldOrNewContext = metadata
                 .getOrThrow(MetadataKeyHolder.CONTEXTUAL_VIEWER)
                 .context();
             if (currentContext.id().equals(oldOrNewContext.id())) {

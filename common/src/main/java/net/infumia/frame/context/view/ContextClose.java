@@ -5,8 +5,8 @@ import net.infumia.frame.viewer.ContextualViewer;
 import org.jetbrains.annotations.NotNull;
 
 public interface ContextClose extends ContextRender, Cancellable {
-    @Override
     @NotNull
+    @Override
     ContextualViewer viewer();
 
     boolean forced();

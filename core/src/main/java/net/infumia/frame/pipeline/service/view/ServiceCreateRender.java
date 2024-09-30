@@ -1,13 +1,10 @@
 package net.infumia.frame.pipeline.service.view;
 
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.config.ViewConfigRich;
-import net.infumia.frame.context.ContextBaseRich;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderImpl;
 import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.context.PipelineContextView;
-import net.infumia.frame.view.ViewContainerRich;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceCreateRender
@@ -29,12 +26,7 @@ public final class ServiceCreateRender
         @NotNull final PipelineContextView.CreateRender ctx
     ) {
         return CompletableFuture.completedFuture(
-            new ContextRenderImpl(
-                (ContextBaseRich) ctx.context(),
-                (ViewContainerRich) ctx.container(),
-                (ViewConfigRich) ctx.config(),
-                ctx.layouts()
-            )
+            new ContextRenderImpl(ctx.context(), ctx.container(), ctx.config(), ctx.layouts())
         );
     }
 

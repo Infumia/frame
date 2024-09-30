@@ -19,7 +19,7 @@ public final class ServiceViewUnregisteredLogging
 
     @Override
     public void accept(@NotNull final PipelineContextManager.ViewUnregistered ctx) {
-        ctx.manager().logger().debug("View classes are unregistered '%s'", ctx.unregisteredViews());
+        ctx.frame().logger().debug("View classes are unregistered '%s'", ctx.unregisteredViews());
     }
 
     private ServiceViewUnregisteredLogging() {}
