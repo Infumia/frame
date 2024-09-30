@@ -261,11 +261,13 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
             "Missing layout character '%s'",
             layout
         );
-        layoutSlot.withBuilderFactory(index -> {
-            final ElementItemBuilder builder = this.newUnregisteredBuilder();
-            configurer.accept(index, builder);
-            return builder;
-        });
+        this.layouts.add(
+                layoutSlot.withBuilderFactory(index -> {
+                    final ElementItemBuilder builder = this.newUnregisteredBuilder();
+                    configurer.accept(index, builder);
+                    return builder;
+                })
+            );
     }
 
     @NotNull
