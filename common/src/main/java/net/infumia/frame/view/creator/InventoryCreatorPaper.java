@@ -8,11 +8,9 @@ import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class InventoryCreatorPaper implements InventoryCreator {
+public final class InventoryCreatorPaper extends InventoryCreatorBukkit {
 
     public static final InventoryCreator INSTANCE = new InventoryCreatorPaper();
-
-    private InventoryCreatorPaper() {}
 
     @NotNull
     @Override
@@ -23,7 +21,7 @@ public final class InventoryCreatorPaper implements InventoryCreator {
         @Nullable final Object title
     ) {
         if (title instanceof String) {
-            return InventoryCreatorBukkit.INSTANCE.create(holder, type, size, title);
+            return super.create(holder, type, size, title);
         }
         final Component finalTitle;
         if (title instanceof Component) {

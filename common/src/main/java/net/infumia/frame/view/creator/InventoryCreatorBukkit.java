@@ -1,5 +1,6 @@
 package net.infumia.frame.view.creator;
 
+import net.infumia.frame.util.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -7,11 +8,17 @@ import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class InventoryCreatorBukkit implements InventoryCreator {
+public class InventoryCreatorBukkit implements InventoryCreator {
 
     public static final InventoryCreator INSTANCE = new InventoryCreatorBukkit();
 
-    private InventoryCreatorBukkit() {}
+    @NotNull
+    public static InventoryCreator bukkitOrPaper() {
+        if (PaperLib.isPaper() && PaperLib.isVersion(16)) {
+            return InventoryCreatorPaper.INSTANCE;
+        }
+        return InventoryCreatorBukkit.INSTANCE;
+    }
 
     @NotNull
     @Override
@@ -37,4 +44,6 @@ public final class InventoryCreatorBukkit implements InventoryCreator {
             ? Bukkit.createInventory(holder, type, titleAsText)
             : Bukkit.createInventory(holder, size, titleAsText);
     }
+
+    protected InventoryCreatorBukkit() {}
 }

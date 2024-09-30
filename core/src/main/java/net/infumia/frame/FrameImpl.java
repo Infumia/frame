@@ -52,7 +52,7 @@ final class FrameImpl implements FrameRich {
     private final MetadataAccessFactory metadataAccessFactory;
     private final ViewerCreator viewerCreator;
     private TypedKeyStorageFactory storageFactory = TypedKeyStorageFactory.create();
-    private InventoryCreator inventoryCreator = InventoryCreatorBukkit.INSTANCE;
+    private InventoryCreator inventoryCreator = InventoryCreatorBukkit.bukkitOrPaper();
 
     FrameImpl(
         @NotNull final Plugin plugin,
