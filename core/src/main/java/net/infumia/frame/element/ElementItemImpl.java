@@ -75,11 +75,11 @@ public class ElementItemImpl extends ElementImpl implements ElementItemRich {
     }
 
     @Override
-    public boolean intersects(@NotNull final ElementRich element) {
-        if (!(element instanceof ElementItemRich)) {
+    public boolean intersects(@NotNull final Element element) {
+        if (!(element instanceof ElementItem)) {
             return false;
         }
-        return ((ElementItemRich) element).slot() == this.slot;
+        return ((ElementItem) element).slot() == this.slot;
     }
 
     @NotNull

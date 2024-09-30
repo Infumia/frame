@@ -12,5 +12,5 @@ public interface ElementPaginationBuilderRich<T>
 
     @NotNull
     @Override
-    ElementPaginationRich<T> build(@NotNull ContextBase parent);
+    ElementPagination build(@NotNull ContextBase parent);
 }

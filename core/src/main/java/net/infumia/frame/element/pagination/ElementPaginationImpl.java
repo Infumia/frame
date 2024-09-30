@@ -17,6 +17,7 @@ import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
 import net.infumia.frame.element.ElementItem;
+import net.infumia.frame.element.ElementItemBuilder;
 import net.infumia.frame.element.ElementItemBuilderImpl;
 import net.infumia.frame.element.ElementItemBuilderRich;
 import net.infumia.frame.element.ElementRich;
@@ -47,7 +48,7 @@ public final class ElementPaginationImpl<T>
     final ElementConfigurer<T> elementConfigurer;
     final State<ElementPagination> associated;
     private final Function<ContextBase, CompletableFuture<List<T>>> sourceFactory;
-    private List<ElementRich> elements = new ArrayList<>();
+    private List<Element> elements = new ArrayList<>();
     private int currentPageIndex = 0;
     private boolean pageWasChanged;
     private boolean initialized = false;
@@ -135,7 +136,7 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     @Override
-    public Collection<ElementRich> modifiableElements() {
+    public Collection<Element> modifiableElements() {
         try {
             this.elementLock.readLock().lock();
             return this.elements;
@@ -265,8 +266,8 @@ public final class ElementPaginationImpl<T>
         try {
             this.elementLock.readLock().lock();
             super.visible(visible);
-            for (final ElementRich child : this.elements) {
-                child.visible(visible);
+            for (final Element child : this.elements) {
+                ((ElementRich) child).visible(visible);
             }
         } finally {
             this.elementLock.readLock().unlock();
@@ -282,28 +283,30 @@ public final class ElementPaginationImpl<T>
                     slot -> slot == position
                 );
             }
-            return this.elements.stream().anyMatch(element -> element.containedWithin(position));
+            return this.elements.stream()
+                .anyMatch(element -> ((ElementRich) element).containedWithin(position));
         } finally {
             this.elementLock.readLock().unlock();
         }
     }
 
     @Override
-    public boolean intersects(@NotNull final ElementRich element) {
+    public boolean intersects(@NotNull final Element element) {
         try {
             this.elementLock.readLock().lock();
-            for (final ElementRich child : this.elements) {
-                if (child.intersects(element)) {
+            for (final Element child : this.elements) {
+                final ElementRich e = (ElementRich) child;
+                if (e.intersects(element)) {
                     return true;
                 }
-                if (child instanceof ElementItem) {
-                    final int slot = ((ElementItem) child).slot();
+                if (e instanceof ElementItem) {
+                    final int slot = ((ElementItem) e).slot();
                     if (this.currentLayoutSlot != null) {
                         return Arrays.stream(this.currentLayoutSlot.slots()).anyMatch(
                             s -> s == slot
                         );
                     }
-                    return child.containedWithin(slot);
+                    return e.containedWithin(slot);
                 }
             }
             return false;
@@ -342,9 +345,9 @@ public final class ElementPaginationImpl<T>
         final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
         for (int i = container.firstSlot(); i < lastSlot; i++) {
             final T value = contents.get(i);
-            final ElementItemBuilderRich builder = new ElementItemBuilderImpl().slot(i).root(this);
+            final ElementItemBuilder builder = new ElementItemBuilderImpl().slot(i).root(this);
             this.elementConfigurer.configure(context, builder, i, i, value);
-            this.elements.add(builder.build(context));
+            this.elements.add(((ElementItemBuilderRich) builder).build(context));
         }
     }
 
@@ -357,11 +360,9 @@ public final class ElementPaginationImpl<T>
         int index = 0;
         for (final int slot : layoutSLot.slots()) {
             final T value = contents.get(index++);
-            final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
-                .slot(slot)
-                .root(this);
+            final ElementItemBuilder builder = new ElementItemBuilderImpl().slot(slot).root(this);
             this.elementConfigurer.configure(context, builder, index, slot, value);
-            this.elements.add(builder.build(context));
+            this.elements.add(((ElementItemBuilderRich) builder).build(context));
             if (index == elementCount) {
                 break;
             }

@@ -23,7 +23,7 @@ public interface ElementRich extends Element, Pipelined<PipelineExecutorElement>
 
     boolean containedWithin(int slot);
 
-    boolean intersects(@NotNull ElementRich element);
+    boolean intersects(@NotNull Element element);
 
     @NotNull
     ElementBuilder toBuilder();

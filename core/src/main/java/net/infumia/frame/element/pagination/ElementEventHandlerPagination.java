@@ -67,12 +67,12 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
             }
             return CompletableFuture.allOf(futures).thenApply(__ -> ConsumerService.State.CONTINUE);
         }
-        final Collection<ElementRich> elements = pagination.modifiableElements();
+        final Collection<Element> elements = pagination.modifiableElements();
         final Collection<CompletableFuture<?>> futures = new ArrayList<>();
-        final Iterator<ElementRich> iterator = elements.iterator();
+        final Iterator<Element> iterator = elements.iterator();
         while (iterator.hasNext()) {
-            final ElementRich element = iterator.next();
-            futures.add(element.pipelines().executeClear(context));
+            final Element element = iterator.next();
+            futures.add(((ElementRich) element).pipelines().executeClear(context));
             iterator.remove();
         }
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).thenApply(__ ->

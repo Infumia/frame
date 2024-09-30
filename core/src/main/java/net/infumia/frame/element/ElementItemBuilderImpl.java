@@ -86,7 +86,7 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilderImpl onUpdate(
+    public ElementItemBuilder onUpdate(
         @Nullable final Consumer<ContextElementItemUpdate> onUpdate
     ) {
         this.onUpdate = onUpdate;
@@ -95,14 +95,14 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilderRich root(@NotNull final ElementRich root) {
+    public ElementItemBuilder root(@NotNull final Element root) {
         super.root(root);
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemRich build(@NotNull final ContextBase parent) {
+    public ElementItem build(@NotNull final ContextBase parent) {
         return new ElementItemImpl(this, parent);
     }
 

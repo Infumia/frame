@@ -71,13 +71,13 @@ public class ElementImpl implements ElementRich {
     }
 
     @Override
-    public boolean intersects(@NotNull final ElementRich element) {
+    public boolean intersects(@NotNull final Element element) {
         return false;
     }
 
     @NotNull
     @Override
-    public ElementBuilderRich toBuilder() {
+    public ElementBuilder toBuilder() {
         return new ElementBuilderImpl(this);
     }
 

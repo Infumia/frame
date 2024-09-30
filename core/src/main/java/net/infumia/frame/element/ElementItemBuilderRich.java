@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 public interface ElementItemBuilderRich extends ElementBuilderRich, ElementItemBuilder {
     @NotNull
     @Override
-    ElementItemRich build(@NotNull ContextBase parent);
+    ElementItem build(@NotNull ContextBase parent);
 
     int slot();
 }

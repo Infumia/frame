@@ -6,9 +6,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
+import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementBuilderImpl;
 import net.infumia.frame.element.ElementItemBuilder;
-import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.state.State;
 import net.infumia.frame.state.pagination.ElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
@@ -92,14 +92,14 @@ public final class ElementPaginationBuilderImpl<T>
 
     @NotNull
     @Override
-    public ElementPaginationBuilderRich<T> root(@NotNull final ElementRich root) {
+    public ElementPaginationBuilder<T> root(@NotNull final Element root) {
         super.root(root);
         return this;
     }
 
     @NotNull
     @Override
-    public ElementPaginationRich<T> build(@NotNull final ContextBase parent) {
+    public ElementPagination build(@NotNull final ContextBase parent) {
         return new ElementPaginationImpl<>(this, parent);
     }
 

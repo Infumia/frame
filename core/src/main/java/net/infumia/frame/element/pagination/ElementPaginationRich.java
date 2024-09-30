@@ -3,6 +3,7 @@ package net.infumia.frame.element.pagination;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.view.ContextRender;
+import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementEventHandlerHolder;
 import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.state.State;
@@ -27,11 +28,11 @@ public interface ElementPaginationRich<T>
     CompletableFuture<?> loadCurrentPage(@NotNull ContextRender context);
 
     @NotNull
-    Collection<ElementRich> modifiableElements();
+    Collection<Element> modifiableElements();
 
     void clearElements();
 
     @NotNull
     @Override
-    ElementPaginationBuilderRich<T> toBuilder();
+    ElementPaginationBuilder<T> toBuilder();
 }
