@@ -10,8 +10,8 @@ public final class StateValueMutable<T> implements StateValue<T> {
         this.value = value;
     }
 
-    @Override
     @Nullable
+    @Override
     public T value() {
         return this.value;
     }
