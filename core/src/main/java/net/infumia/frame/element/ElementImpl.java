@@ -14,7 +14,7 @@ public class ElementImpl implements ElementRich {
 
     private final String key;
     final ContextBase parent;
-    final ElementRich root;
+    final Element root;
     final boolean cancelOnClick;
     final boolean updateOnClick;
     final boolean closeOnClick;
@@ -46,7 +46,7 @@ public class ElementImpl implements ElementRich {
 
     @Nullable
     @Override
-    public ElementRich root() {
+    public Element root() {
         return this.root;
     }
 

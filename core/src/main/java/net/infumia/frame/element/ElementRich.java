@@ -13,7 +13,7 @@ public interface ElementRich extends Element, Pipelined<PipelineExecutorElement>
     ContextBase parent();
 
     @Nullable
-    ElementRich root();
+    Element root();
 
     boolean visible();
 
@@ -26,5 +26,5 @@ public interface ElementRich extends Element, Pipelined<PipelineExecutorElement>
     boolean intersects(@NotNull ElementRich element);
 
     @NotNull
-    ElementBuilderRich toBuilder();
+    ElementBuilder toBuilder();
 }

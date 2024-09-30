@@ -8,7 +8,6 @@ import net.infumia.frame.pipeline.holder.PipelineHolderState;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.service.Implementation;
 import net.infumia.frame.state.State;
-import net.infumia.frame.state.StateRich;
 import net.infumia.frame.state.value.StateValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,13 +28,7 @@ public final class PipelineExecutorStateImpl implements PipelineExecutorState {
         @NotNull final StateValue<?> value
     ) {
         return this.pipelines.access()
-            .completeWith(
-                new PipelineContextStates.Access(
-                    this.context.manager(),
-                    (StateRich<?>) state,
-                    value
-                )
-            );
+            .completeWith(new PipelineContextStates.Access(this.context.manager(), state, value));
     }
 
     @NotNull
@@ -47,12 +40,7 @@ public final class PipelineExecutorStateImpl implements PipelineExecutorState {
     ) {
         return this.pipelines.update()
             .completeWith(
-                new PipelineContextStates.Update(
-                    this.context.manager(),
-                    (StateRich<?>) state,
-                    oldValue,
-                    value
-                )
+                new PipelineContextStates.Update(this.context.manager(), state, oldValue, value)
             );
     }
 

@@ -122,7 +122,7 @@ final class ElementEventHandlerItem implements ElementEventHandler {
             }
 
             if (element instanceof ElementContainer) {
-                final ElementRich root = compareTo.root();
+                final ElementRich root = (ElementRich) compareTo.root();
                 if (root != null && Objects.equals(element.key(), root.key())) {
                     continue;
                 }

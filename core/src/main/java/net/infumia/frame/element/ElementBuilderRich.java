@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface ElementBuilderRich extends ElementBuilder {
     @NotNull
-    ElementBuilderRich root(@NotNull ElementRich root);
+    ElementBuilder root(@NotNull ElementRich root);
 
     @NotNull
-    ElementRich build(@NotNull ContextBase parent);
+    Element build(@NotNull ContextBase parent);
 }

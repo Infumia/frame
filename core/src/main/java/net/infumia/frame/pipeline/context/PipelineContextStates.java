@@ -1,7 +1,7 @@
 package net.infumia.frame.pipeline.context;
 
 import net.infumia.frame.Frame;
-import net.infumia.frame.state.StateRich;
+import net.infumia.frame.state.State;
 import net.infumia.frame.state.value.StateValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,12 +10,12 @@ public interface PipelineContextStates {
     final class Access implements PipelineContextState.Access {
 
         public final Frame manager;
-        private final StateRich<?> state;
+        private final State<?> state;
         private final StateValue<?> value;
 
         public Access(
             @NotNull final Frame manager,
-            @NotNull final StateRich<?> state,
+            @NotNull final State<?> state,
             @NotNull final StateValue<?> value
         ) {
             this.manager = manager;
@@ -31,7 +31,7 @@ public interface PipelineContextStates {
 
         @NotNull
         @Override
-        public StateRich<?> state() {
+        public State<?> state() {
             return this.state;
         }
 
@@ -45,13 +45,13 @@ public interface PipelineContextStates {
     final class Update implements PipelineContextState.Update {
 
         public final Frame manager;
-        private final StateRich<?> state;
+        private final State<?> state;
         private final Object oldValue;
         private final StateValue<?> value;
 
         public Update(
             @NotNull final Frame manager,
-            @NotNull final StateRich<?> state,
+            @NotNull final State<?> state,
             @Nullable final Object oldValue,
             @NotNull final StateValue<?> value
         ) {
@@ -69,7 +69,7 @@ public interface PipelineContextStates {
 
         @NotNull
         @Override
-        public StateRich<?> state() {
+        public State<?> state() {
             return this.state;
         }
 

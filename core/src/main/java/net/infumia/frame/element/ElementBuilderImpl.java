@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ElementBuilderImpl implements ElementBuilderRich {
 
-    ElementRich root;
+    Element root;
     boolean cancelOnClick;
     boolean closeOnClick;
     boolean updateOnClick;
@@ -20,8 +20,8 @@ public class ElementBuilderImpl implements ElementBuilderRich {
     Collection<State<?>> updateOnStateChange;
     Collection<State<?>> updateOnStateAccess;
 
-    public ElementBuilderImpl(@NotNull final ElementRich element) {
-        this.root = element.root();
+    public ElementBuilderImpl(@NotNull final Element element) {
+        this.root = ((ElementRich) element).root();
         this.cancelOnClick = element.cancelOnClick();
         this.closeOnClick = element.closeOnClick();
         this.updateOnClick = element.updateOnClick();
@@ -34,14 +34,14 @@ public class ElementBuilderImpl implements ElementBuilderRich {
 
     @NotNull
     @Override
-    public ElementBuilderRich root(@NotNull final ElementRich root) {
+    public ElementBuilder root(@NotNull final ElementRich root) {
         this.root = root;
         return this;
     }
 
     @NotNull
     @Override
-    public ElementRich build(@NotNull final ContextBase context) {
+    public Element build(@NotNull final ContextBase context) {
         return new ElementImpl(this, context);
     }
 

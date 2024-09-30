@@ -7,8 +7,8 @@ import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.element.pagination.ElementPagination;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
-import net.infumia.frame.state.StatePaginationRich;
-import net.infumia.frame.state.StateRich;
+import net.infumia.frame.state.State;
+import net.infumia.frame.state.pagination.StatePagination;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceFirstRenderPagination
@@ -29,9 +29,9 @@ public final class ServiceFirstRenderPagination
     public CompletableFuture<State> handle(@NotNull final PipelineContextRender.FirstRender ctx) {
         final ContextRenderRich context = (ContextRenderRich) ctx.context();
         final Collection<CompletableFuture<ElementPagination>> futures = new ArrayList<>();
-        for (final StateRich<?> state : context.stateRegistry()) {
-            if (state instanceof StatePaginationRich) {
-                futures.add(((StatePaginationRich) state).getOtThrowWait(context));
+        for (final net.infumia.frame.state.State<?> state : context.stateRegistry()) {
+            if (state instanceof StatePagination) {
+                futures.add(((StatePagination) state).getOtThrowWait(context));
             }
         }
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
