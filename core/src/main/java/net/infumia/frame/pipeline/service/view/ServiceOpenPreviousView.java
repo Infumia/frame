@@ -29,14 +29,15 @@ public final class ServiceOpenPreviousView
         for (final Viewer viewer : ctx.context().viewers()) {
             final MetadataAccess metadata = viewer.metadata();
             final ContextualViewer oldContext = metadata.get(MetadataKeyHolder.CONTEXTUAL_VIEWER);
-            if (oldContext != null) {
-                Deque<ContextRender> previousViews = metadata.get(MetadataKeyHolder.PREVIOUS_VIEWS);
-                if (previousViews == null) {
-                    previousViews = new LinkedList<>();
-                    metadata.setFixed(MetadataKeyHolder.PREVIOUS_VIEWS, previousViews);
-                }
-                previousViews.add(oldContext.context());
+            if (oldContext == null) {
+                continue;
             }
+            Deque<ContextRender> previousViews = metadata.get(MetadataKeyHolder.PREVIOUS_VIEWS);
+            if (previousViews == null) {
+                previousViews = new LinkedList<>();
+                metadata.setFixed(MetadataKeyHolder.PREVIOUS_VIEWS, previousViews);
+            }
+            previousViews.add(oldContext.context());
         }
     }
 
