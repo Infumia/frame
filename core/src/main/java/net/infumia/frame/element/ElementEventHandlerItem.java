@@ -117,10 +117,6 @@ final class ElementEventHandlerItem implements ElementEventHandler {
                 continue;
             }
 
-            if (Objects.equals(element.key(), compareTo.key())) {
-                continue;
-            }
-
             if (element instanceof ElementContainer) {
                 final ElementRich root = (ElementRich) compareTo.root();
                 if (root != null && Objects.equals(element.key(), root.key())) {
@@ -140,6 +136,10 @@ final class ElementEventHandlerItem implements ElementEventHandler {
                         return Optional.of(deepElement);
                     }
                 }
+                continue;
+            }
+
+            if (Objects.equals(element.key(), compareTo.key())) {
                 continue;
             }
 
