@@ -61,7 +61,7 @@ public class ViewerImpl implements Viewer {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(this.player);
+        return this.player.hashCode();
     }
 
     @Override
@@ -69,9 +69,10 @@ public class ViewerImpl implements Viewer {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ViewerImpl)) {
-            return false;
+        if (o instanceof Player) {
+            return this.player.equals(o);
+        } else {
+            return Objects.equals(this.player, ((Viewer) o).player());
         }
-        return Objects.equals(this.player, ((Viewer) o).player());
     }
 }
