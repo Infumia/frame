@@ -20,7 +20,7 @@ public final class Plugin extends JavaPlugin {
         TypedKey.of(CommandSender.class, "console");
     
     private final Frame frame = Frame.create(this)
-        .with();
+        .with(View.class);
     
     @Override
     public void onEnable() {
