@@ -16,6 +16,8 @@ dependencies {
 ### Code
 ```java
 public final class Plugin extends JavaPlugin {
+    public static final TypedKey<CommandSender> CONSOLE_KEY =
+        TypedKey.of(CommandSender.class, "console");
     
     private final Frame frame = Frame.create(this)
         .with();
@@ -23,6 +25,8 @@ public final class Plugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.frame.register();
+        this.frame.register(builder -> 
+            builder.add(Plugin.CONSOLE_KEY, Bukkit.getConsoleSender()));
     }
 }
 
@@ -48,6 +52,7 @@ public final class View implements ViewHandler {
 
     @Override
     public void onFirstRender(@NotNull final ContextRender ctx) {
+        final CommandSender sender = ctx.instances().getOrThrow(Plugin.CONSOLE_KEY);
         ctx.layoutSlot('x', new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
 
         ctx
@@ -55,7 +60,7 @@ public final class View implements ViewHandler {
             .cancelOnClick()
             .onClick(context -> {
                 context.closeForViewer();
-                context.clicker().sendMessage("You've clicked to a diamond!");
+                sender.sendMessage("Player " + context.clicker() + " clicked to a diamond!");
             });
     }
 }
