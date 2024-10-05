@@ -24,7 +24,7 @@ public final class Plugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        this.frame.register();
+        /*this.frame.register();*/
         this.frame.register(builder -> 
             builder.add(Plugin.CONSOLE_KEY, Bukkit.getConsoleSender()));
     }
