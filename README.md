@@ -22,7 +22,7 @@ public final class Plugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        
+        this.frame.register();
     }
 }
 
