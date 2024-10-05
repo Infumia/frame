@@ -60,7 +60,7 @@ public final class View implements ViewHandler {
             .cancelOnClick()
             .onClick(context -> {
                 context.closeForViewer();
-                sender.sendMessage("Player " + context.clicker() + " clicked to a diamond!");
+                sender.sendMessage("Player " + context.clicker().player() + " clicked to a diamond!");
             });
     }
 }
