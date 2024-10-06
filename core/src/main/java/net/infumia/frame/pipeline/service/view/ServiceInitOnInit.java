@@ -12,6 +12,7 @@ public final class ServiceInitOnInit implements PipelineServiceConsumer<Pipeline
 
     public static final String KEY = "on-init";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceInitOnInit.KEY;

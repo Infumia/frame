@@ -14,6 +14,7 @@ public final class ServiceUpdateLogging
 
     public static final String KEY = "logging";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceUpdateLogging.KEY;

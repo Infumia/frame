@@ -29,6 +29,7 @@ public final class ServiceViewRegistered
 
     public static final String KEY = "register";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceViewRegistered.KEY;

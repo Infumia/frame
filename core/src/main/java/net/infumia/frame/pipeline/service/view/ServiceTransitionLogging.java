@@ -16,6 +16,7 @@ public final class ServiceTransitionLogging
 
     public static final String KEY = "logging";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceTransitionLogging.KEY;

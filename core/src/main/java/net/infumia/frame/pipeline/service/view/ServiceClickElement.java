@@ -16,6 +16,7 @@ public final class ServiceClickElement
 
     public static final String KEY = "element";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceClickElement.KEY;

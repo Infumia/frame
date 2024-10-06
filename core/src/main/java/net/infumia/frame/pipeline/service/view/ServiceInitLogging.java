@@ -11,6 +11,7 @@ public final class ServiceInitLogging implements PipelineServiceConsumer<Pipelin
 
     public static final String KEY = "logging";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceInitLogging.KEY;

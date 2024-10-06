@@ -17,6 +17,7 @@ public final class ServiceStartUpdate
 
     public static final String KEY = "start-update";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceStartUpdate.KEY;

@@ -14,6 +14,7 @@ public final class ServiceClickOnClick
 
     public static final String KEY = "on-click";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceClickOnClick.KEY;

@@ -15,6 +15,7 @@ public final class ServiceFirstRenderConsumeNonRenderedElement
 
     public static final String KEY = "consume-non-rendered-element";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceFirstRenderConsumeNonRenderedElement.KEY;

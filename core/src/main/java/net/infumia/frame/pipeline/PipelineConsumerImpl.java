@@ -12,11 +12,17 @@ public final class PipelineConsumerImpl<B extends PipelineContext> implements Pi
 
     private final ServiceRepository<B, ConsumerService.State> repository;
 
+    private PipelineConsumerImpl(
+        @NotNull final ServiceRepository<B, ConsumerService.State> repository
+    ) {
+        this.repository = repository;
+    }
+
     public PipelineConsumerImpl(
         @NotNull final TypeToken<PipelineServiceConsumer<B>> type,
         @NotNull final PipelineServiceConsumer<B> defaultService
     ) {
-        this.repository = ServicePipelineBuilder.newBuilder().build().create(type, defaultService);
+        this(ServicePipelineBuilder.newBuilder().build().create(type, defaultService));
     }
 
     @NotNull
@@ -38,5 +44,11 @@ public final class PipelineConsumerImpl<B extends PipelineContext> implements Pi
     @Override
     public CompletableFuture<ConsumerService.State> completeWithAsync(@NotNull final B context) {
         return this.repository.completeWithAsync(context);
+    }
+
+    @NotNull
+    @Override
+    public PipelineConsumer<B> cloned() {
+        return new PipelineConsumerImpl<>(this.repository.cloned());
     }
 }

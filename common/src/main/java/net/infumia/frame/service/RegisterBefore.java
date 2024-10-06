@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +43,10 @@ final class RegisterBefore<Context, Result> implements Implementation<Context, R
                 "Service '%s' not found in the implementation list '%s'!",
                 this.serviceKey,
                 implementations
+                    .stream()
+                    .map(wrapper -> wrapper.implementation)
+                    .map(Service::key)
+                    .collect(Collectors.toSet())
             )
         );
     }

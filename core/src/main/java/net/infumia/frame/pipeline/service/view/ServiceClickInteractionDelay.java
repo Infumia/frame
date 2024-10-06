@@ -19,6 +19,7 @@ public final class ServiceClickInteractionDelay
 
     public static final String KEY = "interaction-delay";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceClickInteractionDelay.KEY;

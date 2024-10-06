@@ -13,6 +13,7 @@ public final class ServiceResumeLogging
 
     public static final String KEY = "logging";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceResumeLogging.KEY;

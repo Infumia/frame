@@ -14,6 +14,7 @@ public final class ServiceUpdateOnUpdate
 
     public static final String KEY = "on-update";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceUpdateOnUpdate.KEY;

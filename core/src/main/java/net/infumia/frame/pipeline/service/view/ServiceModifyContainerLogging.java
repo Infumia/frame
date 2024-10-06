@@ -12,6 +12,7 @@ public final class ServiceModifyContainerLogging
 
     public static final String KEY = "logging";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceModifyContainerLogging.KEY;

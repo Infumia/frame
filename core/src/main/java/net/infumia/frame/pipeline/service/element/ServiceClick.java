@@ -14,6 +14,7 @@ public final class ServiceClick implements PipelineServiceConsumer<PipelineConte
 
     public static final String KEY = "click";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceClick.KEY;

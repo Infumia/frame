@@ -15,6 +15,7 @@ public final class ServiceCreateRender
 
     public static final String KEY = "create";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceCreateRender.KEY;

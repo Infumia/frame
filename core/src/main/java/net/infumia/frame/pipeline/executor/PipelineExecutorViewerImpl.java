@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class PipelineExecutorViewerImpl implements PipelineExecutorViewer {
 
-    private final PipelineHolderViewer pipelines = PipelineHolderViewer.BASE.createNew();
+    private final PipelineHolderViewer pipelines = PipelineHolderViewer.BASE.cloned();
     private final ContextRender context;
 
     public PipelineExecutorViewerImpl(@NotNull final ContextRender context) {

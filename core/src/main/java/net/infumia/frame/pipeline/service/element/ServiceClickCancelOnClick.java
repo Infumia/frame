@@ -13,6 +13,7 @@ public final class ServiceClickCancelOnClick
 
     public static final String KEY = "cancel-on-click";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceClickCancelOnClick.KEY;

@@ -14,6 +14,7 @@ public final class ServiceUpdate implements PipelineServiceConsumer<PipelineCont
 
     public static final String KEY = "update";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceUpdate.KEY;

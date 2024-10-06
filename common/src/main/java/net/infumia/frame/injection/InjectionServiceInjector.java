@@ -18,6 +18,7 @@ public final class InjectionServiceInjector<C> implements InjectionService<C> {
         this.registry = registry;
     }
 
+    @NotNull
     @Override
     public String key() {
         return InjectionServiceInjector.KEY;

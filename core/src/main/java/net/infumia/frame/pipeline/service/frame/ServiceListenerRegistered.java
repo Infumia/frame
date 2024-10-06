@@ -13,6 +13,7 @@ public final class ServiceListenerRegistered
 
     public static final String KEY = "register";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceListenerRegistered.KEY;

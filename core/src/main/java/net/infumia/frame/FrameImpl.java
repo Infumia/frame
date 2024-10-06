@@ -134,7 +134,7 @@ final class FrameImpl implements FrameRich {
     ) {
         Preconditions.state(
             !this.registered.get(),
-            "This inventory manager is already registered! #register() method cannot be called twice!"
+            "This frame is already registered! #register() method cannot be called twice!"
         );
         this.registered.set(true);
         this.executeViewCreation(this.unregisteredViews, instanceConfigurer)
@@ -172,7 +172,7 @@ final class FrameImpl implements FrameRich {
     @NotNull
     @Override
     public Frame with(@NotNull final Class<?> viewClass) {
-        Preconditions.argument(!this.registered.get(), "This inventory manager is registered!");
+        Preconditions.argument(!this.registered.get(), "This frame is registered!");
         this.intoUnregisteredViews(viewClass);
         return this;
     }
@@ -264,7 +264,7 @@ final class FrameImpl implements FrameRich {
     private View findView(@NotNull final Class<?> viewClass) {
         Preconditions.state(
             this.registered.get(),
-            "Before you open a view you must register this inventory manager!"
+            "Before you open a view you must register this frame!"
         );
         return Preconditions.argumentNotNull(
             this.registeredViews.get(viewClass),

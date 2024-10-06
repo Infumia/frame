@@ -14,6 +14,7 @@ public final class ServiceStartUpdateInvalidate
 
     public static final String KEY = "invalidate";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceStartUpdateInvalidate.KEY;

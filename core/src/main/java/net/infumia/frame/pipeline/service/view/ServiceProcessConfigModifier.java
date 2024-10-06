@@ -16,6 +16,7 @@ public final class ServiceProcessConfigModifier
 
     public static final String KEY = "process";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceProcessConfigModifier.KEY;

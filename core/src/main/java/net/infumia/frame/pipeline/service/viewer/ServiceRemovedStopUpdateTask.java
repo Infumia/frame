@@ -14,6 +14,7 @@ public final class ServiceRemovedStopUpdateTask
 
     public static final String KEY = "stop-update-task";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceRemovedStopUpdateTask.KEY;

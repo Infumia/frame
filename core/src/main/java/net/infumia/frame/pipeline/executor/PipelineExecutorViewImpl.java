@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class PipelineExecutorViewImpl implements PipelineExecutorView {
 
-    private final PipelineHolderView pipelines = PipelineHolderView.BASE.createNew();
+    private final PipelineHolderView pipelines = PipelineHolderView.BASE.cloned();
     private final View view;
 
     public PipelineExecutorViewImpl(@NotNull final View view) {

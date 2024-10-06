@@ -15,6 +15,7 @@ public final class ServiceAddedOnViewerAdded
 
     public static final String KEY = "on-viewer-added";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceAddedOnViewerAdded.KEY;

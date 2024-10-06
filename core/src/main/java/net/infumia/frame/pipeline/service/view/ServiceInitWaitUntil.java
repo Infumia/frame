@@ -13,6 +13,7 @@ public final class ServiceInitWaitUntil
 
     public static final String KEY = "wait-until";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceInitWaitUntil.KEY;

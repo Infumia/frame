@@ -13,6 +13,7 @@ public final class ServiceCloseOnClose
 
     public static final String KEY = "on-close";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceCloseOnClose.KEY;

@@ -15,6 +15,7 @@ public final class ServiceOpenInitializeState
 
     public static final String KEY = "initialize-state";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceOpenInitializeState.KEY;

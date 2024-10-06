@@ -14,10 +14,11 @@ import net.infumia.frame.pipeline.service.frame.ServiceListenerRegisteredLogging
 import net.infumia.frame.pipeline.service.frame.ServiceViewCreated;
 import net.infumia.frame.pipeline.service.frame.ServiceViewRegistered;
 import net.infumia.frame.pipeline.service.frame.ServiceViewUnregisteredLogging;
+import net.infumia.frame.util.Cloned;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineHolderFrame {
+public final class PipelineHolderFrame implements Cloned<PipelineHolderFrame> {
 
     private final Pipeline<PipelineContextFrame.ViewCreated, Collection<Object>> viewCreated;
     private final Pipeline<PipelineContextFrame.ViewRegistered, Collection<View>> viewRegistered;
@@ -68,12 +69,13 @@ public final class PipelineHolderFrame {
     }
 
     @NotNull
-    public PipelineHolderFrame createNew() {
+    @Override
+    public PipelineHolderFrame cloned() {
         return new PipelineHolderFrame(
-            this.viewCreated,
-            this.viewRegistered,
-            this.listenersRegistered,
-            this.viewUnregistered
+            this.viewCreated.cloned(),
+            this.viewRegistered.cloned(),
+            this.listenersRegistered.cloned(),
+            this.viewUnregistered.cloned()
         );
     }
 

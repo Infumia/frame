@@ -8,6 +8,13 @@ import org.jetbrains.annotations.Nullable;
 
 public interface Implementation<Context, Result> {
     @NotNull
+    static <Context, Result> Implementation<Context, Result> remove(
+        @NotNull final String serviceKey
+    ) {
+        return new Remove<>(serviceKey);
+    }
+
+    @NotNull
     static <Context, Result> Implementation<Context, Result> register(
         @NotNull final Service<Context, Result> service,
         @Nullable final Collection<Predicate<Context>> filters

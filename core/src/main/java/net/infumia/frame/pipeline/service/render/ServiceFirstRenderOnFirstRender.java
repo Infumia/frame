@@ -13,6 +13,7 @@ public final class ServiceFirstRenderOnFirstRender
 
     public static final String KEY = "on-first-render";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceFirstRenderOnFirstRender.KEY;

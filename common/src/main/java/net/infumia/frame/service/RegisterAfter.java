@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import net.infumia.frame.util.Keyed;
 import net.infumia.frame.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +49,7 @@ final class RegisterAfter<Context, Result> implements Implementation<Context, Re
                 implementations
                     .stream()
                     .map(wrapper -> wrapper.implementation)
-                    .map(Keyed::key)
+                    .map(Service::key)
                     .collect(Collectors.toSet())
             )
         );

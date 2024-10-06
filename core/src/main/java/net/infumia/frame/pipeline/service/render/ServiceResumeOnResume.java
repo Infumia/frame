@@ -14,6 +14,7 @@ public final class ServiceResumeOnResume
 
     public static final String KEY = "on-resume";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceResumeOnResume.KEY;

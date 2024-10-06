@@ -15,6 +15,7 @@ public final class ServiceClickCancel
 
     public static final String KEY = "cancel";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceClickCancel.KEY;

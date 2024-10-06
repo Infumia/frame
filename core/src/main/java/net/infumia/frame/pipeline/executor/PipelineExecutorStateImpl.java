@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class PipelineExecutorStateImpl implements PipelineExecutorState {
 
-    private final PipelineHolderState pipelines = PipelineHolderState.BASE.createNew();
+    private final PipelineHolderState pipelines = PipelineHolderState.BASE.cloned();
     private final ContextBase context;
 
     public PipelineExecutorStateImpl(@NotNull final ContextBase context) {

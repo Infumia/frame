@@ -69,7 +69,6 @@ public final class StateValueHostImpl implements StateValueHostRich {
     ) {
         final StateValue<T> stateValue = this.accessStateValue(state);
         if (stateValue == null) {
-            this.context.frame().logger().debug("State '%s' is not registered!", state);
             return null;
         }
         final T oldValue = stateValue.value();
@@ -83,7 +82,6 @@ public final class StateValueHostImpl implements StateValueHostRich {
     public <T> StateValue<T> updateStateValue(@NotNull final StateRich<T> state) {
         final StateValue<T> stateValue = this.accessStateValue(state);
         if (stateValue == null) {
-            this.context.frame().logger().debug("State '%s' is not registered!", state);
             return null;
         }
         this.pipelines.executeUpdate(state, stateValue.value(), stateValue);
@@ -124,7 +122,6 @@ public final class StateValueHostImpl implements StateValueHostRich {
     ) {
         return this.accessStateValueWait(state).thenCompose(stateValue -> {
                 if (stateValue == null) {
-                    this.context.frame().logger().debug("State '%s' is not registered!", state);
                     return CompletableFuture.completedFuture(null);
                 }
                 final T oldValue = stateValue.value();
@@ -142,7 +139,6 @@ public final class StateValueHostImpl implements StateValueHostRich {
     ) {
         return this.accessStateValueWait(state).thenCompose(stateValue -> {
                 if (stateValue == null) {
-                    this.context.frame().logger().debug("State '%s' is not registered!", state);
                     return CompletableFuture.completedFuture(null);
                 }
                 return this.pipelines.executeUpdate(
@@ -161,6 +157,7 @@ public final class StateValueHostImpl implements StateValueHostRich {
         this.pipelines.applyAccess(
                 Implementation.register(
                     new PipelineServiceConsumer<PipelineContextState.Access>() {
+                        @NotNull
                         @Override
                         public String key() {
                             return "";
@@ -186,6 +183,7 @@ public final class StateValueHostImpl implements StateValueHostRich {
         this.pipelines.applyUpdate(
                 Implementation.register(
                     new PipelineServiceConsumer<PipelineContextState.Update>() {
+                        @NotNull
                         @Override
                         public String key() {
                             return "";

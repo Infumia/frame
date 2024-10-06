@@ -15,6 +15,7 @@ public final class ServiceProcessConfigModifierAddSizeModifier
 
     public static final String KEY = "add-size-modifier";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceProcessConfigModifierAddSizeModifier.KEY;

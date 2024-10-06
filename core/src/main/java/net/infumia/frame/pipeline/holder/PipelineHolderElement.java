@@ -16,9 +16,10 @@ import net.infumia.frame.pipeline.service.element.ServiceRender;
 import net.infumia.frame.pipeline.service.element.ServiceRenderLogging;
 import net.infumia.frame.pipeline.service.element.ServiceUpdate;
 import net.infumia.frame.pipeline.service.element.ServiceUpdateLogging;
+import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineHolderElement {
+public final class PipelineHolderElement implements Cloned<PipelineHolderElement> {
 
     private final PipelineConsumer<PipelineContextElement.Render> render;
     private final PipelineConsumer<PipelineContextElement.Clear> clear;
@@ -69,8 +70,14 @@ public final class PipelineHolderElement {
     }
 
     @NotNull
-    public PipelineHolderElement createNew() {
-        return new PipelineHolderElement(this.render, this.clear, this.click, this.update);
+    @Override
+    public PipelineHolderElement cloned() {
+        return new PipelineHolderElement(
+            this.render.cloned(),
+            this.clear.cloned(),
+            this.click.cloned(),
+            this.update.cloned()
+        );
     }
 
     public PipelineHolderElement(

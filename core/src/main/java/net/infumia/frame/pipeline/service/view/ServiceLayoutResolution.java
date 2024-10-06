@@ -19,6 +19,7 @@ public final class ServiceLayoutResolution
 
     public static final String KEY = "layout-resolution";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceLayoutResolution.KEY;

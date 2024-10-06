@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class PipelineExecutorFrameImpl implements PipelineExecutorFrame {
 
-    private final PipelineHolderFrame pipelines = PipelineHolderFrame.BASE.createNew();
+    private final PipelineHolderFrame pipelines = PipelineHolderFrame.BASE.cloned();
     private final Frame frame;
 
     public PipelineExecutorFrameImpl(@NotNull final Frame frame) {
