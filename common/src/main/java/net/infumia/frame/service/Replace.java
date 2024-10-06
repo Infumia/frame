@@ -52,7 +52,7 @@ final class Replace<Context, Result> implements Implementation<Context, Result> 
                 implementations
                     .stream()
                     .map(wrapper -> wrapper.implementation)
-                    .map(Keyed::key)
+                    .map(Service::key)
                     .collect(Collectors.toSet())
             )
         );
