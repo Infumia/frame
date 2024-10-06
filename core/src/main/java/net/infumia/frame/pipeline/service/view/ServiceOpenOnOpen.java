@@ -12,6 +12,7 @@ public final class ServiceOpenOnOpen implements PipelineServiceConsumer<Pipeline
 
     public static final String KEY = "on-open";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceOpenOnOpen.KEY;

@@ -12,6 +12,7 @@ public final class ServiceOpenLogging implements PipelineServiceConsumer<Pipelin
 
     public static final String KEY = "logging";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceOpenLogging.KEY;

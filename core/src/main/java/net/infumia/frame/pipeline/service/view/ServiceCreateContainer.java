@@ -33,6 +33,7 @@ public final class ServiceCreateContainer
 
     public static final String KEY = "create";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceCreateContainer.KEY;

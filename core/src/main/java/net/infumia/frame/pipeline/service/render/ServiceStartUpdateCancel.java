@@ -14,6 +14,7 @@ public final class ServiceStartUpdateCancel
 
     public static final String KEY = "cancel";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceStartUpdateCancel.KEY;

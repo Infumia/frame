@@ -15,6 +15,7 @@ public final class ServiceFirstRenderInitializeState
 
     public static final String KEY = "initialize-state";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceFirstRenderInitializeState.KEY;

@@ -14,6 +14,7 @@ public final class ServiceClose implements PipelineServiceConsumer<PipelineConte
 
     public static final String KEY = "close";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceClose.KEY;

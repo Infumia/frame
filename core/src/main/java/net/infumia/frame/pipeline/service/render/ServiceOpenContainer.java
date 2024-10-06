@@ -14,6 +14,7 @@ public final class ServiceOpenContainer
 
     public static final String KEY = "open-container";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceOpenContainer.KEY;

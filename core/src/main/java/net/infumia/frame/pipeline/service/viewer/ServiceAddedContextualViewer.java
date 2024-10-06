@@ -16,6 +16,7 @@ public final class ServiceAddedContextualViewer
 
     public static final String KEY = "contextual-viewer";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceAddedContextualViewer.KEY;

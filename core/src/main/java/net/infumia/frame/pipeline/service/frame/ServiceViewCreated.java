@@ -18,6 +18,7 @@ public final class ServiceViewCreated
 
     public static final String KEY = "create";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceViewCreated.KEY;

@@ -21,6 +21,7 @@ public final class ServiceCreateContext
 
     public static final String KEY = "create";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceCreateContext.KEY;

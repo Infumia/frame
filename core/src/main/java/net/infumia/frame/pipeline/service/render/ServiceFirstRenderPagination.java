@@ -19,6 +19,7 @@ public final class ServiceFirstRenderPagination
 
     public static final String KEY = "pagination";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceFirstRenderPagination.KEY;

@@ -15,6 +15,7 @@ public final class ServiceRemovedOnViewerRemoved
 
     public static final String KEY = "on-viewer-removed";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceRemovedOnViewerRemoved.KEY;

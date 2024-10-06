@@ -12,6 +12,7 @@ public final class ServiceLayoutResolutionLogging
 
     public static final String KEY = "logging";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceLayoutResolutionLogging.KEY;

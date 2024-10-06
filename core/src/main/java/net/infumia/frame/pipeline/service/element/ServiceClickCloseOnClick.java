@@ -13,6 +13,7 @@ public final class ServiceClickCloseOnClick
 
     public static final String KEY = "close-on-click";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceClickCloseOnClick.KEY;

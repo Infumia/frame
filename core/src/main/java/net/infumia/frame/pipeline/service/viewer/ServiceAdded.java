@@ -13,6 +13,7 @@ public final class ServiceAdded implements PipelineServiceConsumer<PipelineConte
 
     public static final String KEY = "added";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceAdded.KEY;

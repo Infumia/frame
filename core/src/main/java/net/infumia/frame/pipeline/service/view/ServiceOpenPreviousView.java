@@ -19,6 +19,7 @@ public final class ServiceOpenPreviousView
 
     public static final String KEY = "previous-view";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceOpenPreviousView.KEY;

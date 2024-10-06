@@ -14,6 +14,7 @@ public final class ServiceClear implements PipelineServiceConsumer<PipelineConte
 
     public static final String KEY = "clear";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceClear.KEY;

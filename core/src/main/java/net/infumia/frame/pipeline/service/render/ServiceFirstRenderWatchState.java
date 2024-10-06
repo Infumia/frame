@@ -19,6 +19,7 @@ public final class ServiceFirstRenderWatchState
 
     public static final String KEY = "watch-state";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceFirstRenderWatchState.KEY;

@@ -14,6 +14,7 @@ public final class ServiceRemoved
 
     public static final String KEY = "removed";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceRemoved.KEY;

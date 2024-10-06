@@ -17,6 +17,7 @@ public final class ServiceFirstRenderLayout
 
     public static final String KEY = "layout";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceFirstRenderLayout.KEY;
