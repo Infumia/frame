@@ -12,9 +12,18 @@ public final class ServiceRepository<Context, Result>
     implements Cloned<ServiceRepository<Context, Result>> {
 
     private final ServicePipeline pipeline;
-    private final Service<Context, Result> defaultImplementation;
-    final List<ServiceWrapper<Context, Result>> implementations;
     final TypeToken<? extends Service<Context, Result>> serviceType;
+    final List<ServiceWrapper<Context, Result>> implementations;
+
+    private ServiceRepository(
+        @NotNull final ServicePipeline pipeline,
+        @NotNull final TypeToken<? extends Service<Context, Result>> serviceType,
+        @NotNull final List<ServiceWrapper<Context, Result>> implementations
+    ) {
+        this.pipeline = pipeline;
+        this.serviceType = serviceType;
+        this.implementations = implementations;
+    }
 
     public ServiceRepository(
         @NotNull final ServicePipeline pipeline,
@@ -23,7 +32,6 @@ public final class ServiceRepository<Context, Result>
     ) {
         this.pipeline = pipeline;
         this.serviceType = serviceType;
-        this.defaultImplementation = defaultImplementation;
         this.implementations = new LinkedList<>();
         this.implementations.add(
                 new ServiceWrapper<>(serviceType, defaultImplementation, true, null)
@@ -33,7 +41,11 @@ public final class ServiceRepository<Context, Result>
     @NotNull
     @Override
     public ServiceRepository<Context, Result> cloned() {
-        return new ServiceRepository<>(this.pipeline, this.serviceType, this.defaultImplementation);
+        return new ServiceRepository<>(
+            this.pipeline,
+            this.serviceType,
+            new LinkedList<>(this.implementations)
+        );
     }
 
     public void apply(@NotNull final Implementation<Context, Result> operation) {
