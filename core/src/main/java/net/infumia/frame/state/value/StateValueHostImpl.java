@@ -161,6 +161,7 @@ public final class StateValueHostImpl implements StateValueHostRich {
         this.pipelines.applyAccess(
                 Implementation.register(
                     new PipelineServiceConsumer<PipelineContextState.Access>() {
+                        @NotNull
                         @Override
                         public String key() {
                             return "";
