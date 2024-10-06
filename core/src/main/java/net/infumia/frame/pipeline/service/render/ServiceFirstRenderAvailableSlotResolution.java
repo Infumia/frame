@@ -23,6 +23,7 @@ public final class ServiceFirstRenderAvailableSlotResolution
 
     public static final String KEY = "available-slot-resolution";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceFirstRenderAvailableSlotResolution.KEY;

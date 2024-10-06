@@ -12,6 +12,7 @@ public final class ServiceListenerRegisteredLogging
 
     public static final String KEY = "logging";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceListenerRegisteredLogging.KEY;

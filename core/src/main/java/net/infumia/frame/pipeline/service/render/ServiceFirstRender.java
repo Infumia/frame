@@ -17,6 +17,7 @@ public final class ServiceFirstRender
 
     public static final String KEY = "render";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceFirstRender.KEY;

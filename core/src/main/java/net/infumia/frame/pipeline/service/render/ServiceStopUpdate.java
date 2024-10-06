@@ -14,6 +14,7 @@ public final class ServiceStopUpdate
 
     public static final String KEY = "stop-update";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceStopUpdate.KEY;

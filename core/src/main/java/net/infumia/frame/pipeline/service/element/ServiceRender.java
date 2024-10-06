@@ -14,6 +14,7 @@ public final class ServiceRender implements PipelineServiceConsumer<PipelineCont
 
     public static final String KEY = "render";
 
+    @NotNull
     @Override
     public String key() {
         return ServiceRender.KEY;
