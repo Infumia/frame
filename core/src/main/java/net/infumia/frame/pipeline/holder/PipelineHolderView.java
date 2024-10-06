@@ -38,11 +38,12 @@ import net.infumia.frame.pipeline.service.view.ServiceOpenWaitUntil;
 import net.infumia.frame.pipeline.service.view.ServiceProcessConfigModifier;
 import net.infumia.frame.pipeline.service.view.ServiceProcessConfigModifierAddSizeModifier;
 import net.infumia.frame.pipeline.service.view.ServiceProcessConfigModifierLogging;
+import net.infumia.frame.util.Cloned;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineHolderView {
+public final class PipelineHolderView implements Cloned<PipelineHolderView> {
 
     private final PipelineConsumer<PipelineContextView.Init> init;
     private final Pipeline<PipelineContextView.CreateViewers, Collection<Viewer>> createViewers;
@@ -178,19 +179,20 @@ public final class PipelineHolderView {
     }
 
     @NotNull
-    public PipelineHolderView createNew() {
+    @Override
+    public PipelineHolderView cloned() {
         return new PipelineHolderView(
-            this.init,
-            this.createViewers,
-            this.createContext,
-            this.open,
-            this.processConfigModifiers,
-            this.createContainer,
-            this.modifyContainer,
-            this.layoutResolution,
-            this.createRender,
-            this.click,
-            this.close
+            this.init.cloned(),
+            this.createViewers.cloned(),
+            this.createContext.cloned(),
+            this.open.cloned(),
+            this.processConfigModifiers.cloned(),
+            this.createContainer.cloned(),
+            this.modifyContainer.cloned(),
+            this.layoutResolution.cloned(),
+            this.createRender.cloned(),
+            this.click.cloned(),
+            this.close.cloned()
         );
     }
 

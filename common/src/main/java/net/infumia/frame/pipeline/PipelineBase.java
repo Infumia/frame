@@ -3,9 +3,11 @@ package net.infumia.frame.pipeline;
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.service.Implementation;
 import net.infumia.frame.service.Service;
+import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineBase<B extends PipelineContext, R, Self extends PipelineBase<B, R, Self>> {
+public interface PipelineBase<B extends PipelineContext, R, Self extends PipelineBase<B, R, Self>>
+    extends Cloned<Self> {
     @NotNull
     Self apply(@NotNull Implementation<B, R> operation);
 

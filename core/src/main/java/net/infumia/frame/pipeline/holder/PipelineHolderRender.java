@@ -29,9 +29,10 @@ import net.infumia.frame.pipeline.service.render.ServiceUpdateLogging;
 import net.infumia.frame.pipeline.service.render.ServiceUpdateOnUpdate;
 import net.infumia.frame.pipeline.service.view.ServiceTransition;
 import net.infumia.frame.pipeline.service.view.ServiceTransitionLogging;
+import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineHolderRender {
+public final class PipelineHolderRender implements Cloned<PipelineHolderRender> {
 
     private final PipelineConsumer<PipelineContextRender.FirstRender> firstRender;
     private final PipelineConsumer<PipelineContextView.Transition> transition;
@@ -119,15 +120,16 @@ public final class PipelineHolderRender {
     }
 
     @NotNull
-    public PipelineHolderRender createNew() {
+    @Override
+    public PipelineHolderRender cloned() {
         return new PipelineHolderRender(
-            this.firstRender,
-            this.transition,
-            this.openContainer,
-            this.resume,
-            this.startUpdate,
-            this.stopUpdate,
-            this.update
+            this.firstRender.cloned(),
+            this.transition.cloned(),
+            this.openContainer.cloned(),
+            this.resume.cloned(),
+            this.startUpdate.cloned(),
+            this.stopUpdate.cloned(),
+            this.update.cloned()
         );
     }
 

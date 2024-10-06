@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class PipelineExecutorRenderImpl implements PipelineExecutorRender {
 
-    private final PipelineHolderRender pipelines = PipelineHolderRender.BASE.createNew();
+    private final PipelineHolderRender pipelines = PipelineHolderRender.BASE.cloned();
     private final ContextRender context;
 
     public PipelineExecutorRenderImpl(@NotNull final ContextRender context) {

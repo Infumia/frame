@@ -7,9 +7,10 @@ import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextState;
 import net.infumia.frame.pipeline.service.state.ServiceAccessLogging;
 import net.infumia.frame.pipeline.service.state.ServiceUpdateLogging;
+import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineHolderState {
+public final class PipelineHolderState implements Cloned<PipelineHolderState> {
 
     private final PipelineConsumer<PipelineContextState.Access> access;
     private final PipelineConsumer<PipelineContextState.Update> update;
@@ -36,8 +37,9 @@ public final class PipelineHolderState {
     }
 
     @NotNull
-    public PipelineHolderState createNew() {
-        return new PipelineHolderState(this.access, this.update);
+    @Override
+    public PipelineHolderState cloned() {
+        return new PipelineHolderState(this.access.cloned(), this.update.cloned());
     }
 
     public PipelineHolderState(

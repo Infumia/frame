@@ -14,9 +14,10 @@ import net.infumia.frame.pipeline.service.viewer.ServiceRemovedContextualViewer;
 import net.infumia.frame.pipeline.service.viewer.ServiceRemovedLogging;
 import net.infumia.frame.pipeline.service.viewer.ServiceRemovedOnViewerRemoved;
 import net.infumia.frame.pipeline.service.viewer.ServiceRemovedStopUpdateTask;
+import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineHolderViewer {
+public final class PipelineHolderViewer implements Cloned<PipelineHolderViewer> {
 
     private final PipelineConsumer<PipelineContextViewer.Added> added;
     private final PipelineConsumer<PipelineContextViewer.Removed> removed;
@@ -50,8 +51,9 @@ public final class PipelineHolderViewer {
     }
 
     @NotNull
-    public PipelineHolderViewer createNew() {
-        return new PipelineHolderViewer(this.added, this.removed);
+    @Override
+    public PipelineHolderViewer cloned() {
+        return new PipelineHolderViewer(this.added.cloned(), this.removed.cloned());
     }
 
     public PipelineHolderViewer(

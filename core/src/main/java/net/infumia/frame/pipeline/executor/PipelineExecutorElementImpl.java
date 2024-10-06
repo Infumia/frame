@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class PipelineExecutorElementImpl implements PipelineExecutorElement {
 
-    private final PipelineHolderElement pipelines = PipelineHolderElement.BASE.createNew();
+    private final PipelineHolderElement pipelines = PipelineHolderElement.BASE.cloned();
     private final ElementRich element;
 
     public PipelineExecutorElementImpl(@NotNull final ElementRich element) {
