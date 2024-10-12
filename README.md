@@ -70,6 +70,7 @@ public final class View implements ViewHandler {
 }
 ```
 #### Annotation Version
+
 ```java
 @ViewCancelOnClick
 @ViewType(InvType.CHEST)
@@ -81,8 +82,8 @@ public final class View implements ViewHandler {
 public final class View {
 
     @ViewOnTitle
-    public String onTitle(final ContextBase ctx, final Player viewer) {
-        return "Player: " + player.getName();
+    public CompletableFuture<String> onTitle(final ContextBase ctx, final Player viewer) {
+        return CompletableFuture.completedFuture("Player: " + player.getName());
     }
 
     @ElementSlotLayout('x')
