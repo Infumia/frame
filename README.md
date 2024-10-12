@@ -96,7 +96,7 @@ public final class View {
         final Player player,
         final MessageSender sender
     ) {
-        sender.sendMessage("Player " + player.getName() + " clicked to a diamond!");
+        sender.sendMessage(player, "Player " + player.getName() + " clicked to a diamond!");
     }
 }
 ```
