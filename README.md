@@ -32,7 +32,8 @@ public final class Plugin extends JavaPlugin {
             builder.add(Plugin.CONSOLE_KEY, Bukkit.getConsoleSender()));
     }
 }
-
+```
+```java
 public final class View implements ViewHandler {
 
     @Override
@@ -65,6 +66,37 @@ public final class View implements ViewHandler {
                 context.closeForViewer();
                 sender.sendMessage("Player " + context.clicker().player() + " clicked to a diamond!");
             });
+    }
+}
+```
+#### Annotation Version
+```java
+@ViewCancelOnClick
+@ViewType(InvType.CHEST)
+@ViewLayout({
+    "xxxxxxxxx",
+    "xxxxaxxxx",
+    "xxxxxxxxx"
+})
+public final class View {
+
+    @ViewOnTitle
+    public String onTitle(final ContextBase ctx) {
+        return "Player: " + ctx.viewer().player().getName();
+    }
+
+    @ElementSlotLayout('x')
+    @ElementConfigKey("fill-item")
+    public void glasses() {}
+
+    @ElementCloseOnClick
+    @ElementSlotLayout('a')
+    @ElementConfigKey("diamond-item")
+    public void diamond(
+        final Player player,
+        final CommandSender sender
+    ) {
+        sender.sendMessage("Player " + player.getName() + " clicked to a diamond!");
     }
 }
 ```
