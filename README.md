@@ -94,7 +94,7 @@ public final class View {
     @ElementConfigKey("diamond-item")
     public void diamond(
         final Player player,
-        final CommandSender sender
+        final MessageSender sender
     ) {
         sender.sendMessage("Player " + player.getName() + " clicked to a diamond!");
     }
