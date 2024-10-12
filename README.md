@@ -81,8 +81,8 @@ public final class View implements ViewHandler {
 public final class View {
 
     @ViewOnTitle
-    public String onTitle(final ContextBase ctx) {
-        return "Player: " + ctx.viewer().player().getName();
+    public String onTitle(final ContextBase ctx, final Player viewer) {
+        return "Player: " + player.getName();
     }
 
     @ElementSlotLayout('x')
@@ -93,10 +93,10 @@ public final class View {
     @ElementSlotLayout('a')
     @ElementConfigKey("diamond-item")
     public void diamond(
-        final Player player,
+        final Player viewer,
         final MessageSender sender
     ) {
-        sender.sendMessage(player, "Player " + player.getName() + " clicked to a diamond!");
+        sender.sendMessage(viewer, "Player " + viewer.getName() + " clicked to a diamond!");
     }
 }
 ```
