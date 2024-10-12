@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.function.Function;
-import net.infumia.frame.api.context.ContextBase;
+import net.infumia.frame.context.ContextBase;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
