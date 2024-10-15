@@ -20,7 +20,7 @@ public final class Plugin extends JavaPlugin {
         TypedKey.of(CommandSender.class, "console");
     
     private final Frame frame = Frame.create(this)
-        .with(View.class);
+        .with(ViewExample.class);
     
     @Override
     public void onEnable() {
@@ -30,7 +30,7 @@ public final class Plugin extends JavaPlugin {
     }
 }
 
-public final class View implements ViewHandler {
+public final class ViewExample implements ViewHandler {
 
     @Override
     public void onInit(@NotNull final ContextInit ctx) {
