@@ -10,7 +10,10 @@ repositories {
 dependencies {
     // Base modules
     implementation "net.infumia:frame:VERSION"
-    runtimeOnly "net.infumia:frame-core:VERSION"
+    implementation "net.infumia:frame-core:VERSION"
+    
+    // Annotation modules
+    implementation "net.infumia:frame-annotations:VERSION"
 }
 ```
 ### Code
@@ -29,7 +32,8 @@ public final class Plugin extends JavaPlugin {
             builder.add(Plugin.CONSOLE_KEY, Bukkit.getConsoleSender()));
     }
 }
-
+```
+```java
 public final class ViewExample implements ViewHandler {
 
     @Override
@@ -62,6 +66,38 @@ public final class ViewExample implements ViewHandler {
                 context.closeForViewer();
                 sender.sendMessage("Player " + context.clicker().player() + " clicked to a diamond!");
             });
+    }
+}
+```
+#### Annotation Version
+
+```java
+@ViewCancelOnClick
+@ViewType(InvType.CHEST)
+@ViewLayout({
+    "xxxxxxxxx",
+    "xxxxaxxxx",
+    "xxxxxxxxx"
+})
+public final class View {
+
+    @ViewOnTitle
+    public CompletableFuture<String> onTitle(final ContextBase ctx, final Player viewer) {
+        return CompletableFuture.completedFuture("Player: " + player.getName());
+    }
+
+    @ElementSlotLayout('x')
+    @ElementConfigKey("fill-item")
+    public void glasses() {}
+
+    @ElementCloseOnClick
+    @ElementSlotLayout('a')
+    @ElementConfigKey("diamond-item")
+    public void diamond(
+        final Player viewer,
+        final MessageSender sender
+    ) {
+        sender.sendMessage(viewer, "Player " + viewer.getName() + " clicked to a diamond!");
     }
 }
 ```
