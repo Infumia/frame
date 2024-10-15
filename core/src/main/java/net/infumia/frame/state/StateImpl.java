@@ -1,6 +1,7 @@
 package net.infumia.frame.state;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.state.value.StateValue;
 import net.infumia.frame.state.value.StateValueFactory;
@@ -95,6 +96,13 @@ public class StateImpl<T> implements StateRich<T> {
         @NotNull final StateWatcherUpdate<T> watcher
     ) {
         ((StateValueHostRich) host.stateValueHost()).watchStateUpdate(this, watcher);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", StateImpl.class.getSimpleName() + "[", "]")
+            .add("id=" + this.id)
+            .toString();
     }
 
     @Override

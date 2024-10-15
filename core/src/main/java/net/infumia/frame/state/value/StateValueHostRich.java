@@ -2,7 +2,6 @@ package net.infumia.frame.state.value;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.pipeline.executor.PipelineExecutorState;
 import net.infumia.frame.state.StateMutableRich;
 import net.infumia.frame.state.StateRich;
 import net.infumia.frame.state.watcher.StateWatcherAccess;
@@ -11,9 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface StateValueHostRich extends StateValueHost {
-    @NotNull
-    PipelineExecutorState statePipelines();
-
     @NotNull
     Map<StateRich<Object>, StateValue<Object>> stateValues();
 
