@@ -438,7 +438,11 @@ public final class ElementPaginationImpl<T>
         return this.sourceFactory.apply(context).thenApply(result -> {
                 this.currentSource = result;
                 this.pageCount = this.calculatePagesCount(result);
+                final int previousPage = Math.min(this.currentPageIndex, this.pageCount - 1);
                 this.loading = false;
+                if (previousPage != this.currentPageIndex) {
+                    this.switchTo(previousPage);
+                }
                 return isLazy
                     ? ElementPaginationImpl.splitSourceForPage(
                         this.currentPageIndex,
