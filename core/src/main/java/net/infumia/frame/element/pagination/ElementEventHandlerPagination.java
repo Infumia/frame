@@ -109,7 +109,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
     ) {
         final ContextElementUpdate context = ctx.context();
         final ElementPaginationRich<?> pagination = (ElementPaginationRich<?>) context.element();
-        if (pagination.pageWasChanged()) {
+        if (pagination.pageWasChanged() || context.forced()) {
             return pagination
                 .pipelines()
                 .executeClear(context)
