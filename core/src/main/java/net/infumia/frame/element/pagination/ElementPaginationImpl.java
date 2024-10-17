@@ -439,14 +439,14 @@ public final class ElementPaginationImpl<T>
                 this.currentSource = result;
                 this.pageCount = this.calculatePagesCount(result);
                 this.loading = false;
-                return !isLazy
-                    ? result
-                    : ElementPaginationImpl.splitSourceForPage(
+                return isLazy
+                    ? ElementPaginationImpl.splitSourceForPage(
                         this.currentPageIndex,
                         this.pageSize(),
                         this.pageCount,
                         result
-                    );
+                    )
+                    : result;
             });
     }
 
