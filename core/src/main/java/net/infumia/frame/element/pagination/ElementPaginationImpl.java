@@ -27,7 +27,6 @@ import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.state.State;
-import net.infumia.frame.state.StateRich;
 import net.infumia.frame.state.pagination.ElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
 import net.infumia.frame.util.Preconditions;
@@ -433,29 +432,21 @@ public final class ElementPaginationImpl<T>
         }
 
         this.loading = true;
-        return ((StateRich<ElementPagination>) this.associated).manualUpdateWait(
-                context
-            ).thenCompose(__ -> {
-                if (this.sourceFactory == null) {
-                    return CompletableFuture.completedFuture(Collections.emptyList());
-                }
-                return this.sourceFactory.apply(context).thenCompose(result -> {
-                        this.currentSource = result;
-                        this.pageCount = this.calculatePagesCount(result);
-                        this.loading = false;
-                        return ((StateRich<ElementPagination>) this.associated).manualUpdateWait(
-                                context
-                            ).thenApply(value ->
-                                !isLazy
-                                    ? result
-                                    : ElementPaginationImpl.splitSourceForPage(
-                                        this.currentPageIndex,
-                                        this.pageSize(),
-                                        this.pageCount,
-                                        result
-                                    )
-                            );
-                    });
+        if (this.sourceFactory == null) {
+            return CompletableFuture.completedFuture(Collections.emptyList());
+        }
+        return this.sourceFactory.apply(context).thenApply(result -> {
+                this.currentSource = result;
+                this.pageCount = this.calculatePagesCount(result);
+                this.loading = false;
+                return !isLazy
+                    ? result
+                    : ElementPaginationImpl.splitSourceForPage(
+                        this.currentPageIndex,
+                        this.pageSize(),
+                        this.pageCount,
+                        result
+                    );
             });
     }
 
@@ -502,7 +493,7 @@ public final class ElementPaginationImpl<T>
         if (src.size() <= pageSize) {
             return new ArrayList<>(src);
         }
-        if (index < 0 || (pagesCount > 0 && index > pagesCount)) {
+        if (index < 0 || (pagesCount > 0 && index >= pagesCount)) {
             throw new IndexOutOfBoundsException(
                 String.format(
                     "Page index must be between the range of 0 and %d. Given: %d",

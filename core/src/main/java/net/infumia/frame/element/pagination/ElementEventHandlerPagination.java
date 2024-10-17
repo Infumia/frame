@@ -30,7 +30,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
     ) {
         final ContextElementRender context = ctx.context();
         final ElementPaginationRich<?> pagination = (ElementPaginationRich<?>) context.element();
-        if (pagination.initialized() && !pagination.pageWasChanged()) {
+        if (pagination.initialized() && !pagination.pageWasChanged() && !context.forced()) {
             pagination.visible(true);
             return this.renderChild(context, pagination);
         }
