@@ -104,6 +104,17 @@ public class ElementItemImpl extends ElementImpl implements ElementItemRich {
 
     @NotNull
     @Override
+    public CompletableFuture<ConsumerService.State> forceUpdate() {
+        Preconditions.state(
+            this.parent instanceof ContextRender,
+            "You cannot update the element '%s' when the parent is not a ContextRender!",
+            this
+        );
+        return this.pipelines.executeUpdate((ContextRender) this.parent, true);
+    }
+
+    @NotNull
+    @Override
     public PipelineExecutorElement pipelines() {
         return this.pipelines;
     }

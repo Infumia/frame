@@ -10,7 +10,10 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PipelineExecutorElement {
     @NotNull
-    CompletableFuture<ConsumerService.State> executeRender(@NotNull ContextRender context);
+    CompletableFuture<ConsumerService.State> executeRender(
+        @NotNull ContextRender context,
+        boolean forced
+    );
 
     @NotNull
     CompletableFuture<ConsumerService.State> executeUpdate(

@@ -27,12 +27,13 @@ public final class PipelineExecutorElementImpl implements PipelineExecutorElemen
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> executeRender(
-        @NotNull final ContextRender context
+        @NotNull final ContextRender context,
+        final boolean forced
     ) {
         return this.pipelines.render()
             .completeWith(
                 new PipelineContextElements.Render(
-                    new ContextElementRenderImpl(context, this.element)
+                    new ContextElementRenderImpl(context, this.element, forced)
                 )
             );
     }

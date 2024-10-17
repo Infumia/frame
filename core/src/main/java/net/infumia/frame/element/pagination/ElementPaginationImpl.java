@@ -122,8 +122,11 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     @Override
-    public CompletableFuture<?> loadCurrentPage(@NotNull final ContextRender context) {
-        return this.loadSourceForTheCurrentPage(context).thenAccept(pageContents -> {
+    public CompletableFuture<?> loadCurrentPage(
+        @NotNull final ContextRender context,
+        final boolean forced
+    ) {
+        return this.loadSourceForTheCurrentPage(context, forced).thenAccept(pageContents -> {
                 if (pageContents.isEmpty()) {
                     return;
                 }
@@ -335,6 +338,17 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     @Override
+    public CompletableFuture<ConsumerService.State> forceUpdate() {
+        Preconditions.state(
+            this.parent() instanceof ContextRender,
+            "You cannot update the element '%s' when the parent is not a ContextRender!",
+            this
+        );
+        return this.pipelines.executeUpdate((ContextRender) this.parent(), true);
+    }
+
+    @NotNull
+    @Override
     public PipelineExecutorElement pipelines() {
         return this.pipelines;
     }
@@ -389,15 +403,15 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     private CompletableFuture<List<T>> loadSourceForTheCurrentPage(
-        @NotNull final ContextBase context
+        @NotNull final ContextBase context,
+        final boolean forced
     ) {
         final boolean isLazy = this.sourceProvider.lazy();
         final boolean reuseLazy = isLazy && this.initialized;
-        final boolean force = false; // TODO: portlek, Implement this.
         if (
             (this.sourceProvider.provided() || reuseLazy) &&
             !this.sourceProvider.computed() &&
-            !force
+            !forced
         ) {
             final List<T> currentSource = Preconditions.stateNotNull(
                 this.currentSource,

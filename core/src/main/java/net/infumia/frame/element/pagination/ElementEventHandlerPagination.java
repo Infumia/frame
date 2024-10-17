@@ -38,7 +38,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
             pagination.updatePageSize(context);
         }
         return pagination
-            .loadCurrentPage(context)
+            .loadCurrentPage(context, context.forced())
             .thenCompose(__ -> {
                 pagination.visible(true);
                 pagination.initialized(true);
@@ -115,7 +115,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
                 .executeClear(context)
                 .thenCompose(__ -> {
                     pagination.clearElements();
-                    return pagination.pipelines().executeRender(context);
+                    return pagination.pipelines().executeRender(context, context.forced());
                 })
                 .thenApply(__ -> {
                     pagination.pageWasChanged(false);
@@ -143,7 +143,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
         final CompletableFuture<?>[] futures = new CompletableFuture[elements.size()];
         for (int i = 0; i < futures.length; i++) {
             final ElementRich element = (ElementRich) elements.get(i);
-            futures[i] = element.pipelines().executeRender(context);
+            futures[i] = element.pipelines().executeRender(context, context.forced());
         }
         return CompletableFuture.allOf(futures).thenApply(__ -> ConsumerService.State.CONTINUE);
     }

@@ -25,7 +25,7 @@ public interface ElementPaginationRich<T>
     void updatePageSize(@NotNull ContextRender context);
 
     @NotNull
-    CompletableFuture<?> loadCurrentPage(@NotNull ContextRender context);
+    CompletableFuture<?> loadCurrentPage(@NotNull ContextRender context, boolean forced);
 
     @NotNull
     Collection<Element> modifiableElements();
