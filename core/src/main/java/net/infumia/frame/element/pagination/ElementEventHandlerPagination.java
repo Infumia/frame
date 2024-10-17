@@ -128,8 +128,12 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
         final List<Element> elements = pagination.elements();
         final CompletableFuture<?>[] futures = new CompletableFuture<?>[elements.size()];
         for (int i = 0; i < futures.length; i++) {
-            futures[i] = ((ElementRich) elements.get(i)).pipelines()
-                .executeUpdate(context, context.forced());
+            final ElementRich element = (ElementRich) elements.get(i);
+            if (context.forced()) {
+                futures[i] = element.forceUpdate();
+            } else {
+                futures[i] = element.update();
+            }
         }
         return CompletableFuture.allOf(futures).thenApply(__ -> ConsumerService.State.CONTINUE);
     }

@@ -228,7 +228,7 @@ public final class ElementPaginationImpl<T>
             this.onPageSwitch.accept(host, this);
         }
         CompletableFutureExtensions.logError(
-            this.pipelines.executeUpdate(host, false),
+            this.update(),
             this.parent().frame().logger(),
             "An error occurred while updating the pagination '%s'.",
             this

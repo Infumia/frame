@@ -57,7 +57,7 @@ public final class ServiceFirstRenderWatchState
         for (final net.infumia.frame.state.State<?> state : states) {
             state.watchAccess(context, update ->
                 CompletableFutureExtensions.logError(
-                    element.pipelines().executeUpdate(context, false),
+                    element.update(),
                     context.frame().logger(),
                     "An error occurred while updating element '%s' due to state '%s' access!",
                     element.key(),
@@ -78,7 +78,7 @@ public final class ServiceFirstRenderWatchState
         for (final net.infumia.frame.state.State<?> state : states) {
             state.watchUpdate(context, update ->
                 CompletableFutureExtensions.logError(
-                    element.pipelines().executeUpdate(context, false),
+                    element.update(),
                     context.frame().logger(),
                     "An error occurred while updating element '%s' due to state '%s' change!",
                     element.key(),
