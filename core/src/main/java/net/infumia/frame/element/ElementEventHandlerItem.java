@@ -33,7 +33,7 @@ final class ElementEventHandlerItem implements ElementEventHandler {
         final ContextElementRender context = ctx.context();
         final ElementItemRich element = (ElementItemRich) context.element();
         if (element.shouldRender(context)) {
-            this.forceRender(element, context);
+            this.renderInternally(element, context);
             return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
         }
         element.visible(false);
@@ -80,7 +80,7 @@ final class ElementEventHandlerItem implements ElementEventHandler {
         if (context.cancelled()) {
             return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
         }
-        return element.pipelines().executeRender(context);
+        return element.pipelines().executeRender(context, context.forced());
     }
 
     @NotNull
@@ -96,7 +96,7 @@ final class ElementEventHandlerItem implements ElementEventHandler {
         final ElementRich overlapping = overlappingOptional.get();
         return overlapping
             .pipelines()
-            .executeRender(context)
+            .executeRender(context, false)
             .thenCompose(__ -> {
                 if (overlapping.visible()) {
                     return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
@@ -150,7 +150,7 @@ final class ElementEventHandlerItem implements ElementEventHandler {
         return Optional.empty();
     }
 
-    private void forceRender(
+    private void renderInternally(
         @NotNull final ElementItemRich element,
         @NotNull final ContextElementRender delegate
     ) {

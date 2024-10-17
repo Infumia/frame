@@ -7,4 +7,6 @@ import org.jetbrains.annotations.NotNull;
 public interface ContextElementRender extends ContextRender {
     @NotNull
     Element element();
+
+    boolean forced();
 }
