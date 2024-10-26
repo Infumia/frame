@@ -122,6 +122,12 @@ public class ElementImpl implements ElementRich {
         throw new UnsupportedOperationException("This element cannot be updated!");
     }
 
+    @NotNull
+    @Override
+    public CompletableFuture<ConsumerService.State> forceUpdate() {
+        throw new UnsupportedOperationException("This element cannot be updated!");
+    }
+
     @Override
     public String key() {
         return this.key;

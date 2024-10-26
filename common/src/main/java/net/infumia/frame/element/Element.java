@@ -27,4 +27,7 @@ public interface Element {
 
     @NotNull
     CompletableFuture<ConsumerService.State> update();
+
+    @NotNull
+    CompletableFuture<ConsumerService.State> forceUpdate();
 }

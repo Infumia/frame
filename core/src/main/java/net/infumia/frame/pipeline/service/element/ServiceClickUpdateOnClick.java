@@ -3,7 +3,6 @@ package net.infumia.frame.pipeline.service.element;
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.element.Element;
-import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextElement;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +27,7 @@ public final class ServiceClickUpdateOnClick
         final ContextElementClick context = ctx.context();
         final Element element = context.element();
         if (element.updateOnClick()) {
-            return ((ElementRich) element).pipelines().executeUpdate(context, false);
+            return element.update();
         }
         return CompletableFuture.completedFuture(State.CONTINUE);
     }

@@ -8,13 +8,20 @@ import org.jetbrains.annotations.NotNull;
 public class ContextElementRenderImpl extends ContextRenderImpl implements ContextElementRender {
 
     private final Element element;
+    private final boolean forced;
 
     public ContextElementRenderImpl(
         @NotNull final ContextRender context,
-        @NotNull final Element element
+        @NotNull final Element element,
+        final boolean forced
     ) {
         super(context);
         this.element = element;
+        this.forced = forced;
+    }
+
+    public ContextElementRenderImpl(@NotNull final ContextElementRender context) {
+        this(context, context.element(), context.forced());
     }
 
     @NotNull
@@ -23,7 +30,8 @@ public class ContextElementRenderImpl extends ContextRenderImpl implements Conte
         return this.element;
     }
 
-    public ContextElementRenderImpl(@NotNull final ContextElementRender context) {
-        this(context, context.element());
+    @Override
+    public boolean forced() {
+        return this.forced;
     }
 }

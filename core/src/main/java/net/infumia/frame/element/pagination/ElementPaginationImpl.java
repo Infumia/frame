@@ -27,7 +27,6 @@ import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.state.State;
-import net.infumia.frame.state.StateRich;
 import net.infumia.frame.state.pagination.ElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
 import net.infumia.frame.util.Preconditions;
@@ -122,8 +121,11 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     @Override
-    public CompletableFuture<?> loadCurrentPage(@NotNull final ContextRender context) {
-        return this.loadSourceForTheCurrentPage(context).thenAccept(pageContents -> {
+    public CompletableFuture<?> loadCurrentPage(
+        @NotNull final ContextRender context,
+        final boolean forced
+    ) {
+        return this.loadSourceForTheCurrentPage(context, forced).thenAccept(pageContents -> {
                 if (pageContents.isEmpty()) {
                     return;
                 }
@@ -225,7 +227,7 @@ public final class ElementPaginationImpl<T>
             this.onPageSwitch.accept(host, this);
         }
         CompletableFutureExtensions.logError(
-            this.pipelines.executeUpdate(host, false),
+            this.update(),
             this.parent().frame().logger(),
             "An error occurred while updating the pagination '%s'.",
             this
@@ -335,6 +337,17 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     @Override
+    public CompletableFuture<ConsumerService.State> forceUpdate() {
+        Preconditions.state(
+            this.parent() instanceof ContextRender,
+            "You cannot update the element '%s' when the parent is not a ContextRender!",
+            this
+        );
+        return this.pipelines.executeUpdate((ContextRender) this.parent(), true);
+    }
+
+    @NotNull
+    @Override
     public PipelineExecutorElement pipelines() {
         return this.pipelines;
     }
@@ -389,15 +402,15 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     private CompletableFuture<List<T>> loadSourceForTheCurrentPage(
-        @NotNull final ContextBase context
+        @NotNull final ContextBase context,
+        final boolean forced
     ) {
         final boolean isLazy = this.sourceProvider.lazy();
         final boolean reuseLazy = isLazy && this.initialized;
-        final boolean force = false; // TODO: portlek, Implement this.
         if (
             (this.sourceProvider.provided() || reuseLazy) &&
             !this.sourceProvider.computed() &&
-            !force
+            !forced
         ) {
             final List<T> currentSource = Preconditions.stateNotNull(
                 this.currentSource,
@@ -419,29 +432,25 @@ public final class ElementPaginationImpl<T>
         }
 
         this.loading = true;
-        return ((StateRich<ElementPagination>) this.associated).manualUpdateWait(
-                context
-            ).thenCompose(__ -> {
-                if (this.sourceFactory == null) {
-                    return CompletableFuture.completedFuture(Collections.emptyList());
+        if (this.sourceFactory == null) {
+            return CompletableFuture.completedFuture(Collections.emptyList());
+        }
+        return this.sourceFactory.apply(context).thenApply(result -> {
+                this.currentSource = result;
+                this.pageCount = this.calculatePagesCount(result);
+                final int previousPage = Math.min(this.currentPageIndex, this.pageCount - 1);
+                this.loading = false;
+                if (previousPage != this.currentPageIndex) {
+                    this.switchTo(previousPage);
                 }
-                return this.sourceFactory.apply(context).thenCompose(result -> {
-                        this.currentSource = result;
-                        this.pageCount = this.calculatePagesCount(result);
-                        this.loading = false;
-                        return ((StateRich<ElementPagination>) this.associated).manualUpdateWait(
-                                context
-                            ).thenApply(value ->
-                                !isLazy
-                                    ? result
-                                    : ElementPaginationImpl.splitSourceForPage(
-                                        this.currentPageIndex,
-                                        this.pageSize(),
-                                        this.pageCount,
-                                        result
-                                    )
-                            );
-                    });
+                return isLazy
+                    ? ElementPaginationImpl.splitSourceForPage(
+                        this.currentPageIndex,
+                        this.pageSize(),
+                        this.pageCount,
+                        result
+                    )
+                    : result;
             });
     }
 
@@ -488,7 +497,7 @@ public final class ElementPaginationImpl<T>
         if (src.size() <= pageSize) {
             return new ArrayList<>(src);
         }
-        if (index < 0 || (pagesCount > 0 && index > pagesCount)) {
+        if (index < 0 || (pagesCount > 0 && index >= pagesCount)) {
             throw new IndexOutOfBoundsException(
                 String.format(
                     "Page index must be between the range of 0 and %d. Given: %d",
