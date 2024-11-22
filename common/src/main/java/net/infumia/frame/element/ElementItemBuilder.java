@@ -63,6 +63,12 @@ public interface ElementItemBuilder extends ElementBuilder {
 
     @NotNull
     @Override
+    ElementItemBuilder interactionDelayKey(
+        @NotNull Function<ContextElementClick, String> interactionDelayKey
+    );
+
+    @NotNull
+    @Override
     ElementItemBuilder updateOnStateChange(
         @NotNull State<?> state,
         @NotNull State<?> @NotNull... otherStates

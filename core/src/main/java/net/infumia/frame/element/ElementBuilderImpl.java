@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.element.ContextElementClick;
@@ -23,6 +24,7 @@ public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>>
     boolean updateOnClick;
     Duration interactionDelay;
     Consumer<ContextElementClick> onInteractionDelay;
+    Function<ContextElementClick, String> interactionDelayKey;
     Predicate<ContextElementRender> displayIf;
     Collection<State<?>> updateOnStateChange;
     Collection<State<?>> updateOnStateAccess;
@@ -106,6 +108,15 @@ public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>>
         @NotNull final Consumer<ContextElementClick> onInteractionDelay
     ) {
         this.onInteractionDelay = onInteractionDelay;
+        return this.self();
+    }
+
+    @NotNull
+    @Override
+    public Self interactionDelayKey(
+        @NotNull final Function<ContextElementClick, String> interactionDelayKey
+    ) {
+        this.interactionDelayKey = interactionDelayKey;
         return this.self();
     }
 

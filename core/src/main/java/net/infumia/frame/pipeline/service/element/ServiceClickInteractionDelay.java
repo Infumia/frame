@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.metadata.MetadataAccess;
@@ -44,7 +45,14 @@ public final class ServiceClickInteractionDelay
             lastInteractions = new HashMap<>();
             metadata.setFixed(MetadataKeyHolder.LAST_INTERACTION_ELEMENT, lastInteractions);
         }
-        final String key = element.key();
+        final Function<ContextElementClick, String> interactionDelayKey =
+            element.interactionDelayKey();
+        final String key;
+        if (interactionDelayKey == null) {
+            key = element.key();
+        } else {
+            key = interactionDelayKey.apply(context);
+        }
         final Long lastInteraction = lastInteractions.get(key);
         final long now = System.currentTimeMillis();
         if (lastInteraction == null) {
