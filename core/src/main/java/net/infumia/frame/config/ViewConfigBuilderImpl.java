@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.function.Consumer;
+import net.infumia.frame.context.view.ContextClick;
 import net.infumia.frame.type.InvType;
 import net.infumia.frame.util.Preconditions;
 import net.infumia.frame.util.Reflection;
@@ -32,6 +34,7 @@ final class ViewConfigBuilderImpl implements ViewConfigBuilderRich {
     String[] layout;
     Duration updateInterval;
     Duration interactionDelay;
+    Consumer<ContextClick> onInteractionDelay;
 
     ViewConfigBuilderImpl(@NotNull final ViewConfigImpl config) {
         this.options = new HashMap<>(config.options);
@@ -42,6 +45,7 @@ final class ViewConfigBuilderImpl implements ViewConfigBuilderRich {
         this.layout = config.layout;
         this.updateInterval = config.updateInterval;
         this.interactionDelay = config.interactionDelay;
+        this.onInteractionDelay = config.onInteractionDelay;
     }
 
     ViewConfigBuilderImpl() {
@@ -82,6 +86,12 @@ final class ViewConfigBuilderImpl implements ViewConfigBuilderRich {
     @Override
     public Duration interactionDelay() {
         return this.interactionDelay;
+    }
+
+    @Nullable
+    @Override
+    public Consumer<ContextClick> onInteractionDelay() {
+        return this.onInteractionDelay;
     }
 
     @NotNull

@@ -3,6 +3,8 @@ package net.infumia.frame.view.config;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Consumer;
+import net.infumia.frame.context.view.ContextClick;
 import net.infumia.frame.type.InvType;
 import net.infumia.frame.view.config.option.ViewConfigOption;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +28,9 @@ public interface ViewConfig {
 
     @Nullable
     Duration interactionDelay();
+
+    @Nullable
+    Consumer<ContextClick> onInteractionDelay();
 
     @NotNull
     @UnmodifiableView

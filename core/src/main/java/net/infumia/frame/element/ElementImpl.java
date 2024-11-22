@@ -1,10 +1,13 @@
 package net.infumia.frame.element;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
+import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
 import net.infumia.frame.service.ConsumerService;
@@ -20,6 +23,8 @@ public class ElementImpl implements ElementRich {
     final boolean cancelOnClick;
     final boolean updateOnClick;
     final boolean closeOnClick;
+    final Duration interactionDelay;
+    final Consumer<ContextElementClick> onInteractionDelay;
     final Predicate<ContextElementRender> displayIf;
     final Collection<State<?>> updateOnStateChange;
     final Collection<State<?>> updateOnStateAccess;
@@ -33,6 +38,8 @@ public class ElementImpl implements ElementRich {
         this.cancelOnClick = builder.cancelOnClick;
         this.updateOnClick = builder.updateOnClick;
         this.closeOnClick = builder.closeOnClick;
+        this.interactionDelay = builder.interactionDelay;
+        this.onInteractionDelay = builder.onInteractionDelay;
         this.displayIf = builder.displayIf;
         this.updateOnStateChange = builder.updateOnStateChange;
         this.updateOnStateAccess = builder.updateOnStateAccess;
@@ -96,6 +103,18 @@ public class ElementImpl implements ElementRich {
     @Override
     public boolean updateOnClick() {
         return this.updateOnClick;
+    }
+
+    @Nullable
+    @Override
+    public Duration interactionDelay() {
+        return this.interactionDelay;
+    }
+
+    @Nullable
+    @Override
+    public Consumer<ContextElementClick> onInteractionDelay() {
+        return this.onInteractionDelay;
     }
 
     @Nullable
