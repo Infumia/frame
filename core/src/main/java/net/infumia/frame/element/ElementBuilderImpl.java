@@ -1,14 +1,18 @@
 package net.infumia.frame.element;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
+import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ElementBuilderImpl implements ElementBuilderRich {
 
@@ -16,6 +20,8 @@ public class ElementBuilderImpl implements ElementBuilderRich {
     boolean cancelOnClick;
     boolean closeOnClick;
     boolean updateOnClick;
+    Duration interactionDelay;
+    Consumer<ContextElementClick> onInteractionDelay;
     Predicate<ContextElementRender> displayIf;
     Collection<State<?>> updateOnStateChange;
     Collection<State<?>> updateOnStateAccess;
@@ -25,6 +31,8 @@ public class ElementBuilderImpl implements ElementBuilderRich {
         this.cancelOnClick = element.cancelOnClick();
         this.closeOnClick = element.closeOnClick();
         this.updateOnClick = element.updateOnClick();
+        this.interactionDelay = element.interactionDelay();
+        this.onInteractionDelay = element.onInteractionDelay();
         this.displayIf = element.displayIf();
         this.updateOnStateChange = element.updateOnStateChange();
         this.updateOnStateAccess = element.updateOnStateAccess();
@@ -81,6 +89,22 @@ public class ElementBuilderImpl implements ElementBuilderRich {
     @Override
     public ElementBuilder updateOnClick(final boolean updateOnClick) {
         this.updateOnClick = updateOnClick;
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementBuilder interactionDelay(@Nullable final Duration interactionDelay) {
+        this.interactionDelay = interactionDelay;
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementBuilder onInteractionDelay(
+        @NotNull final Consumer<ContextElementClick> onInteractionDelay
+    ) {
+        this.onInteractionDelay = onInteractionDelay;
         return this;
     }
 

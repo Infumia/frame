@@ -29,4 +29,9 @@ public interface MetadataKeyHolder {
         new TypeToken<Map<String, Long>>() {},
         "last-interaction"
     );
+
+    TypedKey<Map<String, Long>> LAST_INTERACTION_ELEMENT = TypedKey.of(
+        new TypeToken<Map<String, Long>>() {},
+        "last-interaction-element"
+    );
 }
