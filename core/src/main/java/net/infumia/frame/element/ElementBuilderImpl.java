@@ -14,7 +14,8 @@ import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>> implements ElementBuilderRich {
+public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>>
+    implements ElementBuilderRich {
 
     Element root;
     boolean cancelOnClick;
@@ -38,8 +39,7 @@ public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>> implement
         this.updateOnStateAccess = element.updateOnStateAccess();
     }
 
-    public ElementBuilderImpl() {
-    }
+    public ElementBuilderImpl() {}
 
     @NotNull
     @Override
@@ -113,7 +113,7 @@ public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>> implement
     @Override
     public Self updateOnStateChange(
         @NotNull final State<?> state,
-        @NotNull final State<?> @NotNull ... otherStates
+        @NotNull final State<?> @NotNull... otherStates
     ) {
         if (this.updateOnStateChange == null) {
             this.updateOnStateChange = new HashSet<>();
@@ -127,7 +127,7 @@ public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>> implement
     @Override
     public Self updateOnStateAccess(
         @NotNull final State<?> state,
-        @NotNull final State<?> @NotNull ... otherStates
+        @NotNull final State<?> @NotNull... otherStates
     ) {
         if (this.updateOnStateAccess == null) {
             this.updateOnStateAccess = new HashSet<>();

@@ -1,12 +1,8 @@
 package net.infumia.frame.element.pagination;
 
 import java.util.function.BiConsumer;
-import java.util.function.BooleanSupplier;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
-import net.infumia.frame.context.element.ContextElementRender;
-import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementBuilderImpl;
 import net.infumia.frame.element.ElementItemBuilder;
 import net.infumia.frame.state.State;

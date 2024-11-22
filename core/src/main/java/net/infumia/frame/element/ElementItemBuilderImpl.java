@@ -1,17 +1,11 @@
 package net.infumia.frame.element;
 
-import java.time.Duration;
-import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
-import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
-import net.infumia.frame.context.element.ContextElementRender;
-import net.infumia.frame.state.State;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
