@@ -15,7 +15,7 @@ import net.infumia.frame.state.pagination.StatePagination;
 import org.jetbrains.annotations.NotNull;
 
 public final class ElementPaginationBuilderImpl<T>
-    extends ElementBuilderImpl
+    extends ElementBuilderImpl<ElementPaginationBuilderImpl<T>>
     implements ElementPaginationBuilderRich<T> {
 
     final SourceProvider<T> sourceProvider;
@@ -92,108 +92,7 @@ public final class ElementPaginationBuilderImpl<T>
 
     @NotNull
     @Override
-    public ElementPaginationBuilder<T> root(@NotNull final Element root) {
-        super.root(root);
-        return this;
-    }
-
-    @NotNull
-    @Override
     public ElementPagination build(@NotNull final ContextBase parent) {
         return new ElementPaginationImpl<>(this, parent);
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> cancelOnClick() {
-        super.cancelOnClick();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> closeOnClick() {
-        super.closeOnClick();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> updateOnClick() {
-        super.updateOnClick();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> cancelOnClick(final boolean cancelOnClick) {
-        super.cancelOnClick(cancelOnClick);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> closeOnClick(final boolean cancelOnClick) {
-        super.closeOnClick(cancelOnClick);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> updateOnClick(final boolean updateOnClick) {
-        super.updateOnClick(updateOnClick);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> updateOnStateChange(
-        @NotNull final State<?> state,
-        @NotNull final State<?> @NotNull... otherStates
-    ) {
-        super.updateOnStateChange(state, otherStates);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> updateOnStateAccess(
-        @NotNull final State<?> state,
-        @NotNull final State<?> @NotNull... otherStates
-    ) {
-        super.updateOnStateAccess(state, otherStates);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> displayIf(
-        @NotNull final Predicate<ContextElementRender> condition
-    ) {
-        super.displayIf(condition);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> displayIf(@NotNull final BooleanSupplier condition) {
-        super.displayIf(condition);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> hideIf(
-        @NotNull final Predicate<ContextElementRender> condition
-    ) {
-        super.hideIf(condition);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementPaginationBuilder<T> hideIf(@NotNull final BooleanSupplier condition) {
-        super.hideIf(condition);
-        return this;
     }
 }
