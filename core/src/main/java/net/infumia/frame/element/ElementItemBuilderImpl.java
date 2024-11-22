@@ -1,10 +1,12 @@
 package net.infumia.frame.element;
 
+import java.time.Duration;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
+import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
@@ -124,6 +126,22 @@ public final class ElementItemBuilderImpl
     @Override
     public ElementItemBuilder updateOnClick() {
         super.updateOnClick();
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementItemBuilder onInteractionDelay(
+        final @NotNull Consumer<ContextElementClick> onInteractionDelay
+    ) {
+        super.onInteractionDelay(onInteractionDelay);
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementItemBuilder interactionDelay(final @Nullable Duration interactionDelay) {
+        super.interactionDelay(interactionDelay);
         return this;
     }
 
