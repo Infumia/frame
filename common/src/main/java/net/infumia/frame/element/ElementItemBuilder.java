@@ -52,9 +52,11 @@ public interface ElementItemBuilder extends ElementBuilder {
     ElementItemBuilder updateOnClick();
 
     @NotNull
+    @Override
     ElementItemBuilder interactionDelay(@Nullable Duration interactionDelay);
 
     @NotNull
+    @Override
     ElementItemBuilder onInteractionDelay(
         @NotNull Consumer<ContextElementClick> onInteractionDelay
     );
