@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.element.ContextElementClick;
@@ -25,13 +26,14 @@ public class ElementImpl implements ElementRich {
     final boolean closeOnClick;
     final Duration interactionDelay;
     final Consumer<ContextElementClick> onInteractionDelay;
+    final Function<ContextElementClick, String> interactionDelayKey;
     final Predicate<ContextElementRender> displayIf;
     final Collection<State<?>> updateOnStateChange;
     final Collection<State<?>> updateOnStateAccess;
     private boolean visible = true;
 
     public ElementImpl(
-        @NotNull final ElementBuilderImpl builder,
+        @NotNull final ElementBuilderImpl<?> builder,
         @NotNull final ContextBase parent
     ) {
         this.key = UUID.randomUUID().toString();
@@ -40,6 +42,7 @@ public class ElementImpl implements ElementRich {
         this.closeOnClick = builder.closeOnClick;
         this.interactionDelay = builder.interactionDelay;
         this.onInteractionDelay = builder.onInteractionDelay;
+        this.interactionDelayKey = builder.interactionDelayKey;
         this.displayIf = builder.displayIf;
         this.updateOnStateChange = builder.updateOnStateChange;
         this.updateOnStateAccess = builder.updateOnStateAccess;
@@ -87,7 +90,7 @@ public class ElementImpl implements ElementRich {
     @NotNull
     @Override
     public ElementBuilder toBuilder() {
-        return new ElementBuilderImpl(this);
+        return new ElementBuilderImpl<>(this);
     }
 
     @Override
@@ -115,6 +118,12 @@ public class ElementImpl implements ElementRich {
     @Override
     public Consumer<ContextElementClick> onInteractionDelay() {
         return this.onInteractionDelay;
+    }
+
+    @Nullable
+    @Override
+    public Function<ContextElementClick, String> interactionDelayKey() {
+        return this.interactionDelayKey;
     }
 
     @Nullable

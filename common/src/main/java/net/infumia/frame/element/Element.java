@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.context.element.ContextElementRender;
@@ -24,6 +25,9 @@ public interface Element {
 
     @Nullable
     Consumer<ContextElementClick> onInteractionDelay();
+
+    @Nullable
+    Function<ContextElementClick, String> interactionDelayKey();
 
     @Nullable
     Predicate<ContextElementRender> displayIf();
