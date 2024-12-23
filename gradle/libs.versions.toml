@@ -1,7 +1,7 @@
 [libraries]
 geantyref = { module = "io.leangen.geantyref:geantyref", version = "1.3.16" }
 guice = { module = "com.google.inject:guice", version = "7.0.0" }
-adventure-api = { module = "net.kyori:adventure-api", version = "4.17.0" }
+adventure-api = { module = "net.kyori:adventure-api", version = "4.18.0" }
 
 minecraft-one-eight-eight-paper = { module = "com.destroystokyo.paper:paper-api", version = "1.16.5-R0.1-SNAPSHOT" }
 
