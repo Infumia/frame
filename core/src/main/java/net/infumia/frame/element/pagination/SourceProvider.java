@@ -65,7 +65,7 @@ public interface SourceProvider<T> extends Function<ContextBase, CompletableFutu
             final boolean computed,
             final boolean lazy
         ) {
-            this(base -> provider.get(), computed, lazy);
+            this(__ -> provider.get(), computed, lazy);
         }
 
         @Override
