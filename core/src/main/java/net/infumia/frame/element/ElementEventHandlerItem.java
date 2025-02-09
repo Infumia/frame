@@ -27,14 +27,12 @@ final class ElementEventHandlerItem implements ElementEventHandler {
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> handleRender(
-        @NotNull final PipelineContextElement.Render ctx
-    ) {
+    public CompletableFuture<?> handleRender(@NotNull final PipelineContextElement.Render ctx) {
         final ContextElementRender context = ctx.context();
         final ElementItemRich element = (ElementItemRich) context.element();
         if (element.shouldRender(context)) {
             this.renderInternally(element, context);
-            return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
+            return CompletableFuture.completedFuture(null);
         }
         element.visible(false);
         return this.checkOverlapping(element, context);
@@ -42,43 +40,37 @@ final class ElementEventHandlerItem implements ElementEventHandler {
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> handleClear(
-        @NotNull final PipelineContextElement.Clear ctx
-    ) {
+    public CompletableFuture<?> handleClear(@NotNull final PipelineContextElement.Clear ctx) {
         ctx.context().container().removeItem(((ElementItemRich) ctx.context().element()).slot());
-        return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
+        return CompletableFuture.completedFuture(null);
     }
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> handleClick(
-        @NotNull final PipelineContextElement.Click ctx
-    ) {
+    public CompletableFuture<?> handleClick(@NotNull final PipelineContextElement.Click ctx) {
         final ContextElementClick context = ctx.context();
         final ElementItemRich element = (ElementItemRich) context.element();
         final Consumer<ContextElementItemClick> onClick = element.onClick();
         if (onClick != null) {
             onClick.accept(new ContextElementItemClickImpl(context, element));
         }
-        return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
+        return CompletableFuture.completedFuture(null);
     }
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> handleUpdate(
-        @NotNull final PipelineContextElement.Update ctx
-    ) {
+    public CompletableFuture<?> handleUpdate(@NotNull final PipelineContextElement.Update ctx) {
         final ContextElementUpdate context = ctx.context();
         final ElementItemRich element = (ElementItemRich) context.element();
         if (!context.forced() && element.displayIf() == null && element.onRender() == null) {
-            return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
+            return CompletableFuture.completedFuture(null);
         }
         final Consumer<ContextElementItemUpdate> onUpdate = element.onUpdate();
         if (element.visible() && onUpdate != null) {
             onUpdate.accept(new ContextElementItemUpdateImpl(context, element));
         }
         if (context.cancelled()) {
-            return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
+            return CompletableFuture.completedFuture(null);
         }
         return element.pipelines().executeRender(context, context.forced());
     }
@@ -99,7 +91,7 @@ final class ElementEventHandlerItem implements ElementEventHandler {
             .executeRender(context, false)
             .thenCompose(__ -> {
                 if (overlapping.visible()) {
-                    return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
+                    return CompletableFuture.completedFuture(null);
                 } else {
                     return compareTo.pipelines().executeClear(context);
                 }

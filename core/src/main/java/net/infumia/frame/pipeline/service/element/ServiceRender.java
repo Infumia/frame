@@ -25,9 +25,9 @@ public final class ServiceRender implements PipelineServiceConsumer<PipelineCont
     public CompletableFuture<State> handle(@NotNull final PipelineContextElement.Render ctx) {
         final Element element = ctx.context().element();
         if (element instanceof ElementEventHandlerHolder) {
-            final CompletableFuture<State> future =
-                ((ElementEventHandlerHolder) element).eventHandler().handleRender(ctx);
-            return CompletableFuture.allOf(future).thenApply(__ -> future.join());
+            return ((ElementEventHandlerHolder) element).eventHandler()
+                .handleRender(ctx)
+                .thenApply(__ -> State.CONTINUE);
         }
         return CompletableFuture.completedFuture(State.CONTINUE);
     }
