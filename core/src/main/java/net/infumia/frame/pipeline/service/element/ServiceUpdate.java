@@ -25,7 +25,9 @@ public final class ServiceUpdate implements PipelineServiceConsumer<PipelineCont
     public CompletableFuture<State> handle(@NotNull final PipelineContextElement.Update ctx) {
         final Element element = ctx.context().element();
         if (element instanceof ElementEventHandlerHolder) {
-            return ((ElementEventHandlerHolder) element).eventHandler().handleUpdate(ctx);
+            return ((ElementEventHandlerHolder) element).eventHandler()
+                .handleUpdate(ctx)
+                .thenApply(__ -> State.CONTINUE);
         }
         return CompletableFuture.completedFuture(State.CONTINUE);
     }

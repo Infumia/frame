@@ -17,7 +17,6 @@ import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
 import net.infumia.frame.element.ElementItem;
-import net.infumia.frame.element.ElementItemBuilder;
 import net.infumia.frame.element.ElementItemBuilderImpl;
 import net.infumia.frame.element.ElementItemBuilderRich;
 import net.infumia.frame.element.ElementRich;
@@ -376,9 +375,9 @@ public final class ElementPaginationImpl<T>
         final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
         for (int i = container.firstSlot(); i < lastSlot; i++) {
             final T value = contents.get(i);
-            final ElementItemBuilder builder = new ElementItemBuilderImpl().slot(i).root(this);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl().slot(i).root(this);
             this.elementConfigurer.configure(context, builder, i, i, value);
-            this.elements.add(((ElementItemBuilderRich) builder).build(context));
+            this.elements.add(builder.build(context));
         }
     }
 
@@ -391,9 +390,11 @@ public final class ElementPaginationImpl<T>
         int index = 0;
         for (final int slot : layoutSLot.slots()) {
             final T value = contents.get(index++);
-            final ElementItemBuilder builder = new ElementItemBuilderImpl().slot(slot).root(this);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
+                .slot(slot)
+                .root(this);
             this.elementConfigurer.configure(context, builder, index, slot, value);
-            this.elements.add(((ElementItemBuilderRich) builder).build(context));
+            this.elements.add(builder.build(context));
             if (index == elementCount) {
                 break;
             }

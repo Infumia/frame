@@ -38,7 +38,7 @@ public final class ServiceFirstRender
             final ElementRich element = (ElementRich) elements.get(i - 1);
             futures[size - i] = element.pipelines().executeRender(context, false);
         }
-        return CompletableFuture.allOf(futures).thenApply(unused -> State.CONTINUE);
+        return CompletableFuture.allOf(futures).thenApply(__ -> State.CONTINUE);
     }
 
     private ServiceFirstRender() {}

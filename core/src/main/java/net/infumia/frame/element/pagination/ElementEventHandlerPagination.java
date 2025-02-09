@@ -25,9 +25,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> handleRender(
-        @NotNull final PipelineContextElement.Render ctx
-    ) {
+    public CompletableFuture<?> handleRender(@NotNull final PipelineContextElement.Render ctx) {
         final ContextElementRender context = ctx.context();
         final ElementPaginationRich<?> pagination = (ElementPaginationRich<?>) context.element();
         if (pagination.initialized() && !pagination.pageWasChanged() && !context.forced()) {
@@ -48,15 +46,13 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
                                 context
                             )
                     )
-                    .thenApply(v -> ConsumerService.State.CONTINUE);
+                    .thenApply(v -> null);
             });
     }
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> handleClear(
-        @NotNull final PipelineContextElement.Clear ctx
-    ) {
+    public CompletableFuture<?> handleClear(@NotNull final PipelineContextElement.Clear ctx) {
         final ContextElementClear context = ctx.context();
         final ElementPaginationRich<?> pagination = (ElementPaginationRich<?>) context.element();
         if (!pagination.pageWasChanged()) {
@@ -65,7 +61,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
             for (int i = 0; i < futures.length; i++) {
                 futures[i] = ((ElementRich) elements.get(i)).pipelines().executeClear(context);
             }
-            return CompletableFuture.allOf(futures).thenApply(__ -> ConsumerService.State.CONTINUE);
+            return CompletableFuture.allOf(futures);
         }
         final Collection<Element> elements = pagination.modifiableElements();
         final Collection<CompletableFuture<?>> futures = new ArrayList<>();
@@ -75,22 +71,18 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
             futures.add(((ElementRich) element).pipelines().executeClear(context));
             iterator.remove();
         }
-        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).thenApply(__ ->
-            ConsumerService.State.CONTINUE
-        );
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
     }
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> handleClick(
-        @NotNull final PipelineContextElement.Click ctx
-    ) {
+    public CompletableFuture<?> handleClick(@NotNull final PipelineContextElement.Click ctx) {
         final ContextElementClick context = ctx.context();
         final ElementPaginationRich<?> pagination = (ElementPaginationRich<?>) context.element();
         if (pagination.pageWasChanged() || !pagination.visible()) {
             ctx.cancelled(true);
             context.cancelled(true);
-            return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
+            return CompletableFuture.completedFuture(null);
         }
         for (final Element child : pagination.elements()) {
             final ElementRich element = (ElementRich) child;
@@ -99,7 +91,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
             }
             return element.pipelines().executeClick(context);
         }
-        return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
+        return CompletableFuture.completedFuture(null);
     }
 
     @NotNull
@@ -119,11 +111,11 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
                 })
                 .thenApply(__ -> {
                     pagination.pageWasChanged(false);
-                    return ConsumerService.State.CONTINUE;
+                    return null;
                 });
         }
         if (!pagination.visible()) {
-            return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
+            return CompletableFuture.completedFuture(null);
         }
         final List<Element> elements = pagination.elements();
         final CompletableFuture<?>[] futures = new CompletableFuture<?>[elements.size()];
@@ -135,7 +127,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
                 futures[i] = element.update();
             }
         }
-        return CompletableFuture.allOf(futures).thenApply(__ -> ConsumerService.State.CONTINUE);
+        return CompletableFuture.allOf(futures).thenApply(__ -> null);
     }
 
     @NotNull
@@ -149,6 +141,6 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
             final ElementRich element = (ElementRich) elements.get(i);
             futures[i] = element.pipelines().executeRender(context, context.forced());
         }
-        return CompletableFuture.allOf(futures).thenApply(__ -> ConsumerService.State.CONTINUE);
+        return CompletableFuture.allOf(futures).thenApply(__ -> null);
     }
 }

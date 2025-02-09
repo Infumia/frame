@@ -25,7 +25,9 @@ public final class ServiceClick implements PipelineServiceConsumer<PipelineConte
     public CompletableFuture<State> handle(@NotNull final PipelineContextElement.Click ctx) {
         final Element element = ctx.context().element();
         if (element instanceof ElementEventHandlerHolder) {
-            return ((ElementEventHandlerHolder) element).eventHandler().handleClick(ctx);
+            return ((ElementEventHandlerHolder) element).eventHandler()
+                .handleClick(ctx)
+                .thenApply(__ -> State.CONTINUE);
         } else {
             return CompletableFuture.completedFuture(State.CONTINUE);
         }
