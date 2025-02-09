@@ -35,7 +35,7 @@ public final class ServiceCloseCancel
             return;
         }
         ctx.cancelled(true);
-        context.frame().taskFactory().sync(() -> viewer.open(context.container()));
+        context.frame().taskFactory().sync(() -> context.container().open(viewer));
         final Player player = viewer.player();
         final ItemStack cursor = player.getItemOnCursor();
         if (cursor != null && cursor.getType() != Material.AIR) {
