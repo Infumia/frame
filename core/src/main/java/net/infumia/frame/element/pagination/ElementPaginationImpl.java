@@ -438,9 +438,7 @@ public final class ElementPaginationImpl<T>
         }
         final CompletableFuture<List<T>> future = new CompletableFuture<>();
         this.sourceFactory.apply(context).thenAccept(future::complete);
-        System.out.println("a-1: " + Thread.currentThread());
         return future.thenApply(result -> {
-            System.out.println("a-2: " + Thread.currentThread());
             this.currentSource = result;
             this.pageCount = this.calculatePagesCount(result);
             final int previousPage = Math.min(this.currentPageIndex, this.pageCount - 1);
