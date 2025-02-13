@@ -373,10 +373,11 @@ public final class ElementPaginationImpl<T>
         }*/
 
         final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
-        for (int i = container.firstSlot(); i < lastSlot; i++) {
-            final T value = contents.get(i);
-            final ElementItemBuilderRich builder = new ElementItemBuilderImpl().slot(i).root(this);
-            this.elementConfigurer.configure(context, builder, i, i, value);
+        int index = 0;
+        for (int slot = container.firstSlot(); slot < lastSlot; slot++) {
+            final T value = contents.get(slot);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl().slot(slot).root(this);
+            this.elementConfigurer.configure(context, builder, index++, slot, value);
             this.elements.add(builder.build(context));
         }
     }
@@ -385,19 +386,20 @@ public final class ElementPaginationImpl<T>
         @NotNull final ContextRender context,
         @NotNull final List<T> contents
     ) {
-        final LayoutSlot layoutSLot = this.layoutSlotFor(context);
+        final LayoutSlot layoutSlot = this.layoutSlotFor(context);
         final int elementCount = contents.size();
         int index = 0;
-        for (final int slot : layoutSLot.slots()) {
-            final T value = contents.get(index++);
+        for (final int slot : layoutSlot.slots()) {
+            if (index >= elementCount) {
+                break;
+            }
+            final T value = contents.get(index);
             final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
                 .slot(slot)
                 .root(this);
             this.elementConfigurer.configure(context, builder, index, slot, value);
             this.elements.add(builder.build(context));
-            if (index == elementCount) {
-                break;
-            }
+            index++;
         }
     }
 
