@@ -374,10 +374,10 @@ public final class ElementPaginationImpl<T>
 
         final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
         int index = 0;
-        for (int i = container.firstSlot(); i < lastSlot; i++) {
-            final T value = contents.get(i);
-            final ElementItemBuilderRich builder = new ElementItemBuilderImpl().slot(i).root(this);
-            this.elementConfigurer.configure(context, builder, index++, i, value);
+        for (int slot = container.firstSlot(); slot < lastSlot; slot++) {
+            final T value = contents.get(slot);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl().slot(slot).root(this);
+            this.elementConfigurer.configure(context, builder, index++, slot, value);
             this.elements.add(builder.build(context));
         }
     }
