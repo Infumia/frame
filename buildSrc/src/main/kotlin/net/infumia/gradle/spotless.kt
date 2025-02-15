@@ -14,7 +14,6 @@ fun Project.applySpotless() {
     apply<SpotlessPlugin>()
 
     extensions.configure<SpotlessExtension> {
-        isEnforceCheck = false
         lineEndings = LineEnding.UNIX
 
         val prettierConfig =
