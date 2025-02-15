@@ -1,19 +1,17 @@
 package net.infumia.frame.util;
 
+import java.util.Objects;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.NotNull;
 
 public final class Lazy<T> implements Supplier<T> {
 
-    @NotNull
     private final Cache<T> delegate;
 
-    private Lazy(@NotNull final Cache<T> delegate) {
-        this.delegate = delegate;
+    private Lazy(final Cache<T> delegate) {
+        this.delegate = Objects.requireNonNull(delegate, "delegate");
     }
 
-    @NotNull
-    public static <T> Lazy<T> of(@NotNull final Supplier<T> supplier) {
+    public static <T> Lazy<T> of(final Supplier<T> supplier) {
         return new Lazy<>(Cache.of(supplier));
     }
 

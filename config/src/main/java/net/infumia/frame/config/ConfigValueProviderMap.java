@@ -1,7 +1,7 @@
 package net.infumia.frame.config;
 
 import java.util.Map;
-import net.infumia.frame.util.Preconditions;
+import net.infumia.frame.Preconditions;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -4,13 +4,13 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import net.infumia.frame.Pair;
 import net.infumia.frame.annotations.provider.Provider;
 import net.infumia.frame.annotations.provider.inferred.InferredCharacterProvider;
 import net.infumia.frame.annotations.provider.inferred.InferredIntegerProvider;
 import net.infumia.frame.annotations.provider.inferred.InferredSlotPositionProvider;
 import net.infumia.frame.annotations.provider.inferred.InferredStringProvider;
 import net.infumia.frame.context.ContextBase;
-import net.infumia.frame.util.Pair;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

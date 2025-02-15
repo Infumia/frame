@@ -9,6 +9,6 @@ import org.jetbrains.annotations.Nullable;
 public interface InjectionService<C> extends Service<InjectionRequest<C>, @Nullable Object> {
     @NotNull
     static <C> InjectionService<C> create(@NotNull final InjectorRegistry<C> registry) {
-        return new InjectionServiceInjector<>(registry);
+        return new InjectionServiceImpl<>(registry);
     }
 }

@@ -1,12 +1,9 @@
 import net.infumia.gradle.applyPublish
 
-applyPublish("annotations")
+applyPublish()
 
 dependencies {
     compileOnly(project(":common"))
-    compileOnly(project(":api"))
-    compileOnly(project(":config"))
-    compileOnly(project(":core"))
     compileOnly(libs.minecraft.one.eight.eight.paper)
 
     compileOnly(libs.guice) { isTransitive = false }

@@ -1,13 +1,13 @@
 package net.infumia.frame.view;
 
 import java.util.concurrent.CompletableFuture;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.injection.AnnotationAccessor;
 import net.infumia.frame.injection.InjectionRequester;
 import net.infumia.frame.injection.InjectionService;
 import net.infumia.frame.injection.InjectionServicePipeline;
 import net.infumia.frame.injector.InjectorNoArg;
 import net.infumia.frame.injector.InjectorRegistry;
-import net.infumia.frame.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
 public final class ViewCreatorImpl implements ViewCreator {

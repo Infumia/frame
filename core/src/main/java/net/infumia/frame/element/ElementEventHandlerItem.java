@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemClickImpl;
@@ -15,7 +16,6 @@ import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.context.element.ContextElementUpdate;
 import net.infumia.frame.pipeline.context.PipelineContextElement;
 import net.infumia.frame.service.ConsumerService;
-import net.infumia.frame.util.Preconditions;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 

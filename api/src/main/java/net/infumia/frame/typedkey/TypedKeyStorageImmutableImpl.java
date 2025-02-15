@@ -3,7 +3,7 @@ package net.infumia.frame.typedkey;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import net.infumia.frame.util.Preconditions;
+import net.infumia.frame.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;

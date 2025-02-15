@@ -2,6 +2,7 @@ package net.infumia.frame.pipeline.executor;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
+import net.infumia.frame.Pair;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextInit;
 import net.infumia.frame.context.view.ContextOpen;
@@ -11,7 +12,6 @@ import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.service.Implementation;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
-import net.infumia.frame.util.Pair;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.config.ViewConfig;
 import net.infumia.frame.viewer.ContextualViewer;

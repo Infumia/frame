@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import net.infumia.frame.util.Pair;
+import net.infumia.frame.Pair;
 import org.jetbrains.annotations.NotNull;
 
 final class InjectorRegistryImpl<C> implements InjectorRegistry<C> {

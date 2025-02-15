@@ -7,21 +7,21 @@ import net.infumia.frame.injector.InjectorRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class InjectionServiceInjector<C> implements InjectionService<C> {
+final class InjectionServiceImpl<C> implements InjectionService<C> {
 
     public static final String KEY = "injector";
 
     @NotNull
     private final InjectorRegistry<C> registry;
 
-    InjectionServiceInjector(@NotNull final InjectorRegistry<C> registry) {
+    InjectionServiceImpl(@NotNull final InjectorRegistry<C> registry) {
         this.registry = registry;
     }
 
     @NotNull
     @Override
     public String key() {
-        return InjectionServiceInjector.KEY;
+        return InjectionServiceImpl.KEY;
     }
 
     @NotNull
