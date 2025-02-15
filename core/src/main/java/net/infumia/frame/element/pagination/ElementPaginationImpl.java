@@ -17,7 +17,6 @@ import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
 import net.infumia.frame.element.ElementItem;
-import net.infumia.frame.element.ElementItemBuilder;
 import net.infumia.frame.element.ElementItemBuilderImpl;
 import net.infumia.frame.element.ElementItemBuilderRich;
 import net.infumia.frame.element.ElementRich;
@@ -374,11 +373,14 @@ public final class ElementPaginationImpl<T>
         }*/
 
         final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
-        for (int i = container.firstSlot(); i < lastSlot; i++) {
-            final T value = contents.get(i);
-            final ElementItemBuilder builder = new ElementItemBuilderImpl().slot(i).root(this);
-            this.elementConfigurer.configure(context, builder, i, i, value);
-            this.elements.add(((ElementItemBuilderRich) builder).build(context));
+        int index = 0;
+        for (int slot = container.firstSlot(); slot < lastSlot; slot++) {
+            final T value = contents.get(slot);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
+                .slot(slot)
+                .root(this);
+            this.elementConfigurer.configure(context, builder, index++, slot, value);
+            this.elements.add(builder.build(context));
         }
     }
 
@@ -386,17 +388,19 @@ public final class ElementPaginationImpl<T>
         @NotNull final ContextRender context,
         @NotNull final List<T> contents
     ) {
-        final LayoutSlot layoutSLot = this.layoutSlotFor(context);
+        final LayoutSlot layoutSlot = this.layoutSlotFor(context);
         final int elementCount = contents.size();
         int index = 0;
-        for (final int slot : layoutSLot.slots()) {
-            final T value = contents.get(index++);
-            final ElementItemBuilder builder = new ElementItemBuilderImpl().slot(slot).root(this);
-            this.elementConfigurer.configure(context, builder, index, slot, value);
-            this.elements.add(((ElementItemBuilderRich) builder).build(context));
-            if (index == elementCount) {
+        for (final int slot : layoutSlot.slots()) {
+            if (index >= elementCount) {
                 break;
             }
+            final T value = contents.get(index);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
+                .slot(slot)
+                .root(this);
+            this.elementConfigurer.configure(context, builder, index++, slot, value);
+            this.elements.add(builder.build(context));
         }
     }
 

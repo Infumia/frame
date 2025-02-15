@@ -1,21 +1,17 @@
 package net.infumia.frame.element;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
-import net.infumia.frame.context.element.ContextElementRender;
-import net.infumia.frame.state.State;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class ElementItemBuilderImpl
-    extends ElementBuilderImpl
+    extends ElementBuilderImpl<ElementItemBuilderImpl>
     implements ElementItemBuilderRich {
 
     ItemStack item;
@@ -95,104 +91,7 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilder root(@NotNull final Element root) {
-        super.root(root);
-        return this;
-    }
-
-    @NotNull
-    @Override
     public ElementItem build(@NotNull final ContextBase parent) {
         return new ElementItemImpl(this, parent);
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder cancelOnClick() {
-        super.cancelOnClick();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder closeOnClick() {
-        super.closeOnClick();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder updateOnClick() {
-        super.updateOnClick();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder cancelOnClick(final boolean cancelOnClick) {
-        super.cancelOnClick(cancelOnClick);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder closeOnClick(final boolean cancelOnClick) {
-        super.closeOnClick(cancelOnClick);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder updateOnClick(final boolean updateOnClick) {
-        super.updateOnClick(updateOnClick);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder updateOnStateChange(
-        @NotNull final State<?> state,
-        @NotNull final State<?> @NotNull... otherStates
-    ) {
-        super.updateOnStateChange(state, otherStates);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder updateOnStateAccess(
-        @NotNull final State<?> state,
-        @NotNull final State<?> @NotNull... otherStates
-    ) {
-        super.updateOnStateAccess(state, otherStates);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder displayIf(@NotNull final Predicate<ContextElementRender> condition) {
-        super.displayIf(condition);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder displayIf(@NotNull final BooleanSupplier condition) {
-        super.displayIf(condition);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder hideIf(@NotNull final Predicate<ContextElementRender> condition) {
-        super.hideIf(condition);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder hideIf(@NotNull final BooleanSupplier condition) {
-        super.hideIf(condition);
-        return this;
     }
 }

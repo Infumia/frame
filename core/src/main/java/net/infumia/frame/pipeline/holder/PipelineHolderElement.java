@@ -10,6 +10,7 @@ import net.infumia.frame.pipeline.service.element.ServiceClearLogging;
 import net.infumia.frame.pipeline.service.element.ServiceClick;
 import net.infumia.frame.pipeline.service.element.ServiceClickCancelOnClick;
 import net.infumia.frame.pipeline.service.element.ServiceClickCloseOnClick;
+import net.infumia.frame.pipeline.service.element.ServiceClickInteractionDelay;
 import net.infumia.frame.pipeline.service.element.ServiceClickLogging;
 import net.infumia.frame.pipeline.service.element.ServiceClickUpdateOnClick;
 import net.infumia.frame.pipeline.service.element.ServiceRender;
@@ -42,6 +43,7 @@ public final class PipelineHolderElement implements Cloned<PipelineHolderElement
             .register(ServiceClickCloseOnClick.INSTANCE)
             .register(ServiceClickUpdateOnClick.INSTANCE)
             .register(ServiceClick.INSTANCE)
+            .register(ServiceClickInteractionDelay.INSTANCE)
             .register(ServiceClickCancelOnClick.INSTANCE),
         new PipelineConsumerImpl<>(
             new TypeToken<PipelineServiceConsumer<PipelineContextElement.Update>>() {},

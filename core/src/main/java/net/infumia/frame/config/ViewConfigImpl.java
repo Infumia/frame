@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
+import net.infumia.frame.context.view.ContextClick;
 import net.infumia.frame.type.InvType;
 import net.infumia.frame.view.config.ViewConfigModifier;
 import net.infumia.frame.view.config.option.ViewConfigOption;
@@ -22,6 +24,7 @@ final class ViewConfigImpl implements ViewConfigRich {
     final String[] layout;
     final Duration updateInterval;
     final Duration interactionDelay;
+    final Consumer<ContextClick> onInteractionDelay;
 
     ViewConfigImpl(@NotNull final ViewConfigBuilderImpl builder) {
         this.options = Collections.unmodifiableMap(builder.options);
@@ -32,6 +35,7 @@ final class ViewConfigImpl implements ViewConfigRich {
         this.layout = builder.layout;
         this.updateInterval = builder.updateInterval;
         this.interactionDelay = builder.interactionDelay;
+        this.onInteractionDelay = builder.onInteractionDelay;
     }
 
     @Nullable
@@ -73,6 +77,12 @@ final class ViewConfigImpl implements ViewConfigRich {
     @Override
     public Duration interactionDelay() {
         return this.interactionDelay;
+    }
+
+    @Nullable
+    @Override
+    public Consumer<ContextClick> onInteractionDelay() {
+        return this.onInteractionDelay;
     }
 
     @NotNull

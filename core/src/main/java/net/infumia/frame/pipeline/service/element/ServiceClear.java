@@ -25,7 +25,9 @@ public final class ServiceClear implements PipelineServiceConsumer<PipelineConte
     public CompletableFuture<State> handle(@NotNull final PipelineContextElement.Clear ctx) {
         final Element element = ctx.context().element();
         if (element instanceof ElementEventHandlerHolder) {
-            return ((ElementEventHandlerHolder) element).eventHandler().handleClear(ctx);
+            return ((ElementEventHandlerHolder) element).eventHandler()
+                .handleClear(ctx)
+                .thenApply(__ -> State.CONTINUE);
         } else {
             return CompletableFuture.completedFuture(State.CONTINUE);
         }

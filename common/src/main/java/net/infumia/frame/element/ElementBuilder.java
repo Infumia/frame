@@ -1,10 +1,15 @@
 package net.infumia.frame.element;
 
+import java.time.Duration;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface ElementBuilder {
     @NotNull
@@ -24,6 +29,17 @@ public interface ElementBuilder {
 
     @NotNull
     ElementBuilder updateOnClick(boolean updateOnClick);
+
+    @NotNull
+    ElementBuilder interactionDelay(@Nullable Duration interactionDelay);
+
+    @NotNull
+    ElementBuilder onInteractionDelay(@NotNull Consumer<ContextElementClick> onInteractionDelay);
+
+    @NotNull
+    ElementBuilder interactionDelayKey(
+        @NotNull Function<ContextElementClick, String> interactionDelayKey
+    );
 
     @NotNull
     ElementBuilder updateOnStateChange(@NotNull State<?> state, @NotNull State<?>... otherStates);

@@ -4,6 +4,7 @@ import java.util.Objects;
 import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.view.View;
 import net.infumia.frame.view.ViewContainer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,8 +49,10 @@ public class ViewerImpl implements Viewer {
 
     @Override
     public void open(@NotNull final ViewContainer container) {
-        if (this.player.isOnline()) {
-            this.player.openInventory(container.inventory());
+        if (Bukkit.isPrimaryThread()) {
+            this.openUnsafe(container);
+        } else {
+            this.view.context().frame().taskFactory().sync(() -> this.openUnsafe(container));
         }
     }
 
@@ -73,6 +76,12 @@ public class ViewerImpl implements Viewer {
             return this.player.equals(o);
         } else {
             return Objects.equals(this.player, ((Viewer) o).player());
+        }
+    }
+
+    private void openUnsafe(@NotNull final ViewContainer container) {
+        if (this.player.isOnline()) {
+            this.player.openInventory(container.inventory());
         }
     }
 }
