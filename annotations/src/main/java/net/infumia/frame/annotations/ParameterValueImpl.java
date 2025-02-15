@@ -10,7 +10,7 @@ final class ParameterValueImpl implements ParameterValue {
     private final Object value;
     private final ParameterDescriptor descriptor;
 
-    public ParameterValueImpl(
+    ParameterValueImpl(
         @NotNull final Parameter parameter,
         @Nullable final Object value,
         @Nullable final ParameterDescriptor descriptor
@@ -20,7 +20,7 @@ final class ParameterValueImpl implements ParameterValue {
         this.descriptor = descriptor;
     }
 
-    public ParameterValueImpl(@NotNull final Parameter parameter, @Nullable final Object value) {
+    ParameterValueImpl(@NotNull final Parameter parameter, @Nullable final Object value) {
         this(parameter, value, null);
     }
 
