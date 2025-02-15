@@ -22,11 +22,11 @@ public final class Plugin extends JavaPlugin {
         TypedKey.of(CommandSender.class, "console");
 
     private final Frame frame = Frame.create(this)
-        .with(ViewExample.class);
+        .with(ViewExample.class)
+        .with(ViewAnnotationExample.class);
  
     @Override
     public void onEnable() {
-        this.frame.register();
         this.frame.register(builder -> 
             builder.add(Plugin.CONSOLE_KEY, Bukkit.getConsoleSender()));
     }
@@ -68,8 +68,6 @@ public final class ViewExample implements ViewHandler {
     }
 }
 ```
-#### Annotation Version
-
 ```java
 @ViewCancelOnClick
 @ViewType(InvType.CHEST)
@@ -78,7 +76,7 @@ public final class ViewExample implements ViewHandler {
     "xxxxaxxxx",
     "xxxxxxxxx"
 })
-public final class View {
+public final class ViewAnnotationExample {
 
     @ViewTitle
     public CompletableFuture<String> onTitle(final ContextBase ctx, final Player viewer) {
