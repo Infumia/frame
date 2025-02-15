@@ -1,4 +1,4 @@
-package net.infumia.frame.annotations.decorator.view.config.update;
+package net.infumia.frame.annotations.decorator.view;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ViewUpdateInterval {
-    long value();
+public @interface ViewCancelOnPickup {
+    boolean value() default true;
 }

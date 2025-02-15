@@ -1,11 +1,12 @@
-package net.infumia.frame.annotations.decorator.view.config;
+package net.infumia.frame.annotations.decorator.view;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.METHOD })
-public @interface ViewConfigModifier {
+public @interface ViewCancelOnClick {
+    boolean value() default true;
 }

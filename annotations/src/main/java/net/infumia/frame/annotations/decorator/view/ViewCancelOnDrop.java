@@ -1,13 +1,12 @@
-package net.infumia.frame.annotations.decorator.view.config.type;
+package net.infumia.frame.annotations.decorator.view;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import net.infumia.frame.type.InvType;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ViewType {
-    InvType value() default InvType.CHEST;
+public @interface ViewCancelOnDrop {
+    boolean value() default true;
 }

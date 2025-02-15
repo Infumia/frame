@@ -1,4 +1,4 @@
-package net.infumia.frame.annotations.decorator.view.config;
+package net.infumia.frame.annotations.decorator.view;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
