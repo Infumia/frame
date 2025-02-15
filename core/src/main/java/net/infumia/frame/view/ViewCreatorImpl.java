@@ -24,7 +24,7 @@ public final class ViewCreatorImpl implements ViewCreator {
 
     @NotNull
     @Override
-    public InjectionServicePipeline<Object> pipeline() {
+    public InjectionServicePipeline<Object> pipelines() {
         return this.pipeline;
     }
 
