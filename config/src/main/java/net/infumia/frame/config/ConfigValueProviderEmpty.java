@@ -1,8 +1,6 @@
 package net.infumia.frame.config;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class ConfigValueProviderEmpty implements ConfigValueProvider {
 
@@ -10,27 +8,23 @@ public final class ConfigValueProviderEmpty implements ConfigValueProvider {
 
     private ConfigValueProviderEmpty() {}
 
-    @Nullable
     @Override
-    public Object getRaw(@NotNull final String key) {
+    public Object getRaw(final String key) {
         return null;
     }
 
-    @Nullable
     @Override
-    public Integer getInt(@NotNull final String key) {
+    public Integer getInt(final String key) {
         return null;
     }
 
-    @Nullable
     @Override
-    public String getString(@NotNull final String key) {
+    public String getString(final String key) {
         return null;
     }
 
-    @Nullable
     @Override
-    public ItemStack getItem(@NotNull final String key) {
+    public ItemStack getItem(final String key) {
         return null;
     }
 }

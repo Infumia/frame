@@ -1,13 +1,13 @@
 package net.infumia.frame;
 
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public final class Pair<F, S> {
 
     private final F first;
-
     private final S second;
 
     private Pair(final F first, final S second) {
@@ -33,6 +33,9 @@ public final class Pair<F, S> {
 
     @Override
     public String toString() {
-        return "Pair{" + "first=" + this.first + ", second=" + this.second + '}';
+        return new StringJoiner(", ", Pair.class.getSimpleName() + "[", "]")
+            .add("first=" + this.first)
+            .add("second=" + this.second)
+            .toString();
     }
 }

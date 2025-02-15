@@ -2,10 +2,10 @@ package net.infumia.frame.view;
 
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.Preconditions;
-import net.infumia.frame.injection.AnnotationAccessor;
-import net.infumia.frame.injection.InjectionRequester;
-import net.infumia.frame.injection.InjectionService;
-import net.infumia.frame.injection.InjectionServicePipeline;
+import net.infumia.frame.injector.AnnotationAccessor;
+import net.infumia.frame.injector.InjectionRequester;
+import net.infumia.frame.injector.InjectionService;
+import net.infumia.frame.injector.InjectionServicePipeline;
 import net.infumia.frame.injector.InjectorNoArg;
 import net.infumia.frame.injector.InjectorRegistry;
 import org.jetbrains.annotations.NotNull;

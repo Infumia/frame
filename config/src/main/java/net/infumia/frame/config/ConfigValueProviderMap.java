@@ -1,28 +1,29 @@
 package net.infumia.frame.config;
 
 import java.util.Map;
+import java.util.Objects;
 import net.infumia.frame.Preconditions;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class ConfigValueProviderMap implements ConfigValueProvider {
 
     private final Map<String, Object> config;
 
-    public ConfigValueProviderMap(@NotNull final Map<String, Object> config) {
-        this.config = config;
+    public ConfigValueProviderMap(final Map<String, Object> config) {
+        this.config = Objects.requireNonNull(config, "config");
     }
 
-    @Nullable
     @Override
-    public Object getRaw(@NotNull final String key) {
+    public Object getRaw(final String key) {
+        Objects.requireNonNull(key, "key");
+
         return this.config.get(key);
     }
 
-    @Nullable
     @Override
-    public Integer getInt(@NotNull final String key) {
+    public Integer getInt(final String key) {
+        Objects.requireNonNull(key, "key");
+
         final Object raw = this.getRaw(key);
         if (raw == null) {
             return null;
@@ -31,9 +32,10 @@ public final class ConfigValueProviderMap implements ConfigValueProvider {
         return (int) raw;
     }
 
-    @Nullable
     @Override
-    public String getString(@NotNull final String key) {
+    public String getString(final String key) {
+        Objects.requireNonNull(key, "key");
+
         final Object raw = this.getRaw(key);
         if (raw == null) {
             return null;
@@ -42,9 +44,10 @@ public final class ConfigValueProviderMap implements ConfigValueProvider {
         return (String) raw;
     }
 
-    @Nullable
     @Override
-    public ItemStack getItem(@NotNull final String key) {
+    public ItemStack getItem(final String key) {
+        Objects.requireNonNull(key, "key");
+
         final Object raw = this.getRaw(key);
         if (raw == null) {
             return null;

@@ -4,6 +4,8 @@ applyPublish()
 
 dependencies {
     compileOnly(project(":common"))
+    compileOnly(project(":injector"))
+    compileOnly(project(":service"))
     compileOnly(libs.minecraft.one.eight.eight.paper)
 
     compileOnly(libs.guice) { isTransitive = false }

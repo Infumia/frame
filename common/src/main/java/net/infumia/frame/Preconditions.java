@@ -1,9 +1,11 @@
 package net.infumia.frame;
 
 import java.util.Objects;
+import org.jetbrains.annotations.Contract;
 
 public final class Preconditions {
 
+    @Contract("false, _, _ -> fail")
     public static void argument(final boolean check, final String message, final Object... args) {
         Objects.requireNonNull(args, "args");
         Objects.requireNonNull(message, "message");
@@ -13,6 +15,7 @@ public final class Preconditions {
         }
     }
 
+    @Contract("null, _, _ -> fail")
     public static <T> T argumentNotNull(
         final T object,
         final String message,
@@ -25,6 +28,7 @@ public final class Preconditions {
         return object;
     }
 
+    @Contract("false, _, _ -> fail")
     public static void state(final boolean check, final String message, final Object... args) {
         Objects.requireNonNull(args, "args");
         Objects.requireNonNull(message, "message");
@@ -34,6 +38,7 @@ public final class Preconditions {
         }
     }
 
+    @Contract("null, _, _ -> fail")
     public static <T> T stateNotNull(final T object, final String message, final Object... args) {
         Objects.requireNonNull(args, "args");
         Objects.requireNonNull(message, "message");

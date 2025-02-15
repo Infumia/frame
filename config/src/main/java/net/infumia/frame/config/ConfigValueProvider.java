@@ -1,19 +1,13 @@
 package net.infumia.frame.config;
 
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public interface ConfigValueProvider {
-    @Nullable
-    Object getRaw(@NotNull String key);
+    Object getRaw(String key);
 
-    @Nullable
-    Integer getInt(@NotNull String key);
+    Integer getInt(String key);
 
-    @Nullable
-    String getString(@NotNull String key);
+    String getString(String key);
 
-    @Nullable
-    ItemStack getItem(@NotNull String key);
+    ItemStack getItem(String key);
 }

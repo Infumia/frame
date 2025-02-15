@@ -1,6 +1,7 @@
 package net.infumia.frame.pipeline.holder;
 
 import io.leangen.geantyref.TypeToken;
+import net.infumia.frame.Cloned;
 import net.infumia.frame.pipeline.PipelineConsumer;
 import net.infumia.frame.pipeline.PipelineConsumerImpl;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
@@ -14,7 +15,6 @@ import net.infumia.frame.pipeline.service.viewer.ServiceRemovedContextualViewer;
 import net.infumia.frame.pipeline.service.viewer.ServiceRemovedLogging;
 import net.infumia.frame.pipeline.service.viewer.ServiceRemovedOnViewerRemoved;
 import net.infumia.frame.pipeline.service.viewer.ServiceRemovedStopUpdateTask;
-import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
 public final class PipelineHolderViewer implements Cloned<PipelineHolderViewer> {

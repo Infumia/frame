@@ -4,5 +4,5 @@ applyPublish("config")
 
 dependencies {
     compileOnly(project(":common"))
-    compileOnly(libs.minecraft.one.eight.eight.paper)
+    compileOnly(libs.minecraft.one.eight.eight.paper) { exclude("org.jetbrains") }
 }
