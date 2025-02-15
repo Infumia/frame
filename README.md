@@ -20,13 +20,13 @@ dependencies {
 public final class Plugin extends JavaPlugin {
     public static final TypedKey<CommandSender> CONSOLE_KEY =
         TypedKey.of(CommandSender.class, "console");
-    
+
     private final Frame frame = Frame.create(this)
         .with(ViewExample.class);
-    
+ 
     @Override
     public void onEnable() {
-        /*this.frame.register();*/
+        this.frame.register();
         this.frame.register(builder -> 
             builder.add(Plugin.CONSOLE_KEY, Bukkit.getConsoleSender()));
     }
