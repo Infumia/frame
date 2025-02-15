@@ -23,6 +23,14 @@ public @interface ElementSlot {
 
     int column() default ElementSlot.INFERRED_COLUMN;
 
+    boolean firstSlot() default false;
+
+    boolean lastSlot() default false;
+
+    boolean availableSlot() default false;
+
+    boolean resultSlot() default false;
+
     String configKey();
 
     Class<
