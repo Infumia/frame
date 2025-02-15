@@ -4,6 +4,7 @@ applyPublish("annotations")
 
 dependencies {
     compileOnly(project(":common"))
+    compileOnly(project(":config"))
     compileOnly(project(":core"))
     compileOnly(libs.minecraft.one.eight.eight.paper)
 

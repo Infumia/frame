@@ -1,4 +1,4 @@
-package net.infumia.frame.annotations.config;
+package net.infumia.frame.config;
 
 import java.util.Map;
 import net.infumia.frame.util.Preconditions;

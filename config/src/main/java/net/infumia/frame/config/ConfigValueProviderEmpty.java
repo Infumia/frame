@@ -1,4 +1,4 @@
-package net.infumia.frame.annotations.config;
+package net.infumia.frame.config;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

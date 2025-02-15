@@ -81,18 +81,18 @@ public final class ViewExample implements ViewHandler {
 })
 public final class View {
 
-    @ViewOnTitle
+    @ViewTitle
     public CompletableFuture<String> onTitle(final ContextBase ctx, final Player viewer) {
         return CompletableFuture.completedFuture("Player: " + player.getName());
     }
 
-    @ElementSlotLayout('x')
-    @ElementConfigKey("fill-item")
+    @ElementSlot(layout = 'x')
+    @ElementItem(configKey = "fill-item")
     public void glasses() {}
 
     @ElementCloseOnClick
-    @ElementSlotLayout('a')
-    @ElementConfigKey("diamond-item")
+    @ElementSlot(layout = 'a')
+    @ElementItem(configKey = "diamond-item")
     public void diamond(
         final Player viewer,
         final MessageSender sender
