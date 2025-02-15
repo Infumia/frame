@@ -1,4 +1,4 @@
-package net.infumia.frame.annotations.decorator.config.update;
+package net.infumia.frame.annotations.decorator.config.interaction;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,7 +9,7 @@ import net.infumia.frame.context.ContextBase;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ViewUpdateIntervalProvide {
+public @interface ViewInteractionDelayProvider {
     Class<? extends Function<ContextBase, Long>> value();
 
     boolean cache() default false;

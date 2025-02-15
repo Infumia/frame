@@ -1,4 +1,4 @@
-package net.infumia.frame.annotations.decorator.config.size;
+package net.infumia.frame.annotations.decorator.config.layout;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,8 +9,8 @@ import net.infumia.frame.context.ContextBase;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ViewSizeProvide {
-    Class<? extends Function<ContextBase, Integer>> value();
+public @interface ViewLayoutProvider {
+    Class<? extends Function<ContextBase, String[]>> value();
 
     boolean cache() default false;
 }
