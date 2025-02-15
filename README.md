@@ -60,7 +60,6 @@ public final class ViewExample implements ViewHandler {
 
         ctx
             .layoutSlot('a', new ItemStack(Material.DIAMOND))
-            .cancelOnClick()
             .onClick(context -> {
                 context.closeForViewer();
                 sender.sendMessage("Player " + context.clicker().player() + " clicked to a diamond!");
@@ -92,7 +91,7 @@ public final class ViewAnnotationExample {
     @ElementItemStack(configKey = "diamond-item")
     public void diamond(
         final Player viewer,
-        final MessageSender sender
+        final CommandSender sender
     ) {
         sender.sendMessage(viewer, "Player " + viewer.getName() + " clicked to a diamond!");
     }
