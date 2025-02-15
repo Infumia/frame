@@ -5,8 +5,8 @@ applyPublish("annotations")
 dependencies {
     compileOnly(project(":common"))
     compileOnly(project(":config"))
-    compileOnly(project(":api"))
     compileOnly(project(":injector"))
+    compileOnly(project(":api"))
     compileOnly(libs.minecraft.one.eight.eight.paper)
 
     compileOnly(libs.guice) { isTransitive = false }
