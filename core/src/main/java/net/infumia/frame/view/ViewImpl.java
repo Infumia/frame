@@ -75,7 +75,7 @@ public final class ViewImpl implements View, ViewEventHandler {
 
     @NotNull
     @Override
-    public CompletableFuture<@Nullable ContextRender> simulateOpenActive(
+    public CompletableFuture<@NotNull ContextRender> simulateOpenActive(
         @NotNull final ContextRender activeContext,
         @NotNull final Collection<Player> viewers
     ) {

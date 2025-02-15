@@ -242,9 +242,10 @@ final class FrameImpl implements FrameRich {
         @NotNull final ContextRender activeContext
     ) {
         final View view = activeContext.view();
-        if (!(view instanceof ViewEventHandler)) {
-            return CompletableFuture.completedFuture(null);
-        }
+        Preconditions.argument(
+            view instanceof ViewEventHandler,
+            "The active context's view must be an instance of ViewEventHandler!"
+        );
         return CompletableFutureExtensions.logError(
             ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
             this.logger,
