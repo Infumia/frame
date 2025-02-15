@@ -92,7 +92,7 @@ public final class View {
 
     @ElementCloseOnClick
     @ElementSlot(layout = 'a')
-    @ElementItem(configKey = "diamond-item")
+    @ElementItemStack(configKey = "diamond-item")
     public void diamond(
         final Player viewer,
         final MessageSender sender

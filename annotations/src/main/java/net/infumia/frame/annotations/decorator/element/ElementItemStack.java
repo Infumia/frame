@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ElementItem {
+public @interface ElementItemStack {
     Class<
         ? extends Provider<ContextBase, ItemStack>
     > provider() default InferredItemStackProvider.class;
