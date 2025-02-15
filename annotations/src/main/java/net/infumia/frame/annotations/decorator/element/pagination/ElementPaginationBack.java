@@ -8,7 +8,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ElementPaginationBack {
-    String value() default "";
+    String value() default ElementPaginationBack.FIRST_PAGINATION_KEY;
 
     boolean hideIfCannot() default true;
+
+    String FIRST_PAGINATION_KEY = "__FIRST_PAGINATION__";
 }
