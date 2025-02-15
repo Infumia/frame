@@ -91,9 +91,9 @@ public final class ViewAnnotationExample {
     @ElementItemStack(configKey = "diamond-item")
     public void diamond(
         final Player viewer,
-        final CommandSender sender
+        /*optional @InstanceKey("console")*/ final CommandSender sender
     ) {
-        sender.sendMessage(viewer, "Player " + viewer.getName() + " clicked to a diamond!");
+        sender.sendMessage("Player " + viewer.getName() + " clicked to a diamond!");
     }
 }
 ```
