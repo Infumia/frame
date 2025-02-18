@@ -1,6 +1,6 @@
 package net.infumia.frame.view.config.option;
 
-import net.infumia.frame.util.Keyed;
+import net.infumia.frame.Keyed;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

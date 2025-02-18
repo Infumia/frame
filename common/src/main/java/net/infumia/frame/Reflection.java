@@ -1,7 +1,6 @@
-package net.infumia.frame.util;
+package net.infumia.frame;
 
 import java.lang.reflect.Field;
-import net.infumia.frame.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

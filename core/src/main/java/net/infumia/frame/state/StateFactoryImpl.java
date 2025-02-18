@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import net.infumia.frame.Lazy;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.element.pagination.ElementPaginationBuilder;
 import net.infumia.frame.element.pagination.ElementPaginationBuilderImpl;
@@ -17,7 +18,6 @@ import net.infumia.frame.state.value.StateValueImmutable;
 import net.infumia.frame.state.value.StateValueInitial;
 import net.infumia.frame.state.value.StateValueMutable;
 import net.infumia.frame.typedkey.TypedKey;
-import net.infumia.frame.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

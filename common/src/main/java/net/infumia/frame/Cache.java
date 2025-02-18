@@ -1,4 +1,4 @@
-package net.infumia.frame.util;
+package net.infumia.frame;
 
 import java.util.Objects;
 import java.util.Optional;

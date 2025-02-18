@@ -1,4 +1,4 @@
-package net.infumia.frame.util;
+package net.infumia.frame;
 
 @FunctionalInterface
 public interface RunnableThrowable {
