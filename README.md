@@ -78,7 +78,7 @@ public final class ViewExample implements ViewHandler {
 public final class ViewAnnotationExample {
 
     @ViewTitle
-    public String onTitle(final ContextBase ctx, final Player viewer) {
+    public String onTitle(final Player viewer) {
         return "Player: " + player.getName();
     }
 
