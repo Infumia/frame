@@ -27,7 +27,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
     @Override
     public CompletableFuture<?> handleRender(@NotNull final PipelineContextElement.Render ctx) {
         final ContextElementRender context = ctx.context();
-        final ElementPaginationRich<?> pagination = (ElementPaginationRich<?>) context.element();
+        final ElementPaginationRich pagination = (ElementPaginationRich) context.element();
         if (pagination.initialized() && !pagination.pageWasChanged() && !context.forced()) {
             pagination.visible(true);
             return this.renderChild(context, pagination);
@@ -54,7 +54,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
     @Override
     public CompletableFuture<?> handleClear(@NotNull final PipelineContextElement.Clear ctx) {
         final ContextElementClear context = ctx.context();
-        final ElementPaginationRich<?> pagination = (ElementPaginationRich<?>) context.element();
+        final ElementPaginationRich pagination = (ElementPaginationRich) context.element();
         if (!pagination.pageWasChanged()) {
             final List<Element> elements = pagination.elements();
             final CompletableFuture<?>[] futures = new CompletableFuture<?>[elements.size()];
@@ -78,7 +78,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
     @Override
     public CompletableFuture<?> handleClick(@NotNull final PipelineContextElement.Click ctx) {
         final ContextElementClick context = ctx.context();
-        final ElementPaginationRich<?> pagination = (ElementPaginationRich<?>) context.element();
+        final ElementPaginationRich pagination = (ElementPaginationRich) context.element();
         if (pagination.pageWasChanged() || !pagination.visible()) {
             ctx.cancelled(true);
             context.cancelled(true);
@@ -100,7 +100,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
         @NotNull final PipelineContextElement.Update ctx
     ) {
         final ContextElementUpdate context = ctx.context();
-        final ElementPaginationRich<?> pagination = (ElementPaginationRich<?>) context.element();
+        final ElementPaginationRich pagination = (ElementPaginationRich) context.element();
         if (pagination.pageWasChanged() || context.forced()) {
             return pagination
                 .pipelines()
@@ -133,7 +133,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
     @NotNull
     private CompletableFuture<ConsumerService.State> renderChild(
         @NotNull final ContextElementRender context,
-        @NotNull final ElementPaginationRich<?> pagination
+        @NotNull final ElementPaginationRich pagination
     ) {
         final List<Element> elements = pagination.elements();
         final CompletableFuture<?>[] futures = new CompletableFuture[elements.size()];

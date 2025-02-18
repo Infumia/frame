@@ -15,8 +15,7 @@ import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>>
-    implements ElementBuilderRich {
+public class ElementBuilderImpl implements ElementBuilderRich {
 
     Element root;
     boolean cancelOnClick;
@@ -45,9 +44,9 @@ public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>>
 
     @NotNull
     @Override
-    public Self root(@NotNull final Element root) {
+    public ElementBuilder root(@NotNull final Element root) {
         this.root = root;
-        return this.self();
+        return this;
     }
 
     @NotNull
@@ -58,71 +57,71 @@ public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>>
 
     @NotNull
     @Override
-    public Self cancelOnClick() {
+    public ElementBuilder cancelOnClick() {
         return this.cancelOnClick(true);
     }
 
     @NotNull
     @Override
-    public Self closeOnClick() {
+    public ElementBuilder closeOnClick() {
         return this.closeOnClick(true);
     }
 
     @NotNull
     @Override
-    public Self updateOnClick() {
+    public ElementBuilder updateOnClick() {
         return this.updateOnClick(true);
     }
 
     @NotNull
     @Override
-    public Self cancelOnClick(final boolean cancelOnClick) {
+    public ElementBuilder cancelOnClick(final boolean cancelOnClick) {
         this.cancelOnClick = cancelOnClick;
-        return this.self();
+        return this;
     }
 
     @NotNull
     @Override
-    public Self closeOnClick(final boolean cancelOnClick) {
+    public ElementBuilder closeOnClick(final boolean cancelOnClick) {
         this.closeOnClick = cancelOnClick;
-        return this.self();
+        return this;
     }
 
     @NotNull
     @Override
-    public Self updateOnClick(final boolean updateOnClick) {
+    public ElementBuilder updateOnClick(final boolean updateOnClick) {
         this.updateOnClick = updateOnClick;
-        return this.self();
+        return this;
     }
 
     @NotNull
     @Override
-    public Self interactionDelay(@Nullable final Duration interactionDelay) {
+    public ElementBuilder interactionDelay(@Nullable final Duration interactionDelay) {
         this.interactionDelay = interactionDelay;
-        return this.self();
+        return this;
     }
 
     @NotNull
     @Override
-    public Self onInteractionDelay(
+    public ElementBuilder onInteractionDelay(
         @NotNull final Consumer<ContextElementClick> onInteractionDelay
     ) {
         this.onInteractionDelay = onInteractionDelay;
-        return this.self();
+        return this;
     }
 
     @NotNull
     @Override
-    public Self interactionDelayKey(
+    public ElementBuilder interactionDelayKey(
         @NotNull final Function<ContextElementClick, String> interactionDelayKey
     ) {
         this.interactionDelayKey = interactionDelayKey;
-        return this.self();
+        return this;
     }
 
     @NotNull
     @Override
-    public Self updateOnStateChange(
+    public ElementBuilder updateOnStateChange(
         @NotNull final State<?> state,
         @NotNull final State<?> @NotNull... otherStates
     ) {
@@ -131,12 +130,12 @@ public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>>
         }
         this.updateOnStateChange.add(state);
         Collections.addAll(this.updateOnStateChange, otherStates);
-        return this.self();
+        return this;
     }
 
     @NotNull
     @Override
-    public Self updateOnStateAccess(
+    public ElementBuilder updateOnStateAccess(
         @NotNull final State<?> state,
         @NotNull final State<?> @NotNull... otherStates
     ) {
@@ -145,37 +144,31 @@ public class ElementBuilderImpl<Self extends ElementBuilderImpl<Self>>
         }
         this.updateOnStateAccess.add(state);
         Collections.addAll(this.updateOnStateAccess, otherStates);
-        return this.self();
+        return this;
     }
 
     @NotNull
     @Override
-    public Self displayIf(@NotNull final Predicate<ContextElementRender> condition) {
+    public ElementBuilder displayIf(@NotNull final Predicate<ContextElementRender> condition) {
         this.displayIf = condition;
-        return this.self();
+        return this;
     }
 
     @NotNull
     @Override
-    public Self displayIf(@NotNull final BooleanSupplier condition) {
+    public ElementBuilder displayIf(@NotNull final BooleanSupplier condition) {
         return this.displayIf(__ -> condition.getAsBoolean());
     }
 
     @NotNull
     @Override
-    public Self hideIf(@NotNull final Predicate<ContextElementRender> condition) {
+    public ElementBuilder hideIf(@NotNull final Predicate<ContextElementRender> condition) {
         return this.displayIf(ctx -> condition.negate().test(ctx));
     }
 
     @NotNull
     @Override
-    public Self hideIf(@NotNull final BooleanSupplier condition) {
+    public ElementBuilder hideIf(@NotNull final BooleanSupplier condition) {
         return this.hideIf(__ -> condition.getAsBoolean());
-    }
-
-    @NotNull
-    @SuppressWarnings("unchecked")
-    private Self self() {
-        return (Self) this;
     }
 }

@@ -87,7 +87,7 @@ public class ElementItemImpl extends ElementImpl implements ElementItemRich {
 
     @NotNull
     @Override
-    public ElementItemBuilderRich toBuilder() {
+    public ElementBuilder toBuilder() {
         return new ElementItemBuilderImpl(this);
     }
 

@@ -33,7 +33,7 @@ public class ElementImpl implements ElementRich {
     private boolean visible = true;
 
     public ElementImpl(
-        @NotNull final ElementBuilderImpl<?> builder,
+        @NotNull final ElementBuilderImpl builder,
         @NotNull final ContextBase parent
     ) {
         this.key = UUID.randomUUID().toString();
@@ -90,7 +90,7 @@ public class ElementImpl implements ElementRich {
     @NotNull
     @Override
     public ElementBuilder toBuilder() {
-        return new ElementBuilderImpl<>(this);
+        return new ElementBuilderImpl(this);
     }
 
     @Override

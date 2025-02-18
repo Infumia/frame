@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class ElementItemBuilderImpl
-    extends ElementBuilderImpl<ElementItemBuilderImpl>
+    extends ElementBuilderImpl
     implements ElementItemBuilderRich {
 
     ItemStack item;
@@ -38,14 +38,14 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilderImpl item(@Nullable final ItemStack item) {
+    public ElementItemBuilder item(@Nullable final ItemStack item) {
         this.item = item;
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemBuilderImpl slot(final int slot) {
+    public ElementItemBuilder slot(final int slot) {
         this.slot = slot;
         return this;
     }
@@ -65,7 +65,7 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilderImpl onRender(
+    public ElementItemBuilder onRender(
         @Nullable final Consumer<ContextElementItemRender> onRender
     ) {
         this.onRender = onRender;

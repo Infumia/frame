@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import net.infumia.frame.Lazy;
 import net.infumia.frame.context.ContextBase;
+import net.infumia.frame.element.pagination.ElementPagination;
 import net.infumia.frame.element.pagination.ElementPaginationBuilder;
 import net.infumia.frame.element.pagination.ElementPaginationBuilderImpl;
 import net.infumia.frame.element.pagination.ElementPaginationBuilderRich;
@@ -318,11 +319,13 @@ public class StateFactoryImpl implements StateFactory {
         @NotNull final ElementPaginationBuilder<T> builder
     ) {
         return this.registered(
-                new StatePaginationImpl(StateFactoryImpl.nextStateId(), (host, state) ->
-                    new StateValueImmutable<>(
-                        ((ElementPaginationBuilderRich<T>) builder).associated(state).build(host)
-                    )
-                )
+                new StatePaginationImpl(StateFactoryImpl.nextStateId(), (host, state) -> {
+                    final ElementPaginationBuilderRich<T> b = (ElementPaginationBuilderRich<
+                            T
+                        >) builder;
+                    b.associated(state);
+                    return new StateValueImmutable<>((ElementPagination) b.build(host));
+                })
             );
     }
 

@@ -15,6 +15,7 @@ import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
+import net.infumia.frame.element.ElementBuilder;
 import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
 import net.infumia.frame.element.ElementItem;
@@ -32,9 +33,7 @@ import net.infumia.frame.state.pagination.StatePagination;
 import net.infumia.frame.view.ViewContainer;
 import org.jetbrains.annotations.NotNull;
 
-public final class ElementPaginationImpl<T>
-    extends ElementImpl
-    implements ElementPaginationRich<T> {
+public final class ElementPaginationImpl<T> extends ElementImpl implements ElementPaginationRich {
 
     private final ReadWriteLock elementLock = new ReentrantReadWriteLock();
     private final PipelineExecutorElement pipelines = new PipelineExecutorElementImpl(this);
@@ -319,7 +318,7 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     @Override
-    public ElementPaginationBuilderRich<T> toBuilder() {
+    public ElementBuilder toBuilder() {
         return new ElementPaginationBuilderImpl<>(this);
     }
 
@@ -376,9 +375,9 @@ public final class ElementPaginationImpl<T>
         int index = 0;
         for (int slot = container.firstSlot(); slot < lastSlot; slot++) {
             final T value = contents.get(slot);
-            final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
-                .slot(slot)
-                .root(this);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl();
+            builder.root(this);
+            builder.slot(slot);
             this.elementConfigurer.configure(context, builder, index++, slot, value);
             this.elements.add(builder.build(context));
         }
@@ -396,9 +395,9 @@ public final class ElementPaginationImpl<T>
                 break;
             }
             final T value = contents.get(index);
-            final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
-                .slot(slot)
-                .root(this);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl();
+            builder.root(this);
+            builder.slot(slot);
             this.elementConfigurer.configure(context, builder, index++, slot, value);
             this.elements.add(builder.build(context));
         }

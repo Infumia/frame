@@ -11,7 +11,7 @@ import net.infumia.frame.state.pagination.StatePagination;
 import org.jetbrains.annotations.NotNull;
 
 public final class ElementPaginationBuilderImpl<T>
-    extends ElementBuilderImpl<ElementPaginationBuilderImpl<T>>
+    extends ElementBuilderImpl
     implements ElementPaginationBuilderRich<T> {
 
     final SourceProvider<T> sourceProvider;
@@ -40,7 +40,7 @@ public final class ElementPaginationBuilderImpl<T>
 
     @NotNull
     @Override
-    public ElementPaginationBuilderRich<T> associated(
+    public ElementPaginationBuilder<T> associated(
         @NotNull final State<ElementPagination> associated
     ) {
         this.associated = associated;
