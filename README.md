@@ -78,8 +78,8 @@ public final class ViewExample implements ViewHandler {
 public final class ViewAnnotationExample {
 
     @ViewTitle
-    public CompletableFuture<String> onTitle(final ContextBase ctx, final Player viewer) {
-        return CompletableFuture.completedFuture("Player: " + player.getName());
+    public String onTitle(final ContextBase ctx, final Player viewer) {
+        return "Player: " + player.getName();
     }
 
     @ElementSlot(layout = 'x')
