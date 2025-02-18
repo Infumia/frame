@@ -23,7 +23,8 @@ public final class Plugin extends JavaPlugin {
 
     private final Frame frame = Frame.create(this)
         .with(ViewExample.class)
-        .with(ViewAnnotationExample.class);
+        .with(ViewAnnotationExample.class)
+        .install(FrameAnnotationFeature.class);
  
     @Override
     public void onEnable() {
