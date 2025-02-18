@@ -4,11 +4,10 @@ import net.infumia.frame.context.element.ContextElementClear;
 import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.context.element.ContextElementUpdate;
-import net.infumia.frame.pipeline.PipelineContext;
 import net.infumia.frame.service.Cancellable;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineContextElement extends PipelineContext {
+public interface PipelineContextElement {
     interface Render extends PipelineContextElement {
         @NotNull
         ContextElementRender context();

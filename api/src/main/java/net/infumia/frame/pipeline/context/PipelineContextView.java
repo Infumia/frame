@@ -5,7 +5,6 @@ import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextClick;
 import net.infumia.frame.context.view.ContextClose;
 import net.infumia.frame.context.view.ContextOpen;
-import net.infumia.frame.pipeline.PipelineContext;
 import net.infumia.frame.service.Cancellable;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
@@ -16,7 +15,7 @@ import net.infumia.frame.viewer.Viewer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineContextView extends PipelineContext {
+public interface PipelineContextView {
     interface Init extends PipelineContextView {
         @NotNull
         View view();

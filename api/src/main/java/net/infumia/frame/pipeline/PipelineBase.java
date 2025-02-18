@@ -6,19 +6,19 @@ import net.infumia.frame.service.Implementation;
 import net.infumia.frame.service.Service;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineBase<B extends PipelineContext, R, Self extends PipelineBase<B, R, Self>>
+public interface PipelineBase<Context, Result, Self extends PipelineBase<Context, Result, Self>>
     extends Cloned<Self> {
     @NotNull
-    Self apply(@NotNull Implementation<B, R> operation);
+    Self apply(@NotNull Implementation<Context, Result> operation);
 
     @NotNull
-    CompletableFuture<R> completeWith(@NotNull B context);
+    CompletableFuture<Result> completeWith(@NotNull Context context);
 
     @NotNull
-    CompletableFuture<R> completeWithAsync(@NotNull B context);
+    CompletableFuture<Result> completeWithAsync(@NotNull Context context);
 
     @NotNull
-    default Self register(@NotNull final Service<B, R> service) {
+    default Self register(@NotNull final Service<Context, Result> service) {
         return this.apply(Implementation.register(service));
     }
 }

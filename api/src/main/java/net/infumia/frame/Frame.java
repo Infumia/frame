@@ -1,9 +1,7 @@
 package net.infumia.frame;
 
-import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
-import net.infumia.frame.context.view.ContextRender;
+import net.infumia.frame.feature.FeatureBuilderFactory;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.pipeline.Pipelined;
 import net.infumia.frame.pipeline.executor.PipelineExecutorFrame;
@@ -11,14 +9,14 @@ import net.infumia.frame.task.TaskFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.view.ViewCreator;
+import net.infumia.frame.view.ViewOpener;
 import net.infumia.frame.view.creator.InventoryCreator;
 import net.infumia.frame.viewer.ViewerCreator;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public interface Frame extends Pipelined<PipelineExecutorFrame> {
+public interface Frame
+    extends ViewOpener, FeatureBuilderFactory<Frame>, Pipelined<PipelineExecutorFrame> {
     @NotNull
     static Frame create(@NotNull final Plugin plugin) {
         return Internal.factory().create(plugin);
@@ -73,42 +71,4 @@ public interface Frame extends Pipelined<PipelineExecutorFrame> {
 
     @NotNull
     Frame with(@NotNull Class<?> viewClass);
-
-    @NotNull
-    CompletableFuture<@Nullable ContextRender> open(
-        @NotNull Player player,
-        @NotNull Class<?> viewClass
-    );
-
-    @NotNull
-    CompletableFuture<@Nullable ContextRender> open(
-        @NotNull Player player,
-        @NotNull Class<?> viewClass,
-        @NotNull Consumer<TypedKeyStorageImmutableBuilder> initialDataConfigurer
-    );
-
-    @NotNull
-    CompletableFuture<@Nullable ContextRender> open(
-        @NotNull Collection<Player> players,
-        @NotNull Class<?> viewClass
-    );
-
-    @NotNull
-    CompletableFuture<@Nullable ContextRender> open(
-        @NotNull Collection<Player> players,
-        @NotNull Class<?> viewClass,
-        @NotNull Consumer<TypedKeyStorageImmutableBuilder> initialDataConfigurer
-    );
-
-    @NotNull
-    CompletableFuture<ContextRender> openActive(
-        @NotNull Player player,
-        @NotNull ContextRender activeContext
-    );
-
-    @NotNull
-    CompletableFuture<ContextRender> openActive(
-        @NotNull Collection<Player> players,
-        @NotNull ContextRender activeContext
-    );
 }

@@ -35,12 +35,6 @@ public final class ServiceCreateContainer
 
     @NotNull
     @Override
-    public String key() {
-        return ServiceCreateContainer.KEY;
-    }
-
-    @NotNull
-    @Override
     public CompletableFuture<ViewContainer> handle(
         @NotNull final PipelineContextView.CreateContainer ctx
     ) {
@@ -76,6 +70,12 @@ public final class ServiceCreateContainer
                 typeRich
             )
         );
+    }
+
+    @NotNull
+    @Override
+    public String key() {
+        return ServiceCreateContainer.KEY;
     }
 
     private ServiceCreateContainer() {}

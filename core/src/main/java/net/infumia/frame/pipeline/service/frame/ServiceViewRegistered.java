@@ -31,12 +31,6 @@ public final class ServiceViewRegistered
 
     @NotNull
     @Override
-    public String key() {
-        return ServiceViewRegistered.KEY;
-    }
-
-    @NotNull
-    @Override
     @SuppressWarnings("unchecked")
     public CompletableFuture<Collection<View>> handle(
         @NotNull final PipelineContextFrame.ViewRegistered ctx
@@ -66,6 +60,12 @@ public final class ServiceViewRegistered
         return CompletableFuture.allOf(futures).thenApply(__ ->
             Arrays.stream(futures).map(CompletableFuture::join).collect(Collectors.toSet())
         );
+    }
+
+    @NotNull
+    @Override
+    public String key() {
+        return ServiceViewRegistered.KEY;
     }
 
     private ServiceViewRegistered() {}

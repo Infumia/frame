@@ -13,6 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.extension.CompletableFutureExtensions;
+import net.infumia.frame.feature.Feature;
 import net.infumia.frame.listener.InventoryListener;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.metadata.MetadataAccessFactory;
@@ -124,7 +125,7 @@ final class FrameImpl implements FrameRich {
 
     @Override
     public void register() {
-        this.register(builder -> {});
+        this.register(__ -> {});
     }
 
     @Override
@@ -312,5 +313,17 @@ final class FrameImpl implements FrameRich {
                         );
                 }
             });
+    }
+
+    @Override
+    public Frame install(final Class<? extends Feature> feature) {
+        // TODO: portlek, Implement this.
+        return this;
+    }
+
+    @Override
+    public Frame install(final Feature feature) {
+        // TODO: portlek, Implement this.
+        return this;
     }
 }

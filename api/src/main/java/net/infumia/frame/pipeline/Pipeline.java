@@ -1,4 +1,4 @@
 package net.infumia.frame.pipeline;
 
-public interface Pipeline<B extends PipelineContext, R>
-    extends PipelineBase<B, R, Pipeline<B, R>> {}
+public interface Pipeline<Context, Result>
+    extends PipelineBase<Context, Result, Pipeline<Context, Result>> {}

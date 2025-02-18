@@ -14,11 +14,6 @@ final class InjectionServiceImpl<C> implements InjectionService<C> {
     }
 
     @Override
-    public String key() {
-        return InjectionServiceImpl.KEY;
-    }
-
-    @Override
     public CompletableFuture<Object> handle(final InjectionRequest<C> request) {
         Objects.requireNonNull(request, "request");
 
@@ -30,5 +25,10 @@ final class InjectionServiceImpl<C> implements InjectionService<C> {
                 .findFirst()
                 .orElse(null)
         );
+    }
+
+    @Override
+    public String key() {
+        return InjectionServiceImpl.KEY;
     }
 }

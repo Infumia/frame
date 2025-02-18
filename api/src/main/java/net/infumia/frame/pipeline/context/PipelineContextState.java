@@ -1,13 +1,12 @@
 package net.infumia.frame.pipeline.context;
 
 import net.infumia.frame.Frame;
-import net.infumia.frame.pipeline.PipelineContext;
 import net.infumia.frame.state.State;
 import net.infumia.frame.state.value.StateValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface PipelineContextState extends PipelineContext {
+public interface PipelineContextState {
     @NotNull
     Frame frame();
 

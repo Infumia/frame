@@ -5,12 +5,11 @@ import java.util.List;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextResume;
 import net.infumia.frame.element.Element;
-import net.infumia.frame.pipeline.PipelineContext;
 import net.infumia.frame.service.Cancellable;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineContextRender extends PipelineContext {
+public interface PipelineContextRender {
     @NotNull
     ContextRender context();
 
