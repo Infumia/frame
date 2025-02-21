@@ -12,7 +12,7 @@ import net.infumia.frame.element.pagination.ElementPaginationBuilder;
 import net.infumia.frame.element.pagination.ElementPaginationBuilderImpl;
 import net.infumia.frame.element.pagination.ElementPaginationBuilderRich;
 import net.infumia.frame.element.pagination.SourceProvider;
-import net.infumia.frame.state.pagination.ElementConfigurer;
+import net.infumia.frame.state.pagination.PaginationElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
 import net.infumia.frame.state.value.StateValueComputed;
 import net.infumia.frame.state.value.StateValueImmutable;
@@ -108,7 +108,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StatePagination createPaginationState(
         @NotNull final List<T> source,
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         return this.buildPaginationState(source).elementConfigurer(configurer).buildPagination();
     }
@@ -117,7 +117,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StatePagination createComputedPaginationState(
         @NotNull final Supplier<List<T>> source,
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         return this.buildComputedPaginationState(source)
             .elementConfigurer(configurer)
@@ -128,7 +128,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StatePagination createComputedPaginationState(
         @NotNull final Function<ContextBase, List<T>> source,
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         return this.buildComputedPaginationState(source)
             .elementConfigurer(configurer)
@@ -139,7 +139,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StatePagination createComputedAsyncPaginationState(
         @NotNull final Supplier<CompletableFuture<List<T>>> source,
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         return this.buildComputedAsyncPaginationState(source)
             .elementConfigurer(configurer)
@@ -150,7 +150,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StatePagination createComputedAsyncPaginationState(
         @NotNull final Function<ContextBase, CompletableFuture<List<T>>> source,
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         return this.buildComputedAsyncPaginationState(source)
             .elementConfigurer(configurer)
@@ -161,7 +161,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StatePagination createLazyPaginationState(
         @NotNull final Supplier<List<T>> source,
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         return this.buildLazyPaginationState(source)
             .elementConfigurer(configurer)
@@ -172,7 +172,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StatePagination createLazyPaginationState(
         @NotNull final Function<ContextBase, List<T>> source,
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         return this.buildLazyPaginationState(source)
             .elementConfigurer(configurer)
@@ -183,7 +183,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StatePagination createLazyAsyncPaginationState(
         @NotNull final Supplier<CompletableFuture<List<T>>> source,
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         return this.buildLazyAsyncPaginationState(source)
             .elementConfigurer(configurer)
@@ -194,7 +194,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StatePagination createLazyAsyncPaginationState(
         @NotNull final Function<ContextBase, CompletableFuture<List<T>>> source,
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         return this.buildLazyAsyncPaginationState(source)
             .elementConfigurer(configurer)

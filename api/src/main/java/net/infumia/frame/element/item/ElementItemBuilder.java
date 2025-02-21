@@ -9,7 +9,7 @@ import net.infumia.frame.element.ElementBuilder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public interface ElementItemBuilder extends ElementBuilder {
+public interface ElementItemBuilder extends ElementBuilder<ElementItemBuilder> {
     @NotNull
     ElementItemBuilder item(@NotNull ItemStack item);
 

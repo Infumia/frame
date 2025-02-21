@@ -6,7 +6,7 @@ import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.element.ElementBuilderImpl;
 import net.infumia.frame.element.item.ElementItemBuilder;
 import net.infumia.frame.state.State;
-import net.infumia.frame.state.pagination.ElementConfigurer;
+import net.infumia.frame.state.pagination.PaginationElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +18,7 @@ public final class ElementPaginationBuilderImpl<T>
     final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory;
     char layout = '0';
     BiConsumer<ContextBase, ElementPagination> onPageSwitch;
-    ElementConfigurer<T> elementConfigurer;
+    PaginationElementConfigurer<T> elementConfigurer;
     State<ElementPagination> associated;
 
     public ElementPaginationBuilderImpl(
@@ -65,7 +65,7 @@ public final class ElementPaginationBuilderImpl<T>
     @NotNull
     @Override
     public ElementPaginationBuilder<T> elementConfigurer(
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         this.elementConfigurer = configurer;
         return this;

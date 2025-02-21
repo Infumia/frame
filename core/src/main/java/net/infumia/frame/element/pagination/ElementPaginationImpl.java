@@ -27,7 +27,7 @@ import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.state.State;
-import net.infumia.frame.state.pagination.ElementConfigurer;
+import net.infumia.frame.state.pagination.PaginationElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
 import net.infumia.frame.view.ViewContainer;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +42,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory;
     final char layout;
     final BiConsumer<ContextBase, ElementPagination> onPageSwitch;
-    final ElementConfigurer<T> elementConfigurer;
+    final PaginationElementConfigurer<T> elementConfigurer;
     final State<ElementPagination> associated;
     private final Function<ContextBase, CompletableFuture<List<T>>> sourceFactory;
     private List<Element> elements = new ArrayList<>();

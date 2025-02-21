@@ -5,7 +5,7 @@ import net.infumia.frame.element.item.ElementItemBuilder;
 import org.jetbrains.annotations.NotNull;
 
 @FunctionalInterface
-public interface ElementConfigurer<T> {
+public interface PaginationElementConfigurer<T> {
     void configure(
         @NotNull ContextBase context,
         @NotNull ElementItemBuilder builder,

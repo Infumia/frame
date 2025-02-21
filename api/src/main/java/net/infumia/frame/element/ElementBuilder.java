@@ -11,51 +11,49 @@ import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface ElementBuilder {
+public interface ElementBuilder<This extends ElementBuilder<This>> {
     @NotNull
-    ElementBuilder cancelOnClick();
+    This cancelOnClick();
 
     @NotNull
-    ElementBuilder closeOnClick();
+    This closeOnClick();
 
     @NotNull
-    ElementBuilder updateOnClick();
+    This updateOnClick();
 
     @NotNull
-    ElementBuilder cancelOnClick(boolean cancelOnClick);
+    This cancelOnClick(boolean cancelOnClick);
 
     @NotNull
-    ElementBuilder closeOnClick(boolean cancelOnClick);
+    This closeOnClick(boolean cancelOnClick);
 
     @NotNull
-    ElementBuilder updateOnClick(boolean updateOnClick);
+    This updateOnClick(boolean updateOnClick);
 
     @NotNull
-    ElementBuilder interactionDelay(@Nullable Duration interactionDelay);
+    This interactionDelay(@Nullable Duration interactionDelay);
 
     @NotNull
-    ElementBuilder onInteractionDelay(@NotNull Consumer<ContextElementClick> onInteractionDelay);
+    This onInteractionDelay(@NotNull Consumer<ContextElementClick> onInteractionDelay);
 
     @NotNull
-    ElementBuilder interactionDelayKey(
-        @NotNull Function<ContextElementClick, String> interactionDelayKey
-    );
+    This interactionDelayKey(@NotNull Function<ContextElementClick, String> interactionDelayKey);
 
     @NotNull
-    ElementBuilder updateOnStateChange(@NotNull State<?> state, @NotNull State<?>... otherStates);
+    This updateOnStateChange(@NotNull State<?> state, @NotNull State<?>... otherStates);
 
     @NotNull
-    ElementBuilder updateOnStateAccess(@NotNull State<?> state, @NotNull State<?>... otherStates);
+    This updateOnStateAccess(@NotNull State<?> state, @NotNull State<?>... otherStates);
 
     @NotNull
-    ElementBuilder displayIf(@NotNull Predicate<ContextElementRender> condition);
+    This displayIf(@NotNull Predicate<ContextElementRender> condition);
 
     @NotNull
-    ElementBuilder displayIf(@NotNull BooleanSupplier condition);
+    This displayIf(@NotNull BooleanSupplier condition);
 
     @NotNull
-    ElementBuilder hideIf(@NotNull Predicate<ContextElementRender> condition);
+    This hideIf(@NotNull Predicate<ContextElementRender> condition);
 
     @NotNull
-    ElementBuilder hideIf(@NotNull BooleanSupplier condition);
+    This hideIf(@NotNull BooleanSupplier condition);
 }

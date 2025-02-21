@@ -6,7 +6,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.element.pagination.ElementPaginationBuilder;
-import net.infumia.frame.state.pagination.ElementConfigurer;
+import net.infumia.frame.state.pagination.PaginationElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
 import net.infumia.frame.typedkey.TypedKey;
 import org.jetbrains.annotations.NotNull;
@@ -37,55 +37,55 @@ public interface StateFactory {
     @NotNull
     <T> StatePagination createPaginationState(
         @NotNull List<T> source,
-        @NotNull ElementConfigurer<T> configurer
+        @NotNull PaginationElementConfigurer<T> configurer
     );
 
     @NotNull
     <T> StatePagination createComputedPaginationState(
         @NotNull Supplier<List<T>> source,
-        @NotNull ElementConfigurer<T> configurer
+        @NotNull PaginationElementConfigurer<T> configurer
     );
 
     @NotNull
     <T> StatePagination createComputedPaginationState(
         @NotNull Function<ContextBase, List<T>> source,
-        @NotNull ElementConfigurer<T> configurer
+        @NotNull PaginationElementConfigurer<T> configurer
     );
 
     @NotNull
     <T> StatePagination createComputedAsyncPaginationState(
         @NotNull Supplier<CompletableFuture<List<T>>> source,
-        @NotNull ElementConfigurer<T> configurer
+        @NotNull PaginationElementConfigurer<T> configurer
     );
 
     @NotNull
     <T> StatePagination createComputedAsyncPaginationState(
         @NotNull Function<ContextBase, CompletableFuture<List<T>>> source,
-        @NotNull ElementConfigurer<T> configurer
+        @NotNull PaginationElementConfigurer<T> configurer
     );
 
     @NotNull
     <T> StatePagination createLazyPaginationState(
         @NotNull Supplier<List<T>> source,
-        @NotNull ElementConfigurer<T> configurer
+        @NotNull PaginationElementConfigurer<T> configurer
     );
 
     @NotNull
     <T> StatePagination createLazyPaginationState(
         @NotNull Function<ContextBase, List<T>> source,
-        @NotNull ElementConfigurer<T> configurer
+        @NotNull PaginationElementConfigurer<T> configurer
     );
 
     @NotNull
     <T> StatePagination createLazyAsyncPaginationState(
         @NotNull Supplier<CompletableFuture<List<T>>> source,
-        @NotNull ElementConfigurer<T> configurer
+        @NotNull PaginationElementConfigurer<T> configurer
     );
 
     @NotNull
     <T> StatePagination createLazyAsyncPaginationState(
         @NotNull Function<ContextBase, CompletableFuture<List<T>>> source,
-        @NotNull ElementConfigurer<T> configurer
+        @NotNull PaginationElementConfigurer<T> configurer
     );
 
     @NotNull
