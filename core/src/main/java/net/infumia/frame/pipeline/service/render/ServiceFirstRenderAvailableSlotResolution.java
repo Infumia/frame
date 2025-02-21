@@ -113,14 +113,16 @@ public final class ServiceFirstRenderAvailableSlotResolution
         @NotNull final ContextRender context,
         final int slot
     ) {
-        return (
-            !((ViewContainerRich) context.container()).typeRich().canPlayerInteractOn(slot) ||
-            context.container().hasItem(slot) ||
-            ((ContextRenderRich) context).slotFinder()
-                .nonRenderedBuilders()
-                .stream()
-                .anyMatch(builder -> builder.slot() == slot)
-        );
+        if (!((ViewContainerRich) context.container()).typeRich().canPlayerInteractOn(slot)) {
+            return true;
+        }
+        if (context.container().hasItem(slot)) {
+            return true;
+        }
+        return ((ContextRenderRich) context).slotFinder()
+            .nonRenderedBuilders()
+            .stream()
+            .anyMatch(builder -> builder.slot() == slot);
     }
 
     private ServiceFirstRenderAvailableSlotResolution() {}
