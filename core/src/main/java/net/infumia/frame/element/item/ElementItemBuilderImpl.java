@@ -1,4 +1,4 @@
-package net.infumia.frame.element;
+package net.infumia.frame.element.item;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -6,6 +6,7 @@ import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
+import net.infumia.frame.element.ElementBuilderImpl;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,9 +1,10 @@
-package net.infumia.frame.element;
+package net.infumia.frame.element.item;
 
 import java.util.function.Consumer;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
+import net.infumia.frame.element.Element;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

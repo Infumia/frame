@@ -3,7 +3,7 @@ package net.infumia.frame.context.view;
 import java.util.Collection;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.element.ElementContainer;
-import net.infumia.frame.element.ElementItemBuilderFactory;
+import net.infumia.frame.element.item.ElementItemBuilderFactory;
 import net.infumia.frame.pipeline.Pipelined;
 import net.infumia.frame.pipeline.executor.PipelineExecutorRender;
 import net.infumia.frame.pipeline.executor.PipelineExecutorViewer;

@@ -1,4 +1,4 @@
-package net.infumia.frame.element;
+package net.infumia.frame.element.item;
 
 import java.util.function.BiConsumer;
 import org.bukkit.inventory.ItemStack;

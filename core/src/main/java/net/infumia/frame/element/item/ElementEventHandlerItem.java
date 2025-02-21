@@ -1,4 +1,4 @@
-package net.infumia.frame.element;
+package net.infumia.frame.element.item;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -14,6 +14,10 @@ import net.infumia.frame.context.element.ContextElementItemUpdate;
 import net.infumia.frame.context.element.ContextElementItemUpdateImpl;
 import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.context.element.ContextElementUpdate;
+import net.infumia.frame.element.Element;
+import net.infumia.frame.element.ElementContainer;
+import net.infumia.frame.element.ElementEventHandler;
+import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.pipeline.context.PipelineContextElement;
 import net.infumia.frame.service.ConsumerService;
 import org.bukkit.inventory.ItemStack;

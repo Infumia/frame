@@ -1,4 +1,4 @@
-package net.infumia.frame.element;
+package net.infumia.frame.element.item;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -8,6 +8,10 @@ import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
 import net.infumia.frame.context.view.ContextRender;
+import net.infumia.frame.element.Element;
+import net.infumia.frame.element.ElementBuilder;
+import net.infumia.frame.element.ElementEventHandler;
+import net.infumia.frame.element.ElementImpl;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
 import net.infumia.frame.service.ConsumerService;

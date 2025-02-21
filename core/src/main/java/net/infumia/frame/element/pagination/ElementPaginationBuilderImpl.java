@@ -4,7 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.element.ElementBuilderImpl;
-import net.infumia.frame.element.ElementItemBuilder;
+import net.infumia.frame.element.item.ElementItemBuilder;
 import net.infumia.frame.state.State;
 import net.infumia.frame.state.pagination.ElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;

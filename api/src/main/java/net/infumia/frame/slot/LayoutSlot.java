@@ -1,7 +1,7 @@
 package net.infumia.frame.slot;
 
 import java.util.function.IntFunction;
-import net.infumia.frame.element.ElementItemBuilder;
+import net.infumia.frame.element.item.ElementItemBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
