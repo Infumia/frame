@@ -15,7 +15,6 @@ import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
-import net.infumia.frame.element.ElementBuilder;
 import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
 import net.infumia.frame.element.ElementRich;
@@ -74,7 +73,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         this.onPageSwitch = builder.onPageSwitch;
 
         if (this.sourceProvider instanceof SourceProvider.Immutable) {
-            this.currentSource = this.sourceProvider.apply(this.parent()).join();
+            this.currentSource = this.sourceProvider.apply(this.parent).join();
             this.sourceFactory = null;
         } else {
             this.sourceFactory = this.sourceProvider;
@@ -220,13 +219,13 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         }
         this.currentPageIndex = pageIndex;
         this.pageWasChanged = true;
-        final ContextRender host = (ContextRender) this.parent();
+        final ContextRender host = (ContextRender) this.parent;
         if (this.onPageSwitch != null) {
             this.onPageSwitch.accept(host, this);
         }
         CompletableFutureExtensions.logError(
             this.update(),
-            this.parent().frame().logger(),
+            this.parent.frame().logger(),
             "An error occurred while updating the pagination '%s'.",
             this
         );
@@ -318,30 +317,24 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
 
     @NotNull
     @Override
-    public ElementBuilder toBuilder() {
-        return new ElementPaginationBuilderImpl<>(this);
-    }
-
-    @NotNull
-    @Override
     public CompletableFuture<ConsumerService.State> update() {
         Preconditions.state(
-            this.parent() instanceof ContextRender,
+            this.parent instanceof ContextRender,
             "You cannot update the element '%s' when the parent is not a ContextRender!",
             this
         );
-        return this.pipelines.executeUpdate((ContextRender) this.parent(), false);
+        return this.pipelines.executeUpdate((ContextRender) this.parent, false);
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> forceUpdate() {
         Preconditions.state(
-            this.parent() instanceof ContextRender,
+            this.parent instanceof ContextRender,
             "You cannot update the element '%s' when the parent is not a ContextRender!",
             this
         );
-        return this.pipelines.executeUpdate((ContextRender) this.parent(), true);
+        return this.pipelines.executeUpdate((ContextRender) this.parent, true);
     }
 
     @NotNull

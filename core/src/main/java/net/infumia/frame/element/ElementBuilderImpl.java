@@ -28,18 +28,6 @@ public class ElementBuilderImpl implements ElementBuilderRich {
     Collection<State<?>> updateOnStateChange;
     Collection<State<?>> updateOnStateAccess;
 
-    public ElementBuilderImpl(@NotNull final Element element) {
-        this.root = ((ElementRich) element).root();
-        this.cancelOnClick = element.cancelOnClick();
-        this.closeOnClick = element.closeOnClick();
-        this.updateOnClick = element.updateOnClick();
-        this.interactionDelay = element.interactionDelay();
-        this.onInteractionDelay = element.onInteractionDelay();
-        this.displayIf = element.displayIf();
-        this.updateOnStateChange = element.updateOnStateChange();
-        this.updateOnStateAccess = element.updateOnStateAccess();
-    }
-
     public ElementBuilderImpl() {}
 
     @NotNull

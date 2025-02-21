@@ -21,15 +21,6 @@ public final class ElementItemBuilderImpl
     Consumer<ContextElementItemRender> onRender;
     Consumer<ContextElementItemUpdate> onUpdate;
 
-    ElementItemBuilderImpl(@NotNull final ElementItemImpl element) {
-        super(element);
-        this.item = element.item;
-        this.slot = element.slot;
-        this.onClick = element.onClick;
-        this.onRender = element.onRender;
-        this.onUpdate = element.onUpdate;
-    }
-
     public ElementItemBuilderImpl() {}
 
     @Override

@@ -9,7 +9,6 @@ import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
-import net.infumia.frame.element.ElementBuilder;
 import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
@@ -87,12 +86,6 @@ public class ElementItemImpl extends ElementImpl implements ElementItemRich {
             return false;
         }
         return ((ElementItem) element).slot() == this.slot;
-    }
-
-    @NotNull
-    @Override
-    public ElementBuilder toBuilder() {
-        return new ElementItemBuilderImpl(this);
     }
 
     @NotNull

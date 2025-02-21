@@ -29,15 +29,6 @@ public final class ElementPaginationBuilderImpl<T>
         this.stateFactory = stateFactory;
     }
 
-    ElementPaginationBuilderImpl(@NotNull final ElementPaginationImpl<T> element) {
-        super(element);
-        this.sourceProvider = element.sourceProvider;
-        this.stateFactory = element.stateFactory;
-        this.layout = element.layout;
-        this.onPageSwitch = element.onPageSwitch;
-        this.elementConfigurer = element.elementConfigurer;
-    }
-
     @NotNull
     @Override
     public ElementPaginationBuilder<T> associated(

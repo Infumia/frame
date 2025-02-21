@@ -50,12 +50,6 @@ public class ElementImpl implements ElementRich {
         this.root = builder.root;
     }
 
-    @NotNull
-    @Override
-    public ContextBase parent() {
-        return this.parent;
-    }
-
     @Nullable
     @Override
     public Element root() {
@@ -85,12 +79,6 @@ public class ElementImpl implements ElementRich {
     @Override
     public boolean intersects(@NotNull final Element element) {
         return false;
-    }
-
-    @NotNull
-    @Override
-    public ElementBuilder toBuilder() {
-        return new ElementBuilderImpl(this);
     }
 
     @Override
