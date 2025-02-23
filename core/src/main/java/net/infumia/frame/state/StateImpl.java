@@ -58,7 +58,7 @@ public class StateImpl<T> implements StateRich<T> {
 
     @NotNull
     @Override
-    public T getOtThrow(@NotNull final StateValueHostHolder host) {
+    public T getOrThrow(@NotNull final StateValueHostHolder host) {
         return Preconditions.stateNotNull(
             this.get(host),
             "Value for state '%s' not found!",

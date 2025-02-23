@@ -12,7 +12,7 @@ public interface State<T> {
     T get(@NotNull StateValueHostHolder host);
 
     @NotNull
-    T getOtThrow(@NotNull StateValueHostHolder host);
+    T getOrThrow(@NotNull StateValueHostHolder host);
 
     @NotNull
     CompletableFuture<@Nullable T> getWait(@NotNull StateValueHostHolder host);
