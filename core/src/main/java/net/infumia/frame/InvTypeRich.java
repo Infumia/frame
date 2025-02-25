@@ -2,7 +2,6 @@ package net.infumia.frame;
 
 import java.util.Arrays;
 import net.infumia.frame.type.InvType;
-import net.infumia.frame.util.Preconditions;
 import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

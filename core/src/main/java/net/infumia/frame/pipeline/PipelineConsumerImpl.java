@@ -8,27 +8,27 @@ import net.infumia.frame.service.ServicePipelineBuilder;
 import net.infumia.frame.service.ServiceRepository;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineConsumerImpl<B extends PipelineContext> implements PipelineConsumer<B> {
+public final class PipelineConsumerImpl<Context> implements PipelineConsumer<Context> {
 
-    private final ServiceRepository<B, ConsumerService.State> repository;
+    private final ServiceRepository<Context, ConsumerService.State> repository;
 
     private PipelineConsumerImpl(
-        @NotNull final ServiceRepository<B, ConsumerService.State> repository
+        @NotNull final ServiceRepository<Context, ConsumerService.State> repository
     ) {
         this.repository = repository;
     }
 
     public PipelineConsumerImpl(
-        @NotNull final TypeToken<PipelineServiceConsumer<B>> type,
-        @NotNull final PipelineServiceConsumer<B> defaultService
+        @NotNull final TypeToken<PipelineServiceConsumer<Context>> type,
+        @NotNull final PipelineServiceConsumer<Context> defaultService
     ) {
         this(ServicePipelineBuilder.newBuilder().build().create(type, defaultService));
     }
 
     @NotNull
     @Override
-    public PipelineConsumer<B> apply(
-        @NotNull final Implementation<B, ConsumerService.State> operation
+    public PipelineConsumer<Context> apply(
+        @NotNull final Implementation<Context, ConsumerService.State> operation
     ) {
         this.repository.apply(operation);
         return this;
@@ -36,19 +36,21 @@ public final class PipelineConsumerImpl<B extends PipelineContext> implements Pi
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> completeWith(@NotNull final B context) {
+    public CompletableFuture<ConsumerService.State> completeWith(@NotNull final Context context) {
         return this.repository.completeWith(context);
     }
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> completeWithAsync(@NotNull final B context) {
+    public CompletableFuture<ConsumerService.State> completeWithAsync(
+        @NotNull final Context context
+    ) {
         return this.repository.completeWithAsync(context);
     }
 
     @NotNull
     @Override
-    public PipelineConsumer<B> cloned() {
+    public PipelineConsumer<Context> cloned() {
         return new PipelineConsumerImpl<>(this.repository.cloned());
     }
 }

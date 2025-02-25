@@ -1,9 +1,9 @@
 package net.infumia.frame.state.value;
 
+import net.infumia.frame.Lazy;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
-import net.infumia.frame.util.Lazy;
-import net.infumia.frame.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,9 +1,13 @@
 import net.infumia.gradle.applySpotless
 
-plugins { java }
+plugins {
+    java
+    `java-library`
+}
 
 subprojects {
     apply<JavaPlugin>()
+    apply<JavaLibraryPlugin>()
 
     repositories {
         mavenCentral()

@@ -20,12 +20,6 @@ public final class ServiceViewCreated
 
     @NotNull
     @Override
-    public String key() {
-        return ServiceViewCreated.KEY;
-    }
-
-    @NotNull
-    @Override
     @SuppressWarnings("unchecked")
     public CompletableFuture<Collection<Object>> handle(
         @NotNull final PipelineContextFrame.ViewCreated ctx
@@ -42,6 +36,12 @@ public final class ServiceViewCreated
             ctx.frame().logger().debug("View classes are created '%s'", ctx.registeredViews());
             return views;
         });
+    }
+
+    @NotNull
+    @Override
+    public String key() {
+        return ServiceViewCreated.KEY;
     }
 
     private ServiceViewCreated() {}
