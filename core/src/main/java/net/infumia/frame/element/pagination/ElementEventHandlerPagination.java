@@ -28,7 +28,8 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
     public CompletableFuture<?> handleRender(@NotNull final PipelineContextElement.Render ctx) {
         final ContextElementRender context = ctx.context();
         final ElementPaginationRich pagination = (ElementPaginationRich) context.element();
-        if (pagination.initialized() && !pagination.pageWasChanged() && !context.forced()) {
+        final boolean forced = context.forced();
+        if (pagination.initialized() && !pagination.pageWasChanged() && !forced) {
             pagination.visible(true);
             return this.renderChild(context, pagination);
         }
@@ -36,7 +37,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
             pagination.updatePageSize(context);
         }
         return pagination
-            .loadCurrentPage(context, context.forced())
+            .loadCurrentPage(context, forced)
             .thenCompose(__ -> {
                 pagination.visible(true);
                 pagination.initialized(true);
@@ -101,13 +102,14 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
     ) {
         final ContextElementUpdate context = ctx.context();
         final ElementPaginationRich pagination = (ElementPaginationRich) context.element();
-        if (pagination.pageWasChanged() || context.forced()) {
+        final boolean forced = context.forced();
+        if (pagination.pageWasChanged() || forced) {
             return pagination
                 .pipelines()
                 .executeClear(context)
                 .thenCompose(__ -> {
                     pagination.clearElements();
-                    return pagination.pipelines().executeRender(context, context.forced());
+                    return pagination.pipelines().executeRender(context, forced);
                 })
                 .thenApply(__ -> {
                     pagination.pageWasChanged(false);
@@ -120,12 +122,7 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
         final List<Element> elements = pagination.elements();
         final CompletableFuture<?>[] futures = new CompletableFuture<?>[elements.size()];
         for (int i = 0; i < futures.length; i++) {
-            final ElementRich element = (ElementRich) elements.get(i);
-            if (context.forced()) {
-                futures[i] = element.forceUpdate();
-            } else {
-                futures[i] = element.update();
-            }
+            futures[i] = elements.get(i).update();
         }
         return CompletableFuture.allOf(futures).thenApply(__ -> null);
     }
