@@ -1,9 +1,6 @@
 import net.infumia.gradle.applySpotless
 
-plugins {
-    java
-    `java-library`
-}
+plugins { java }
 
 subprojects {
     apply<JavaPlugin>()
