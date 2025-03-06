@@ -13,6 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.extension.CompletableFutureExtensions;
+import net.infumia.frame.feature.Feature;
 import net.infumia.frame.listener.InventoryListener;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.metadata.MetadataAccessFactory;
@@ -23,7 +24,6 @@ import net.infumia.frame.task.TaskFactory;
 import net.infumia.frame.task.TaskFactoryImpl;
 import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
-import net.infumia.frame.util.Preconditions;
 import net.infumia.frame.view.View;
 import net.infumia.frame.view.ViewCreator;
 import net.infumia.frame.view.ViewCreatorImpl;
@@ -125,7 +125,7 @@ final class FrameImpl implements FrameRich {
 
     @Override
     public void register() {
-        this.register(builder -> {});
+        this.register(__ -> {});
     }
 
     @Override
@@ -243,9 +243,10 @@ final class FrameImpl implements FrameRich {
         @NotNull final ContextRender activeContext
     ) {
         final View view = activeContext.view();
-        if (!(view instanceof ViewEventHandler)) {
-            return CompletableFuture.completedFuture(null);
-        }
+        Preconditions.argument(
+            view instanceof ViewEventHandler,
+            "The active context's view must be an instance of ViewEventHandler!"
+        );
         return CompletableFutureExtensions.logError(
             ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
             this.logger,
@@ -312,5 +313,17 @@ final class FrameImpl implements FrameRich {
                         );
                 }
             });
+    }
+
+    @Override
+    public Frame install(final Class<? extends Feature> feature) {
+        // TODO: portlek, Implement this.
+        return this;
+    }
+
+    @Override
+    public Frame install(final Feature feature) {
+        // TODO: portlek, Implement this.
+        return this;
     }
 }

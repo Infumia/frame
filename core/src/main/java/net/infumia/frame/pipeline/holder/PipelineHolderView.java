@@ -2,6 +2,7 @@ package net.infumia.frame.pipeline.holder;
 
 import io.leangen.geantyref.TypeToken;
 import java.util.Collection;
+import net.infumia.frame.Cloned;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.pipeline.Pipeline;
@@ -38,7 +39,6 @@ import net.infumia.frame.pipeline.service.view.ServiceOpenWaitUntil;
 import net.infumia.frame.pipeline.service.view.ServiceProcessConfigModifier;
 import net.infumia.frame.pipeline.service.view.ServiceProcessConfigModifierAddSizeModifier;
 import net.infumia.frame.pipeline.service.view.ServiceProcessConfigModifierLogging;
-import net.infumia.frame.util.Cloned;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;

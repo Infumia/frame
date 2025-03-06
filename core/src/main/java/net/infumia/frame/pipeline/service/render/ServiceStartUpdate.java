@@ -2,11 +2,11 @@ package net.infumia.frame.pipeline.service.render;
 
 import java.time.Duration;
 import net.infumia.frame.Frame;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
-import net.infumia.frame.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceStartUpdate

@@ -22,12 +22,6 @@ public final class ServiceCreateViewers
 
     @NotNull
     @Override
-    public String key() {
-        return ServiceCreateViewers.KEY;
-    }
-
-    @NotNull
-    @Override
     public CompletableFuture<Collection<Viewer>> handle(
         @NotNull final PipelineContextView.CreateViewers ctx
     ) {
@@ -40,6 +34,12 @@ public final class ServiceCreateViewers
                 .map(player -> viewerCreator.create(player, view))
                 .collect(Collectors.toSet())
         );
+    }
+
+    @NotNull
+    @Override
+    public String key() {
+        return ServiceCreateViewers.KEY;
     }
 
     private ServiceCreateViewers() {}

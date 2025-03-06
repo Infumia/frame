@@ -4,21 +4,21 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.element.ElementBuilderImpl;
-import net.infumia.frame.element.ElementItemBuilder;
+import net.infumia.frame.element.item.ElementItemBuilder;
 import net.infumia.frame.state.State;
-import net.infumia.frame.state.pagination.ElementConfigurer;
+import net.infumia.frame.state.pagination.PaginationElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
 import org.jetbrains.annotations.NotNull;
 
 public final class ElementPaginationBuilderImpl<T>
-    extends ElementBuilderImpl<ElementPaginationBuilderImpl<T>>
+    extends ElementBuilderImpl
     implements ElementPaginationBuilderRich<T> {
 
     final SourceProvider<T> sourceProvider;
     final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory;
     char layout = '0';
     BiConsumer<ContextBase, ElementPagination> onPageSwitch;
-    ElementConfigurer<T> elementConfigurer;
+    PaginationElementConfigurer<T> elementConfigurer;
     State<ElementPagination> associated;
 
     public ElementPaginationBuilderImpl(
@@ -29,18 +29,9 @@ public final class ElementPaginationBuilderImpl<T>
         this.stateFactory = stateFactory;
     }
 
-    ElementPaginationBuilderImpl(@NotNull final ElementPaginationImpl<T> element) {
-        super(element);
-        this.sourceProvider = element.sourceProvider;
-        this.stateFactory = element.stateFactory;
-        this.layout = element.layout;
-        this.onPageSwitch = element.onPageSwitch;
-        this.elementConfigurer = element.elementConfigurer;
-    }
-
     @NotNull
     @Override
-    public ElementPaginationBuilderRich<T> associated(
+    public ElementPaginationBuilder<T> associated(
         @NotNull final State<ElementPagination> associated
     ) {
         this.associated = associated;
@@ -74,7 +65,7 @@ public final class ElementPaginationBuilderImpl<T>
     @NotNull
     @Override
     public ElementPaginationBuilder<T> elementConfigurer(
-        @NotNull final ElementConfigurer<T> configurer
+        @NotNull final PaginationElementConfigurer<T> configurer
     ) {
         this.elementConfigurer = configurer;
         return this;
