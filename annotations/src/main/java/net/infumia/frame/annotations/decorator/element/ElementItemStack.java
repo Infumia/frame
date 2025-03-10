@@ -17,7 +17,7 @@ public @interface ElementItemStack {
         ? extends Provider<ContextBase, ItemStack>
     > provider() default InferredItemStackProvider.class;
 
-    String configKey();
+    String configKey() default "";
 
     Class<
         ? extends Provider<ContextBase, String>

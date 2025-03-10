@@ -14,7 +14,7 @@ import net.infumia.frame.context.ContextBase;
 public @interface ElementVault {
     char layout() default ElementVault.INFERRED_LAYOUT;
 
-    String configKey();
+    String configKey() default "";
 
     Class<
         ? extends Provider<ContextBase, String>

@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ElementCloseOnClick {
-    // before
+    // run #close() before the click element or not.
     boolean value() default true;
 }

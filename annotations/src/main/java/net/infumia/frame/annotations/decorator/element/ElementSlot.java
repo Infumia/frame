@@ -31,7 +31,7 @@ public @interface ElementSlot {
 
     boolean resultSlot() default false;
 
-    String configKey();
+    String configKey() default "";
 
     Class<
         ? extends Provider<ContextBase, String>
@@ -55,5 +55,5 @@ public @interface ElementSlot {
 
     int INFERRED_COLUMN = -1;
 
-    char INFERRED_LAYOUT = ':';
+    char INFERRED_LAYOUT = ' ';
 }

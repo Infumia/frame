@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface ElementPaginationAdvance {
     String value() default ElementPaginationAdvance.FIRST_PAGINATION_KEY;
 
-    boolean hideIfCannot() default true;
+    boolean tryHide() default true;
 
     String FIRST_PAGINATION_KEY = "__FIRST_PAGINATION__";
 }
