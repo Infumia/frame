@@ -30,11 +30,9 @@ public class ElementBuilderImpl implements ElementBuilderRich {
 
     public ElementBuilderImpl() {}
 
-    @NotNull
     @Override
-    public ElementBuilder root(@NotNull final Element root) {
+    public void root(@NotNull final Element root) {
         this.root = root;
-        return this;
     }
 
     @NotNull

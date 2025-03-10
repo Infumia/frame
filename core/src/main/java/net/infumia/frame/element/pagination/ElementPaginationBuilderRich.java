@@ -5,7 +5,6 @@ import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
 
 public interface ElementPaginationBuilderRich<Type>
-    extends ElementBuilderRich<ElementPaginationBuilderRich<Type>>, ElementPaginationBuilder<Type> {
-    @NotNull
-    ElementPaginationBuilder<Type> associated(@NotNull State<ElementPagination> associated);
+    extends ElementBuilderRich, ElementPaginationBuilder<Type> {
+    void associated(@NotNull State<ElementPagination> associated);
 }

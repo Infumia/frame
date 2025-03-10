@@ -37,6 +37,8 @@ public class ElementImpl implements ElementRich {
         @NotNull final ContextBase parent
     ) {
         this.key = UUID.randomUUID().toString();
+        this.parent = parent;
+        this.root = builder.root;
         this.cancelOnClick = builder.cancelOnClick;
         this.updateOnClick = builder.updateOnClick;
         this.closeOnClick = builder.closeOnClick;
@@ -46,8 +48,6 @@ public class ElementImpl implements ElementRich {
         this.displayIf = builder.displayIf;
         this.updateOnStateChange = builder.updateOnStateChange;
         this.updateOnStateAccess = builder.updateOnStateAccess;
-        this.parent = parent;
-        this.root = builder.root;
     }
 
     @Nullable

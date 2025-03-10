@@ -5,11 +5,11 @@ import java.util.function.Function;
 import net.infumia.frame.context.element.ContextElementItemClick;
 import net.infumia.frame.context.element.ContextElementItemRender;
 import net.infumia.frame.context.element.ContextElementItemUpdate;
-import net.infumia.frame.element.ElementBuilder;
+import net.infumia.frame.element.ElementBuilderChain;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public interface ElementItemBuilder extends ElementBuilder<ElementItemBuilder> {
+public interface ElementItemBuilder extends ElementBuilderChain<ElementItemBuilder> {
     @NotNull
     ElementItemBuilder item(@NotNull ItemStack item);
 
