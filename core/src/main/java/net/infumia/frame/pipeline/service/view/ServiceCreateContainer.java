@@ -6,11 +6,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import net.infumia.frame.InvTypeRich;
 import net.infumia.frame.InvTypes;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.context.PipelineContextView;
 import net.infumia.frame.type.InvType;
-import net.infumia.frame.util.Preconditions;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.ViewContainerImpl;
 import net.infumia.frame.view.config.ViewConfig;
@@ -32,12 +32,6 @@ public final class ServiceCreateContainer
     > INSTANCE = new ServiceCreateContainer();
 
     public static final String KEY = "create";
-
-    @NotNull
-    @Override
-    public String key() {
-        return ServiceCreateContainer.KEY;
-    }
 
     @NotNull
     @Override
@@ -76,6 +70,12 @@ public final class ServiceCreateContainer
                 typeRich
             )
         );
+    }
+
+    @NotNull
+    @Override
+    public String key() {
+        return ServiceCreateContainer.KEY;
     }
 
     private ServiceCreateContainer() {}

@@ -2,8 +2,8 @@ package net.infumia.frame.task;
 
 import java.io.Closeable;
 import java.time.Duration;
+import net.infumia.frame.RunnableThrowable;
 import net.infumia.frame.logger.Logger;
-import net.infumia.frame.util.RunnableThrowable;
 import net.infumia.frame.util.Ticks;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;

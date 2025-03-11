@@ -1,6 +1,7 @@
 package net.infumia.frame.pipeline.holder;
 
 import io.leangen.geantyref.TypeToken;
+import net.infumia.frame.Cloned;
 import net.infumia.frame.pipeline.PipelineConsumer;
 import net.infumia.frame.pipeline.PipelineConsumerImpl;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
@@ -29,7 +30,6 @@ import net.infumia.frame.pipeline.service.render.ServiceUpdateLogging;
 import net.infumia.frame.pipeline.service.render.ServiceUpdateOnUpdate;
 import net.infumia.frame.pipeline.service.view.ServiceTransition;
 import net.infumia.frame.pipeline.service.view.ServiceTransitionLogging;
-import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
 public final class PipelineHolderRender implements Cloned<PipelineHolderRender> {

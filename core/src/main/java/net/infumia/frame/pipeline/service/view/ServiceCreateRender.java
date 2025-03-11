@@ -17,18 +17,18 @@ public final class ServiceCreateRender
 
     @NotNull
     @Override
-    public String key() {
-        return ServiceCreateRender.KEY;
-    }
-
-    @NotNull
-    @Override
     public CompletableFuture<ContextRender> handle(
         @NotNull final PipelineContextView.CreateRender ctx
     ) {
         return CompletableFuture.completedFuture(
             new ContextRenderImpl(ctx.context(), ctx.container(), ctx.config(), ctx.layouts())
         );
+    }
+
+    @NotNull
+    @Override
+    public String key() {
+        return ServiceCreateRender.KEY;
     }
 
     private ServiceCreateRender() {}
