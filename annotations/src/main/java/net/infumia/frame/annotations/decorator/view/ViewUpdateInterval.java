@@ -16,13 +16,11 @@ public @interface ViewUpdateInterval {
 
     Class<? extends Provider<ContextBase, Long>> provider() default InferredLongProvider.class;
 
-    String configKey() default ViewUpdateInterval.INFERRED_CONFIG_KEY;
+    String configKey() default "";
 
     Class<
         ? extends Provider<ContextBase, String>
     > configKeyProvider() default InferredStringProvider.class;
 
     long INFERRED_VALUE = -1;
-
-    String INFERRED_CONFIG_KEY = "__INFERRED_CONFIG_KEY__";
 }

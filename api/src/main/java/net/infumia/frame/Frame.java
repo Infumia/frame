@@ -1,7 +1,8 @@
 package net.infumia.frame;
 
 import java.util.function.Consumer;
-import net.infumia.frame.feature.FeatureBuilderFactory;
+import net.infumia.frame.feature.Feature;
+import net.infumia.frame.feature.FeatureInstaller;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.pipeline.Pipelined;
 import net.infumia.frame.pipeline.executor.PipelineExecutorFrame;
@@ -16,7 +17,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public interface Frame
-    extends ViewOpener, FeatureBuilderFactory<Frame>, Pipelined<PipelineExecutorFrame> {
+    extends ViewOpener, FeatureInstaller<Frame>, Pipelined<PipelineExecutorFrame> {
     @NotNull
     static Frame create(@NotNull final Plugin plugin) {
         return Internal.factory().create(plugin);
@@ -62,6 +63,12 @@ public interface Frame
     InventoryCreator inventoryCreator();
 
     void inventoryCreator(@NotNull InventoryCreator inventoryCreator);
+
+    @NotNull
+    Frame installFeature(Class<? extends Feature> feature);
+
+    @NotNull
+    Frame installFeature(Feature feature);
 
     void register();
 

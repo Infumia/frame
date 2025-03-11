@@ -315,14 +315,16 @@ final class FrameImpl implements FrameRich {
             });
     }
 
+    @NotNull
     @Override
-    public Frame install(final Class<? extends Feature> feature) {
+    public Frame installFeature(final Class<? extends Feature> feature) {
         // TODO: portlek, Implement this.
         return this;
     }
 
+    @NotNull
     @Override
-    public Frame install(final Feature feature) {
+    public Frame installFeature(final Feature feature) {
         // TODO: portlek, Implement this.
         return this;
     }

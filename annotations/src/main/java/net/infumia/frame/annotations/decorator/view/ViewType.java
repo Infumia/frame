@@ -19,11 +19,9 @@ public @interface ViewType {
         ? extends Provider<ContextBase, InvType>
     > provider() default InferredInvTypeProvider.class;
 
-    String configKey() default ViewType.INFERRED_CONFIG_KEY;
+    String configKey() default "";
 
     Class<
         ? extends Provider<ContextBase, String>
     > configKeyProvider() default InferredStringProvider.class;
-
-    String INFERRED_CONFIG_KEY = "__INFERRED_CONFIG_KEY__";
 }

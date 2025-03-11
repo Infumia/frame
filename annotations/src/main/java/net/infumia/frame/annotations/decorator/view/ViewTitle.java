@@ -15,13 +15,11 @@ public @interface ViewTitle {
 
     Class<? extends Provider<ContextBase, String>> provider() default InferredStringProvider.class;
 
-    String configKey() default ViewTitle.INFERRED_CONFIG_KEY;
+    String configKey() default "";
 
     Class<
         ? extends Provider<ContextBase, String>
     > configKeyProvider() default InferredStringProvider.class;
 
     String INFERRED_VALUE = "__INFERRED_VALUE__";
-
-    String INFERRED_CONFIG_KEY = "__INFERRED_CONFIG_KEY__";
 }

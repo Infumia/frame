@@ -18,13 +18,11 @@ public @interface ViewSize {
         ? extends Provider<ContextBase, Integer>
     > provider() default InferredIntegerProvider.class;
 
-    String configKey() default ViewSize.INFERRED_CONFIG_KEY;
+    String configKey() default "";
 
     Class<
         ? extends Provider<ContextBase, String>
     > configKeyProvider() default InferredStringProvider.class;
 
     int INFERRED_VALUE = -1;
-
-    String INFERRED_CONFIG_KEY = "__INFERRED_CONFIG_KEY__";
 }
