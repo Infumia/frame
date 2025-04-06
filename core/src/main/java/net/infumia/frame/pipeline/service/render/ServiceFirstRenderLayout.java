@@ -2,8 +2,8 @@ package net.infumia.frame.pipeline.service.render;
 
 import java.util.function.IntFunction;
 import net.infumia.frame.context.view.ContextRender;
-import net.infumia.frame.element.ElementItemBuilder;
-import net.infumia.frame.element.ElementItemBuilderRich;
+import net.infumia.frame.element.item.ElementItemBuilder;
+import net.infumia.frame.element.item.ElementItemBuilderRich;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import net.infumia.frame.slot.LayoutSlot;

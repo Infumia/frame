@@ -1,8 +1,8 @@
 package net.infumia.frame.pipeline.service.view;
 
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextView;
-import net.infumia.frame.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

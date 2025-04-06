@@ -7,7 +7,6 @@ import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.element.pagination.ElementPagination;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
-import net.infumia.frame.state.State;
 import net.infumia.frame.state.pagination.StatePagination;
 import org.jetbrains.annotations.NotNull;
 
