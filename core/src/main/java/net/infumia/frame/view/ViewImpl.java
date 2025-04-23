@@ -75,7 +75,7 @@ public final class ViewImpl implements View, ViewEventHandler {
 
     @NotNull
     @Override
-    public CompletableFuture<@Nullable ContextRender> simulateOpenActive(
+    public CompletableFuture<ContextRender> simulateOpenActive(
         @NotNull final ContextRender activeContext,
         @NotNull final Collection<Player> viewers
     ) {
@@ -183,8 +183,8 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ViewConfig config,
         @NotNull final ViewContainer container
     ) {
-        return this.pipelines.executeModifyContainer(context, config, container).thenCompose(pair ->
-                this.executeLayoutResolution(context, config, pair.second().container())
+        return this.pipelines.executeModifyContainer(context, config, container).thenCompose(
+                modified -> this.executeLayoutResolution(context, config, modified)
             );
     }
 
@@ -195,7 +195,7 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ViewContainer container
     ) {
         return this.pipelines.executeLayoutResolution(context, config, container).thenCompose(
-                pair -> this.executeCreateRender(context, config, container, pair.second())
+                slots -> this.executeCreateRender(context, config, container, slots)
             );
     }
 

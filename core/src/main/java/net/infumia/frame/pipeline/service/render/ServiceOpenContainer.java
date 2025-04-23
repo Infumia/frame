@@ -1,6 +1,5 @@
 package net.infumia.frame.pipeline.service.render;
 
-import net.infumia.frame.metadata.MetadataKeyHolder;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import net.infumia.frame.viewer.Viewer;
@@ -23,12 +22,7 @@ public final class ServiceOpenContainer
     @Override
     public void accept(@NotNull final PipelineContextRender.OpenContainer ctx) {
         for (final Viewer viewer : ctx.viewers()) {
-            viewer
-                .metadata()
-                .getOrThrow(MetadataKeyHolder.CONTEXTUAL_VIEWER)
-                .context()
-                .container()
-                .open(viewer);
+            ctx.context().container().open(viewer);
         }
     }
 

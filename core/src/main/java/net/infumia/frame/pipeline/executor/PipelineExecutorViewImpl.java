@@ -94,9 +94,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
 
     @NotNull
     @Override
-    public CompletableFuture<
-        Pair<ConsumerService.State, PipelineContextView.ModifyContainer>
-    > executeModifyContainer(
+    public CompletableFuture<ViewContainer> executeModifyContainer(
         @NotNull final ContextBase context,
         @NotNull final ViewConfig config,
         @NotNull final ViewContainer container
@@ -106,16 +104,12 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
             config,
             container
         );
-        return this.pipelines.modifyContainer()
-            .completeWith(ctx)
-            .thenApply(state -> Pair.of(state, ctx));
+        return this.pipelines.modifyContainer().completeWith(ctx).thenApply(__ -> ctx.container());
     }
 
     @NotNull
     @Override
-    public CompletableFuture<
-        Pair<ConsumerService.State, Collection<LayoutSlot>>
-    > executeLayoutResolution(
+    public CompletableFuture<Collection<LayoutSlot>> executeLayoutResolution(
         @NotNull final ContextBase context,
         @NotNull final ViewConfig config,
         @NotNull final ViewContainer container
@@ -124,7 +118,7 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
             new PipelineContextViews.LayoutResolution(context, config, container);
         return this.pipelines.layoutResolution()
             .completeWith(layoutResolution)
-            .thenApply(state -> Pair.of(state, layoutResolution.layouts()));
+            .thenApply(__ -> layoutResolution.layouts());
     }
 
     @NotNull

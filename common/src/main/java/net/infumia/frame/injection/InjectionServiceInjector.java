@@ -20,12 +20,6 @@ public final class InjectionServiceInjector<C> implements InjectionService<C> {
 
     @NotNull
     @Override
-    public String key() {
-        return InjectionServiceInjector.KEY;
-    }
-
-    @NotNull
-    @Override
     public CompletableFuture<@Nullable Object> handle(@NotNull final InjectionRequest<C> request) {
         return CompletableFuture.completedFuture(
             this.registry.injectors(request.injectedType())
@@ -35,5 +29,11 @@ public final class InjectionServiceInjector<C> implements InjectionService<C> {
                 .findFirst()
                 .orElse(null)
         );
+    }
+
+    @NotNull
+    @Override
+    public String key() {
+        return InjectionServiceInjector.KEY;
     }
 }
