@@ -99,13 +99,6 @@ public class StateImpl<T> implements StateRich<T> {
     }
 
     @Override
-    public String toString() {
-        return new StringJoiner(", ", StateImpl.class.getSimpleName() + "[", "]")
-            .add("id=" + this.id)
-            .toString();
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hashCode(this.id);
     }
@@ -119,5 +112,12 @@ public class StateImpl<T> implements StateRich<T> {
             return false;
         }
         return this.id == ((StateRich<?>) o).id();
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", StateImpl.class.getSimpleName() + "[", "]")
+            .add("id=" + this.id)
+            .toString();
     }
 }

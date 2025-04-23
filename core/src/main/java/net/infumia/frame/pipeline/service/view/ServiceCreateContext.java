@@ -23,12 +23,6 @@ public final class ServiceCreateContext
 
     @NotNull
     @Override
-    public String key() {
-        return ServiceCreateContext.KEY;
-    }
-
-    @NotNull
-    @Override
     public CompletableFuture<ContextBase> handle(
         @NotNull final PipelineContextView.CreateContext ctx
     ) {
@@ -46,6 +40,12 @@ public final class ServiceCreateContext
                 viewers.size() == 1 ? viewers.iterator().next() : null
             )
         );
+    }
+
+    @NotNull
+    @Override
+    public String key() {
+        return ServiceCreateContext.KEY;
     }
 
     private ServiceCreateContext() {}

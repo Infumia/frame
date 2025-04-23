@@ -44,12 +44,6 @@ final class ViewConfigImpl implements ViewConfigRich {
         return this.title;
     }
 
-    @NotNull
-    @Override
-    public ViewConfigBuilderRich toBuilder() {
-        return new ViewConfigBuilderImpl(this);
-    }
-
     @Override
     public int size() {
         return this.size;
@@ -97,6 +91,12 @@ final class ViewConfigImpl implements ViewConfigRich {
     @UnmodifiableView
     public Collection<ViewConfigModifier> modifiers() {
         return this.modifiers;
+    }
+
+    @NotNull
+    @Override
+    public ViewConfigBuilderRich toBuilder() {
+        return new ViewConfigBuilderImpl(this);
     }
 
     @Override

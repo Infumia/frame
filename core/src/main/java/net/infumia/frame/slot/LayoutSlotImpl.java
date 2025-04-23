@@ -10,7 +10,7 @@ public final class LayoutSlotImpl implements LayoutSlot {
 
     private final char character;
     private final int@NotNull[] slots;
-    private IntFunction<ElementItemBuilder> builderFactory;
+    private final IntFunction<ElementItemBuilder> builderFactory;
 
     private LayoutSlotImpl(
         final char character,
