@@ -102,7 +102,6 @@ public final class ViewImpl implements View, ViewEventHandler {
         final MetadataAccess metadata = viewer.metadata();
         final boolean transitioningFromFrame =
             metadata.remove(MetadataKeyHolder.TRANSITIONING_FROM) != null;
-
         final Boolean forcedClose = metadata.remove(MetadataKeyHolder.FORCED_CLOSE);
         final boolean forced = transitioningFromFrame || (forcedClose != null && forcedClose);
         return this.pipelines.executeClose(viewer, forced);
