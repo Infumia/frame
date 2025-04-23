@@ -103,7 +103,8 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
         if (previousContext == null) {
             metadata.remove(MetadataKeyHolder.PREVIOUS_VIEWS);
             return;
-        } else if (previousContexts.isEmpty()) {
+        }
+        if (previousContexts.isEmpty()) {
             metadata.remove(MetadataKeyHolder.PREVIOUS_VIEWS);
         }
         CompletableFutureExtensions.logError(
