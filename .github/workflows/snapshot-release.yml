@@ -3,7 +3,7 @@ name: "Snapshot Release"
 "on":
   release:
     types:
-    - "released"
+    - "published"
 jobs:
   build:
     name: "Snapshot Release"
