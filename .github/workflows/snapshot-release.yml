@@ -6,8 +6,9 @@ name: "Release"
     - "released"
 jobs:
   build:
-    name: "Release"
+    name: "Snapshot Release"
     runs-on: "ubuntu-latest"
+    if: "github.event.release.prerelease"
     steps:
     - uses: "actions/checkout@master"
     - uses: "actions/setup-java@master"
