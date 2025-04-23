@@ -13,9 +13,6 @@ public interface MetadataKeyHolder {
         "contextual-viewer"
     );
 
-    /**
-     * The key for players transition from a frame to another frame inventory.
-     */
     TypedKey<ContextualViewer> TRANSITIONING_FROM = TypedKey.of(
         ContextualViewer.class,
         "transitioning-from"
