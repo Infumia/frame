@@ -1,5 +1,5 @@
 ---
-name: "Release"
+name: "Snapshot Release"
 "on":
   release:
     types:
