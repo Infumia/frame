@@ -15,6 +15,7 @@ import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.ViewContainerImpl;
 import net.infumia.frame.view.config.ViewConfig;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceCreateContainer
@@ -66,7 +67,12 @@ public final class ServiceCreateContainer
                 context
                     .frame()
                     .inventoryCreator()
-                    .create(null, inventoryType, normalized, config.title()),
+                    .create(
+                        instance instanceof InventoryHolder ? (InventoryHolder) instance : null,
+                        inventoryType,
+                        normalized,
+                        config.title()
+                    ),
                 typeRich
             )
         );
