@@ -27,8 +27,8 @@ import net.infumia.frame.pipeline.service.render.ServiceStopUpdate;
 import net.infumia.frame.pipeline.service.render.ServiceStopUpdateLogging;
 import net.infumia.frame.pipeline.service.render.ServiceUpdateLogging;
 import net.infumia.frame.pipeline.service.render.ServiceUpdateOnUpdate;
-import net.infumia.frame.pipeline.service.view.ServiceStartTransition;
-import net.infumia.frame.pipeline.service.view.ServiceStartTransitionLogging;
+import net.infumia.frame.pipeline.service.view.ServiceTransition;
+import net.infumia.frame.pipeline.service.view.ServiceTransitionLogging;
 import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,8 +57,8 @@ public final class PipelineHolderRender implements Cloned<PipelineHolderRender> 
             .register(ServiceFirstRenderInitializeState.INSTANCE),
         new PipelineConsumerImpl<>(
             new TypeToken<PipelineServiceConsumer<PipelineContextView.Transition>>() {},
-            ServiceStartTransitionLogging.INSTANCE
-        ).register(ServiceStartTransition.INSTANCE),
+            ServiceTransitionLogging.INSTANCE
+        ).register(ServiceTransition.INSTANCE),
         new PipelineConsumerImpl<>(
             new TypeToken<PipelineServiceConsumer<PipelineContextRender.OpenContainer>>() {},
             ServiceOpenContainerLogging.INSTANCE
