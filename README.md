@@ -5,6 +5,8 @@
 ```groovy
 repositories {
     mavenCentral()
+    // For snapshot versions:
+    // maven("https://central.sonatype.com/repository/maven-snapshots/")
 }
 
 dependencies {
