@@ -3,6 +3,7 @@ package net.infumia.frame.listener;
 import java.util.function.Consumer;
 import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.logger.Logger;
+import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataAccessFactory;
 import net.infumia.frame.metadata.MetadataKeyHolder;
 import net.infumia.frame.view.ViewEventHandler;
@@ -112,13 +113,12 @@ public final class InventoryListener implements Listener {
         @NotNull final Metadatable metadatable,
         @NotNull final Consumer<ContextualViewer> consumer
     ) {
-        final ContextualViewer transitioningFrom =
-            this.metadataAccessFactory.getOrCreate(metadatable).get(
-                    MetadataKeyHolder.TRANSITIONING_FROM
-                );
+        final MetadataAccess access = this.metadataAccessFactory.getOrCreate(metadatable);
+        final ContextualViewer transitioningFrom = access.get(MetadataKeyHolder.TRANSITIONING_FROM);
+        final boolean transitioning = access.get(MetadataKeyHolder.TRANSITIONING) != null;
         if (transitioningFrom == null) {
             this.ifContextualViewer(metadatable, consumer);
-        } else {
+        } else if (transitioning) {
             consumer.accept(transitioningFrom);
         }
     }
