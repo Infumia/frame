@@ -91,12 +91,38 @@ public interface PipelineContextViews {
         }
     }
 
-    final class Transition implements PipelineContextView.Transition {
+    final class StartTransition implements PipelineContextView.StartTransition {
 
         private final ContextBase context;
         private final Collection<Viewer> viewers;
 
-        public Transition(@NotNull final ContextBase context, final Collection<Viewer> viewers) {
+        public StartTransition(
+            @NotNull final ContextBase context,
+            final Collection<Viewer> viewers
+        ) {
+            this.context = context;
+            this.viewers = viewers;
+        }
+
+        @NotNull
+        @Override
+        public ContextBase context() {
+            return this.context;
+        }
+
+        @NotNull
+        @Override
+        public Collection<Viewer> viewers() {
+            return this.viewers;
+        }
+    }
+
+    final class EndTransition implements PipelineContextView.EndTransition {
+
+        private final ContextBase context;
+        private final Collection<Viewer> viewers;
+
+        public EndTransition(@NotNull final ContextBase context, final Collection<Viewer> viewers) {
             this.context = context;
             this.viewers = viewers;
         }

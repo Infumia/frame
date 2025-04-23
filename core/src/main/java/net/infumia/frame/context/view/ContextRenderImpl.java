@@ -200,9 +200,10 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
     public CompletableFuture<ConsumerService.State> simulateNavigate(
         @NotNull final Collection<Viewer> viewers
     ) {
-        return this.pipelines.executeTransition(viewers)
+        return this.pipelines.executeStartTransition(viewers)
             .thenCompose(__ -> this.pipelinesViewer.executeAdded(viewers))
             .thenCompose(__ -> this.pipelines.executeOpenContainer(viewers))
+            .thenCompose(__ -> this.pipelines.executeEndTransition(viewers))
             .thenCompose(__ -> this.pipelines.executeStartUpdate());
     }
 
