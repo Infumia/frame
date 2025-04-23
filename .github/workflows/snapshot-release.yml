@@ -1,0 +1,28 @@
+---
+name: "Release"
+"on":
+  release:
+    types:
+    - "released"
+jobs:
+  build:
+    name: "Release"
+    runs-on: "ubuntu-latest"
+    steps:
+    - uses: "actions/checkout@master"
+    - uses: "actions/setup-java@master"
+      with:
+        distribution: "adopt"
+        java-version: "11"
+    - uses: "actions/cache@master"
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: "${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}"
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    - run: |
+        [[ "${{ github.event.release.tag_name }}" =~ ^[0-9]+(\.[0-9]+)*$ ]] || exit -1
+        chmod +x gradlew
+        ./gradlew publish -Pversion="${{ github.event.release.tag_name }}-SNAPSHOT" -PmavenCentralUsername="${{ secrets.MAVEN_CENTRAL_USERNAME }}" -PmavenCentralPassword="${{ secrets.MAVEN_CENTRAL_PASSWORD }}"
