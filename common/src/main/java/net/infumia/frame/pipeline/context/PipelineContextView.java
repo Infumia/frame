@@ -41,15 +41,7 @@ public interface PipelineContextView extends PipelineContext {
         TypedKeyStorageImmutable initialData();
     }
 
-    interface StartTransition extends PipelineContextView {
-        @NotNull
-        ContextBase context();
-
-        @NotNull
-        Collection<Viewer> viewers();
-    }
-
-    interface EndTransition extends PipelineContextView {
+    interface Transition extends PipelineContextView {
         @NotNull
         ContextBase context();
 

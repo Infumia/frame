@@ -27,8 +27,6 @@ import net.infumia.frame.pipeline.service.render.ServiceStopUpdate;
 import net.infumia.frame.pipeline.service.render.ServiceStopUpdateLogging;
 import net.infumia.frame.pipeline.service.render.ServiceUpdateLogging;
 import net.infumia.frame.pipeline.service.render.ServiceUpdateOnUpdate;
-import net.infumia.frame.pipeline.service.view.ServiceEndTransition;
-import net.infumia.frame.pipeline.service.view.ServiceEndTransitionLogging;
 import net.infumia.frame.pipeline.service.view.ServiceStartTransition;
 import net.infumia.frame.pipeline.service.view.ServiceStartTransitionLogging;
 import net.infumia.frame.util.Cloned;
@@ -37,8 +35,7 @@ import org.jetbrains.annotations.NotNull;
 public final class PipelineHolderRender implements Cloned<PipelineHolderRender> {
 
     private final PipelineConsumer<PipelineContextRender.FirstRender> firstRender;
-    private final PipelineConsumer<PipelineContextView.StartTransition> startTransition;
-    private final PipelineConsumer<PipelineContextView.EndTransition> endTransition;
+    private final PipelineConsumer<PipelineContextView.Transition> transition;
     private final PipelineConsumer<PipelineContextRender.OpenContainer> openContainer;
     private final PipelineConsumer<PipelineContextRender.Resume> resume;
     private final PipelineConsumer<PipelineContextRender.StartUpdate> startUpdate;
@@ -59,13 +56,9 @@ public final class PipelineHolderRender implements Cloned<PipelineHolderRender> 
             .register(ServiceFirstRenderPagination.INSTANCE)
             .register(ServiceFirstRenderInitializeState.INSTANCE),
         new PipelineConsumerImpl<>(
-            new TypeToken<PipelineServiceConsumer<PipelineContextView.StartTransition>>() {},
+            new TypeToken<PipelineServiceConsumer<PipelineContextView.Transition>>() {},
             ServiceStartTransitionLogging.INSTANCE
         ).register(ServiceStartTransition.INSTANCE),
-        new PipelineConsumerImpl<>(
-            new TypeToken<PipelineServiceConsumer<PipelineContextView.EndTransition>>() {},
-            ServiceEndTransitionLogging.INSTANCE
-        ).register(ServiceEndTransition.INSTANCE),
         new PipelineConsumerImpl<>(
             new TypeToken<PipelineServiceConsumer<PipelineContextRender.OpenContainer>>() {},
             ServiceOpenContainerLogging.INSTANCE
@@ -97,13 +90,8 @@ public final class PipelineHolderRender implements Cloned<PipelineHolderRender> 
     }
 
     @NotNull
-    public PipelineConsumer<PipelineContextView.StartTransition> startTransition() {
-        return this.startTransition;
-    }
-
-    @NotNull
-    public PipelineConsumer<PipelineContextView.EndTransition> endTransition() {
-        return this.endTransition;
+    public PipelineConsumer<PipelineContextView.Transition> transition() {
+        return this.transition;
     }
 
     @NotNull
@@ -136,8 +124,7 @@ public final class PipelineHolderRender implements Cloned<PipelineHolderRender> 
     public PipelineHolderRender cloned() {
         return new PipelineHolderRender(
             this.firstRender.cloned(),
-            this.startTransition.cloned(),
-            this.endTransition.cloned(),
+            this.transition.cloned(),
             this.openContainer.cloned(),
             this.resume.cloned(),
             this.startUpdate.cloned(),
@@ -148,8 +135,7 @@ public final class PipelineHolderRender implements Cloned<PipelineHolderRender> 
 
     private PipelineHolderRender(
         @NotNull final PipelineConsumer<PipelineContextRender.FirstRender> firstRender,
-        @NotNull final PipelineConsumer<PipelineContextView.StartTransition> startTransition,
-        @NotNull final PipelineConsumer<PipelineContextView.EndTransition> endTransition,
+        @NotNull final PipelineConsumer<PipelineContextView.Transition> transition,
         @NotNull final PipelineConsumer<PipelineContextRender.OpenContainer> openContainer,
         @NotNull final PipelineConsumer<PipelineContextRender.Resume> resume,
         @NotNull final PipelineConsumer<PipelineContextRender.StartUpdate> startUpdate,
@@ -157,8 +143,7 @@ public final class PipelineHolderRender implements Cloned<PipelineHolderRender> 
         @NotNull final PipelineConsumer<PipelineContextRender.Update> update
     ) {
         this.firstRender = firstRender;
-        this.startTransition = startTransition;
-        this.endTransition = endTransition;
+        this.transition = transition;
         this.openContainer = openContainer;
         this.resume = resume;
         this.startUpdate = startUpdate;

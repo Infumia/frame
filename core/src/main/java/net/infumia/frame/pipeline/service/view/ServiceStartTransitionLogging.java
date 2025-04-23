@@ -9,9 +9,9 @@ import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceStartTransitionLogging
-    implements PipelineServiceConsumer<PipelineContextView.StartTransition> {
+    implements PipelineServiceConsumer<PipelineContextView.Transition> {
 
-    public static final PipelineServiceConsumer<PipelineContextView.StartTransition> INSTANCE =
+    public static final PipelineServiceConsumer<PipelineContextView.Transition> INSTANCE =
         new ServiceStartTransitionLogging();
 
     public static final String KEY = "logging";
@@ -23,7 +23,7 @@ public final class ServiceStartTransitionLogging
     }
 
     @Override
-    public void accept(@NotNull final PipelineContextView.StartTransition ctx) {
+    public void accept(@NotNull final PipelineContextView.Transition ctx) {
         // TODO: portlek, More detailed message.
         final ContextBase context = ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
