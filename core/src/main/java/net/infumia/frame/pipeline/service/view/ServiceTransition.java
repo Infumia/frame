@@ -30,6 +30,7 @@ public final class ServiceTransition
             if (oldContext != null) {
                 metadata.setFixed(MetadataKeyHolder.TRANSITIONING_FROM, oldContext);
             }
+            metadata.setFixed(MetadataKeyHolder.TRANSITIONING, true);
         }
     }
 
