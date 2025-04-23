@@ -6,7 +6,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import net.infumia.frame.InvTypeRich;
 import net.infumia.frame.InvTypes;
-import net.infumia.frame.context.ContextBase;
+import net.infumia.frame.context.ContextBaseRich;
+import net.infumia.frame.holder.ViewHolder;
 import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.context.PipelineContextView;
 import net.infumia.frame.type.InvType;
@@ -15,7 +16,7 @@ import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.ViewContainerImpl;
 import net.infumia.frame.view.config.ViewConfig;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceCreateContainer
@@ -35,16 +36,10 @@ public final class ServiceCreateContainer
 
     @NotNull
     @Override
-    public String key() {
-        return ServiceCreateContainer.KEY;
-    }
-
-    @NotNull
-    @Override
     public CompletableFuture<ViewContainer> handle(
         @NotNull final PipelineContextView.CreateContainer ctx
     ) {
-        final ContextBase context = ctx.context();
+        final ContextBaseRich context = (ContextBaseRich) ctx.context();
         final Object instance = context.view().instance();
         final ViewConfig config = ctx.config();
         final InvType type = config.type();
@@ -62,20 +57,19 @@ public final class ServiceCreateContainer
             typeRich.maxSize(),
             instance
         );
-        return CompletableFuture.completedFuture(
-            new ViewContainerImpl(
-                context
-                    .frame()
-                    .inventoryCreator()
-                    .create(
-                        instance instanceof InventoryHolder ? (InventoryHolder) instance : null,
-                        inventoryType,
-                        normalized,
-                        config.title()
-                    ),
-                typeRich
-            )
-        );
+        final ViewHolder holder = new ViewHolder(context);
+        final Inventory inventory = context
+            .frame()
+            .inventoryCreator()
+            .create(holder, inventoryType, normalized, config.title());
+        holder.init(inventory);
+        return CompletableFuture.completedFuture(new ViewContainerImpl(inventory, typeRich));
+    }
+
+    @NotNull
+    @Override
+    public String key() {
+        return ServiceCreateContainer.KEY;
     }
 
     private ServiceCreateContainer() {}
