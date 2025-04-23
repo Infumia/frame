@@ -1,16 +1,16 @@
 package net.infumia.frame.holder;
 
-import net.infumia.frame.context.ContextBaseRich;
+import net.infumia.frame.context.ContextBase;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
 public final class ViewHolder implements InventoryHolder {
 
-    private final ContextBaseRich context;
+    private final ContextBase context;
     private Inventory inventory;
 
-    public ViewHolder(@NotNull final ContextBaseRich context) {
+    public ViewHolder(@NotNull final ContextBase context) {
         this.context = context;
     }
 
@@ -25,7 +25,7 @@ public final class ViewHolder implements InventoryHolder {
     }
 
     @NotNull
-    public ContextBaseRich context() {
+    public ContextBase context() {
         return this.context;
     }
 }
