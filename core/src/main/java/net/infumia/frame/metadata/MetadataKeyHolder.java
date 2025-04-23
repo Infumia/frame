@@ -18,6 +18,11 @@ public interface MetadataKeyHolder {
         "transitioning-from"
     );
 
+    TypedKey<Boolean> TRANSITIONING = TypedKey.of(
+        Boolean.class,
+        "transitioning"
+    );
+
     TypedKey<Boolean> FORCED_CLOSE = TypedKey.of(boolean.class, "forced-close");
 
     TypedKey<Deque<ContextRender>> PREVIOUS_VIEWS = TypedKey.of(
