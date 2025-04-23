@@ -9,6 +9,7 @@ import net.infumia.frame.context.view.ContextInit;
 import net.infumia.frame.context.view.ContextOpen;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderRich;
+import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataKeyHolder;
 import net.infumia.frame.pipeline.executor.PipelineExecutorView;
 import net.infumia.frame.pipeline.executor.PipelineExecutorViewImpl;
@@ -98,11 +99,11 @@ public final class ViewImpl implements View, ViewEventHandler {
     public CompletableFuture<ConsumerService.State> simulateClose(
         @NotNull final ContextualViewer viewer
     ) {
-        final ContextualViewer transitioning = viewer
-            .metadata()
-            .remove(MetadataKeyHolder.TRANSITIONING_FROM);
-        final Boolean forcedClose = viewer.metadata().remove(MetadataKeyHolder.FORCED_CLOSE);
-        final boolean forced = transitioning != null || (forcedClose != null && forcedClose);
+        final MetadataAccess metadata = viewer.metadata();
+        final boolean transitioningFromFrame =
+            metadata.remove(MetadataKeyHolder.TRANSITIONING_FROM) != null;
+        final Boolean forcedClose = metadata.remove(MetadataKeyHolder.FORCED_CLOSE);
+        final boolean forced = transitioningFromFrame || (forcedClose != null && forcedClose);
         return this.pipelines.executeClose(viewer, forced);
     }
 

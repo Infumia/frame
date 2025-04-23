@@ -3,6 +3,7 @@ package net.infumia.frame.listener;
 import java.util.function.Consumer;
 import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.logger.Logger;
+import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataAccessFactory;
 import net.infumia.frame.metadata.MetadataKeyHolder;
 import net.infumia.frame.view.ViewEventHandler;
@@ -51,24 +52,24 @@ public final class InventoryListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInventoryClick(final InventoryClickEvent event) {
-        this.ifContextualViewer(event.getWhoClicked(), viewer ->
+    public void onInventoryClose(final InventoryCloseEvent event) {
+        this.ifTransitioning(event.getPlayer(), viewer ->
                 CompletableFutureExtensions.logError(
-                    ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
+                    ((ViewEventHandler) viewer.view()).simulateClose(viewer),
                     this.logger,
-                    "Error occurred while viewer '%s' clicks an inventory!",
+                    "Error occurred while viewer '%s' closes an inventory",
                     viewer
                 )
             );
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInventoryClose(final InventoryCloseEvent event) {
-        this.transitioningOrCurrent(event.getPlayer(), viewer ->
+    public void onInventoryClick(final InventoryClickEvent event) {
+        this.ifContextualViewer(event.getWhoClicked(), viewer ->
                 CompletableFutureExtensions.logError(
-                    ((ViewEventHandler) viewer.view()).simulateClose(viewer),
+                    ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
                     this.logger,
-                    "Error occurred while viewer '%s' closes an inventory",
+                    "Error occurred while viewer '%s' clicks an inventory!",
                     viewer
                 )
             );
@@ -108,17 +109,13 @@ public final class InventoryListener implements Listener {
         }
     }
 
-    private void transitioningOrCurrent(
+    private void ifTransitioning(
         @NotNull final Metadatable metadatable,
         @NotNull final Consumer<ContextualViewer> consumer
     ) {
-        final ContextualViewer transitioningFrom =
-            this.metadataAccessFactory.getOrCreate(metadatable).get(
-                    MetadataKeyHolder.TRANSITIONING_FROM
-                );
-        if (transitioningFrom == null) {
-            this.ifContextualViewer(metadatable, consumer);
-        } else {
+        final MetadataAccess access = this.metadataAccessFactory.getOrCreate(metadatable);
+        final ContextualViewer transitioningFrom = access.get(MetadataKeyHolder.TRANSITIONING_FROM);
+        if (transitioningFrom != null) {
             consumer.accept(transitioningFrom);
         }
     }
