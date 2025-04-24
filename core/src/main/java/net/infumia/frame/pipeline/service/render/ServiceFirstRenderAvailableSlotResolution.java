@@ -95,17 +95,21 @@ public final class ServiceFirstRenderAvailableSlotResolution
         final List<BiFunction<Integer, Integer, ElementItemBuilder>> availableSlotFinders = context
             .slotFinder()
             .availableSlotFinders();
-        int slot = 0;
-        for (int i = 0; i < context.container().size(); i++) {
-            while (this.isSlotNotAvailableForAutoFilling(context, slot)) {
-                slot++;
-            }
-            if (i >= availableSlotFinders.size()) {
+        final int containerSize = context.container().size();
+        int finderIndex = 0;
+        for (int currentSlot = 0; currentSlot < containerSize; currentSlot++) {
+            if (finderIndex >= availableSlotFinders.size()) {
                 break;
             }
+
+            if (this.isSlotNotAvailableForAutoFilling(context, currentSlot)) {
+                continue;
+            }
+
             final BiFunction<Integer, Integer, ElementItemBuilder> factory =
-                availableSlotFinders.get(i);
-            ctx.addElement(((ElementBuilderRich) factory.apply(i, slot++)).build(context));
+                availableSlotFinders.get(finderIndex);
+            ctx.addElement(((ElementBuilderRich) factory.apply(finderIndex, currentSlot)).build(context));
+            finderIndex++;
         }
     }
 
@@ -113,6 +117,9 @@ public final class ServiceFirstRenderAvailableSlotResolution
         @NotNull final ContextRender context,
         final int slot
     ) {
+        if (slot < 0 || slot >= context.container().size()) {
+            return true;
+        }
         return (
             !((ViewContainerRich) context.container()).typeRich().canPlayerInteractOn(slot) ||
             context.container().hasItem(slot) ||

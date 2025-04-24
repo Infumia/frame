@@ -8,22 +8,22 @@ import net.infumia.frame.viewer.ContextualViewer;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-public final class ServiceTransitionLogging
-    implements PipelineServiceConsumer<PipelineContextView.Transition> {
+public final class ServiceStartTransitionLogging
+    implements PipelineServiceConsumer<PipelineContextView.StartTransition> {
 
-    public static final PipelineServiceConsumer<PipelineContextView.Transition> INSTANCE =
-        new ServiceTransitionLogging();
+    public static final PipelineServiceConsumer<PipelineContextView.StartTransition> INSTANCE =
+        new ServiceStartTransitionLogging();
 
     public static final String KEY = "logging";
 
     @NotNull
     @Override
     public String key() {
-        return ServiceTransitionLogging.KEY;
+        return ServiceStartTransitionLogging.KEY;
     }
 
     @Override
-    public void accept(@NotNull final PipelineContextView.Transition ctx) {
+    public void accept(@NotNull final PipelineContextView.StartTransition ctx) {
         // TODO: portlek, More detailed message.
         final ContextBase context = ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
@@ -45,5 +45,5 @@ public final class ServiceTransitionLogging
         }
     }
 
-    private ServiceTransitionLogging() {}
+    private ServiceStartTransitionLogging() {}
 }
