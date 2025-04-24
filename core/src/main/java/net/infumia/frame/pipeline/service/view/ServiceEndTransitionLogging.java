@@ -8,22 +8,22 @@ import net.infumia.frame.viewer.ContextualViewer;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-public final class ServiceTransitionLogging
-    implements PipelineServiceConsumer<PipelineContextView.Transition> {
+public final class ServiceEndTransitionLogging
+    implements PipelineServiceConsumer<PipelineContextView.EndTransition> {
 
-    public static final PipelineServiceConsumer<PipelineContextView.Transition> INSTANCE =
-        new ServiceTransitionLogging();
+    public static final PipelineServiceConsumer<PipelineContextView.EndTransition> INSTANCE =
+        new ServiceEndTransitionLogging();
 
     public static final String KEY = "logging";
 
     @NotNull
     @Override
     public String key() {
-        return ServiceTransitionLogging.KEY;
+        return ServiceEndTransitionLogging.KEY;
     }
 
     @Override
-    public void accept(@NotNull final PipelineContextView.Transition ctx) {
+    public void accept(@NotNull final PipelineContextView.EndTransition ctx) {
         // TODO: portlek, More detailed message.
         final ContextBase context = ctx.context();
         for (final Viewer viewer : ctx.viewers()) {
@@ -37,7 +37,7 @@ public final class ServiceTransitionLogging
                 .frame()
                 .logger()
                 .debug(
-                    "Player '%s' is transitioning from view '%s' to view '%s'.",
+                    "Player '%s' transitioned from view '%s' to view '%s'.",
                     viewer,
                     transitioningFrom.view().instance(),
                     context.view().instance()
@@ -45,5 +45,5 @@ public final class ServiceTransitionLogging
         }
     }
 
-    private ServiceTransitionLogging() {}
+    private ServiceEndTransitionLogging() {}
 }

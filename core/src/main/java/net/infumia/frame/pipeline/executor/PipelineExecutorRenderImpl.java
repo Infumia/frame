@@ -32,11 +32,11 @@ public final class PipelineExecutorRenderImpl implements PipelineExecutorRender 
 
     @NotNull
     @Override
-    public CompletableFuture<ConsumerService.State> executeTransition(
+    public CompletableFuture<ConsumerService.State> executeStartTransition(
         @NotNull final Collection<Viewer> viewers
     ) {
-        return this.pipelines.transition()
-            .completeWith(new PipelineContextViews.Transition(this.context, viewers));
+        return this.pipelines.startTransition()
+            .completeWith(new PipelineContextViews.StartTransition(this.context, viewers));
     }
 
     @NotNull
@@ -94,13 +94,13 @@ public final class PipelineExecutorRenderImpl implements PipelineExecutorRender 
     }
 
     @Override
-    public void applyTransition(
+    public void applyStartTransition(
         @NotNull final Implementation<
-            PipelineContextView.Transition,
+            PipelineContextView.StartTransition,
             ConsumerService.State
         > implementation
     ) {
-        this.pipelines.transition().apply(implementation);
+        this.pipelines.startTransition().apply(implementation);
     }
 
     @Override
