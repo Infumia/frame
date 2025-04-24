@@ -27,7 +27,9 @@ public final class ServiceTransition
         for (final Viewer viewer : ctx.viewers()) {
             final MetadataAccess metadata = viewer.metadata();
             final ContextualViewer oldContext = metadata.get(MetadataKeyHolder.CONTEXTUAL_VIEWER);
-            if (oldContext != null) {
+            if (oldContext == null) {
+                metadata.setFixed(MetadataKeyHolder.TRANSITIONING, true);
+            } else {
                 metadata.setFixed(MetadataKeyHolder.TRANSITIONING_FROM, oldContext);
             }
         }

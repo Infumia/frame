@@ -115,8 +115,11 @@ public final class InventoryListener implements Listener {
     ) {
         final MetadataAccess access = this.metadataAccessFactory.getOrCreate(metadatable);
         final ContextualViewer transitioningFrom = access.get(MetadataKeyHolder.TRANSITIONING_FROM);
+        final boolean transitioning = access.get(MetadataKeyHolder.TRANSITIONING) != null;
         if (transitioningFrom != null) {
             consumer.accept(transitioningFrom);
+        } else if (!transitioning) {
+            this.ifContextualViewer(metadatable, consumer);
         }
     }
 }
