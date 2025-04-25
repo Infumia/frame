@@ -11,6 +11,7 @@ repositories {
 dependencies {
     // Base modules
     implementation "net.infumia:frame:VERSION"
+    runtimeOnly "net.infumia:frame-core:VERSION"
 
     // Annotation modules
     implementation "net.infumia:frame-annotations:VERSION"
