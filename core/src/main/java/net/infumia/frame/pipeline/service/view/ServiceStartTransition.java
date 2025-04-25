@@ -8,22 +8,22 @@ import net.infumia.frame.viewer.ContextualViewer;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-public final class ServiceTransition
-    implements PipelineServiceConsumer<PipelineContextView.Transition> {
+public final class ServiceStartTransition
+    implements PipelineServiceConsumer<PipelineContextView.StartTransition> {
 
-    public static final PipelineServiceConsumer<PipelineContextView.Transition> INSTANCE =
-        new ServiceTransition();
+    public static final PipelineServiceConsumer<PipelineContextView.StartTransition> INSTANCE =
+        new ServiceStartTransition();
 
     public static final String KEY = "transition";
 
     @NotNull
     @Override
     public String key() {
-        return ServiceTransition.KEY;
+        return ServiceStartTransition.KEY;
     }
 
     @Override
-    public void accept(@NotNull final PipelineContextView.Transition ctx) {
+    public void accept(@NotNull final PipelineContextView.StartTransition ctx) {
         for (final Viewer viewer : ctx.viewers()) {
             final MetadataAccess metadata = viewer.metadata();
             final ContextualViewer oldContext = metadata.get(MetadataKeyHolder.CONTEXTUAL_VIEWER);
@@ -33,5 +33,5 @@ public final class ServiceTransition
         }
     }
 
-    private ServiceTransition() {}
+    private ServiceStartTransition() {}
 }

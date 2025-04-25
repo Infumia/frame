@@ -15,7 +15,9 @@ public interface PipelineExecutorRender {
     CompletableFuture<ConsumerService.State> executeFirstRender();
 
     @NotNull
-    CompletableFuture<ConsumerService.State> executeTransition(@NotNull Collection<Viewer> viewers);
+    CompletableFuture<ConsumerService.State> executeStartTransition(
+        @NotNull Collection<Viewer> viewers
+    );
 
     @NotNull
     CompletableFuture<ConsumerService.State> executeOpenContainer(
@@ -44,9 +46,9 @@ public interface PipelineExecutorRender {
         > implementation
     );
 
-    void applyTransition(
+    void applyStartTransition(
         @NotNull Implementation<
-            PipelineContextView.Transition,
+            PipelineContextView.StartTransition,
             ConsumerService.State
         > implementation
     );

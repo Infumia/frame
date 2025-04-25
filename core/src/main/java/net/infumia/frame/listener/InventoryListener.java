@@ -3,8 +3,10 @@ package net.infumia.frame.listener;
 import java.util.function.Consumer;
 import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.logger.Logger;
+import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataAccessFactory;
 import net.infumia.frame.metadata.MetadataKeyHolder;
+import net.infumia.frame.view.InventoryHolderView;
 import net.infumia.frame.view.ViewEventHandler;
 import net.infumia.frame.viewer.ContextualViewer;
 import org.bukkit.Bukkit;
@@ -16,6 +18,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.metadata.Metadatable;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +54,27 @@ public final class InventoryListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void onInventoryClose(final InventoryCloseEvent event) {
+        final InventoryHolder inventoryHolder = event.getInventory().getHolder();
+        if (!(inventoryHolder instanceof InventoryHolderView)) {
+            return;
+        }
+        this.ifTransitioning(event.getPlayer(), viewer ->
+                CompletableFutureExtensions.logError(
+                    ((ViewEventHandler) viewer.view()).simulateClose(viewer),
+                    this.logger,
+                    "Error occurred while viewer '%s' closes an inventory",
+                    viewer
+                )
+            );
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(final InventoryClickEvent event) {
+        final InventoryHolder inventoryHolder = event.getInventory().getHolder();
+        if (!(inventoryHolder instanceof InventoryHolderView)) {
+            return;
+        }
         this.ifContextualViewer(event.getWhoClicked(), viewer ->
                 CompletableFutureExtensions.logError(
                     ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
@@ -63,14 +86,13 @@ public final class InventoryListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInventoryClose(final InventoryCloseEvent event) {
-        this.transitioningOrCurrent(event.getPlayer(), viewer ->
-                CompletableFutureExtensions.logError(
-                    ((ViewEventHandler) viewer.view()).simulateClose(viewer),
-                    this.logger,
-                    "Error occurred while viewer '%s' closes an inventory",
-                    viewer
-                )
+    public void onInventoryDrag(final InventoryDragEvent event) {
+        final InventoryHolder inventoryHolder = event.getInventory().getHolder();
+        if (!(inventoryHolder instanceof InventoryHolderView)) {
+            return;
+        }
+        this.ifContextualViewer(event.getWhoClicked(), viewer ->
+                ((ViewEventHandler) viewer.view()).handleInventoryDrag(viewer, event)
             );
     }
 
@@ -88,13 +110,6 @@ public final class InventoryListener implements Listener {
             );
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onInventoryDrag(final InventoryDragEvent event) {
-        this.ifContextualViewer(event.getWhoClicked(), viewer ->
-                ((ViewEventHandler) viewer.view()).handleInventoryDrag(viewer, event)
-            );
-    }
-
     private void ifContextualViewer(
         @NotNull final Metadatable metadatable,
         @NotNull final Consumer<ContextualViewer> consumer
@@ -108,14 +123,12 @@ public final class InventoryListener implements Listener {
         }
     }
 
-    private void transitioningOrCurrent(
+    private void ifTransitioning(
         @NotNull final Metadatable metadatable,
         @NotNull final Consumer<ContextualViewer> consumer
     ) {
-        final ContextualViewer transitioningFrom =
-            this.metadataAccessFactory.getOrCreate(metadatable).get(
-                    MetadataKeyHolder.TRANSITIONING_FROM
-                );
+        final MetadataAccess access = this.metadataAccessFactory.getOrCreate(metadatable);
+        final ContextualViewer transitioningFrom = access.get(MetadataKeyHolder.TRANSITIONING_FROM);
         if (transitioningFrom == null) {
             this.ifContextualViewer(metadatable, consumer);
         } else {

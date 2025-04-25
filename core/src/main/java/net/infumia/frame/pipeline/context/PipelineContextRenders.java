@@ -7,14 +7,13 @@ import java.util.List;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextResume;
 import net.infumia.frame.element.Element;
-import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
 public interface PipelineContextRenders {
     final class FirstRender implements PipelineContextRender.FirstRender {
 
-        private final List<ElementRich> elements = new ArrayList<>();
+        private final List<Element> elements = new ArrayList<>();
         private final ContextRender context;
 
         public FirstRender(@NotNull final ContextRender context) {
@@ -35,7 +34,7 @@ public interface PipelineContextRenders {
 
         @Override
         public void addElement(@NotNull final Element element) {
-            this.elements.add(0, (ElementRich) element);
+            this.elements.add(0, element);
         }
     }
 

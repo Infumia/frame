@@ -2,6 +2,7 @@ package net.infumia.frame.task;
 
 import java.io.Closeable;
 import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.RunnableThrowable;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.util.Ticks;
@@ -33,6 +34,23 @@ public final class TaskFactoryImpl implements TaskFactory {
                 }
             });
         return bukkitTask::cancel;
+    }
+
+    @NotNull
+    @Override
+    public CompletableFuture<?> syncFuture(@NotNull final RunnableThrowable task) {
+        final CompletableFuture<?> future = new CompletableFuture<>();
+        Bukkit.getScheduler()
+            .runTask(this.plugin, () -> {
+                try {
+                    task.run();
+                    future.complete(null);
+                } catch (final Throwable e) {
+                    this.logger.error(e, "An error occurred while running a sync task.");
+                    future.completeExceptionally(e);
+                }
+            });
+        return future;
     }
 
     @NotNull

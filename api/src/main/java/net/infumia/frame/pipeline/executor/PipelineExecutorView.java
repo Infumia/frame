@@ -50,16 +50,14 @@ public interface PipelineExecutorView {
     );
 
     @NotNull
-    CompletableFuture<
-        Pair<ConsumerService.State, PipelineContextView.ModifyContainer>
-    > executeModifyContainer(
+    CompletableFuture<ViewContainer> executeModifyContainer(
         @NotNull ContextBase context,
         @NotNull ViewConfig config,
         @NotNull ViewContainer container
     );
 
     @NotNull
-    CompletableFuture<Pair<ConsumerService.State, Collection<LayoutSlot>>> executeLayoutResolution(
+    CompletableFuture<Collection<LayoutSlot>> executeLayoutResolution(
         @NotNull ContextBase context,
         @NotNull ViewConfig config,
         @NotNull ViewContainer container

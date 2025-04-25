@@ -40,7 +40,7 @@ public interface PipelineContextView {
         TypedKeyStorageImmutable initialData();
     }
 
-    interface Transition extends PipelineContextView {
+    interface StartTransition extends PipelineContextView {
         @NotNull
         ContextBase context();
 
