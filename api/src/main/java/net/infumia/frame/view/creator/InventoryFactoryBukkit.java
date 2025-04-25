@@ -8,16 +8,16 @@ import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class InventoryCreatorBukkit implements InventoryCreator {
+public class InventoryFactoryBukkit implements InventoryFactory {
 
-    public static final InventoryCreator INSTANCE = new InventoryCreatorBukkit();
+    public static final InventoryFactory INSTANCE = new InventoryFactoryBukkit();
 
     @NotNull
-    public static InventoryCreator bukkitOrPaper() {
+    public static InventoryFactory bukkitOrPaper() {
         if (PaperLib.isPaper() && PaperLib.isVersion(16)) {
-            return InventoryCreatorPaper.INSTANCE;
+            return InventoryFactoryPaper.INSTANCE;
         }
-        return InventoryCreatorBukkit.INSTANCE;
+        return InventoryFactoryBukkit.INSTANCE;
     }
 
     @NotNull
@@ -45,5 +45,5 @@ public class InventoryCreatorBukkit implements InventoryCreator {
             : Bukkit.createInventory(holder, size, titleAsText);
     }
 
-    protected InventoryCreatorBukkit() {}
+    protected InventoryFactoryBukkit() {}
 }

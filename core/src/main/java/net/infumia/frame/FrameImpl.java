@@ -28,8 +28,8 @@ import net.infumia.frame.view.View;
 import net.infumia.frame.view.ViewCreator;
 import net.infumia.frame.view.ViewCreatorImpl;
 import net.infumia.frame.view.ViewEventHandler;
-import net.infumia.frame.view.creator.InventoryCreator;
-import net.infumia.frame.view.creator.InventoryCreatorBukkit;
+import net.infumia.frame.view.creator.InventoryFactory;
+import net.infumia.frame.view.creator.InventoryFactoryBukkit;
 import net.infumia.frame.viewer.ViewerCreator;
 import net.infumia.frame.viewer.ViewerCreatorImpl;
 import org.bukkit.Bukkit;
@@ -52,7 +52,7 @@ final class FrameImpl implements FrameRich {
     private final MetadataAccessFactory metadataAccessFactory;
     private final ViewerCreator viewerCreator;
     private TypedKeyStorageFactory storageFactory = TypedKeyStorageFactory.create();
-    private InventoryCreator inventoryCreator = InventoryCreatorBukkit.bukkitOrPaper();
+    private InventoryFactory inventoryFactory = InventoryFactoryBukkit.bukkitOrPaper();
 
     FrameImpl(
         @NotNull final Plugin plugin,
@@ -114,13 +114,13 @@ final class FrameImpl implements FrameRich {
 
     @NotNull
     @Override
-    public InventoryCreator inventoryCreator() {
-        return this.inventoryCreator;
+    public InventoryFactory inventoryFactory() {
+        return this.inventoryFactory;
     }
 
     @Override
-    public void inventoryCreator(@NotNull final InventoryCreator inventoryCreator) {
-        this.inventoryCreator = inventoryCreator;
+    public void inventoryFactory(@NotNull final InventoryFactory inventoryFactory) {
+        this.inventoryFactory = inventoryFactory;
     }
 
     @Override

@@ -8,9 +8,9 @@ import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class InventoryCreatorPaper extends InventoryCreatorBukkit {
+public final class InventoryFactoryPaper extends InventoryFactoryBukkit {
 
-    public static final InventoryCreator INSTANCE = new InventoryCreatorPaper();
+    public static final InventoryFactory INSTANCE = new InventoryFactoryPaper();
 
     @NotNull
     @Override

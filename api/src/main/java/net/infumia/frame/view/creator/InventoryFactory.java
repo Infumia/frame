@@ -6,7 +6,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface InventoryCreator {
+public interface InventoryFactory {
     @NotNull
     Inventory create(
         @Nullable InventoryHolder holder,

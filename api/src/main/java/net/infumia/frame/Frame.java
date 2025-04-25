@@ -10,7 +10,7 @@ import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.view.ViewCreator;
 import net.infumia.frame.view.ViewOpener;
-import net.infumia.frame.view.creator.InventoryCreator;
+import net.infumia.frame.view.creator.InventoryFactory;
 import net.infumia.frame.viewer.ViewerCreator;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -59,9 +59,9 @@ public interface Frame
     void storageFactory(@NotNull TypedKeyStorageFactory storageFactory);
 
     @NotNull
-    InventoryCreator inventoryCreator();
+    InventoryFactory inventoryFactory();
 
-    void inventoryCreator(@NotNull InventoryCreator inventoryCreator);
+    void inventoryFactory(@NotNull InventoryFactory inventoryFactory);
 
     void register();
 
