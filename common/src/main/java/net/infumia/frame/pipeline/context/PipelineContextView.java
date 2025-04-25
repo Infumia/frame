@@ -49,14 +49,6 @@ public interface PipelineContextView extends PipelineContext {
         Collection<Viewer> viewers();
     }
 
-    interface EndTransition extends PipelineContextView {
-        @NotNull
-        ContextBase context();
-
-        @NotNull
-        Collection<Viewer> viewers();
-    }
-
     interface Open extends PipelineContextView, Cancellable {
         @NotNull
         ContextOpen context();

@@ -11,11 +11,12 @@ import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.context.PipelineContextView;
 import net.infumia.frame.type.InvType;
 import net.infumia.frame.util.Preconditions;
+import net.infumia.frame.view.InventoryHolderView;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.ViewContainerImpl;
 import net.infumia.frame.view.config.ViewConfig;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceCreateContainer
@@ -62,20 +63,18 @@ public final class ServiceCreateContainer
             typeRich.maxSize(),
             instance
         );
-        return CompletableFuture.completedFuture(
-            new ViewContainerImpl(
-                context
-                    .frame()
-                    .inventoryCreator()
-                    .create(
-                        instance instanceof InventoryHolder ? (InventoryHolder) instance : null,
-                        inventoryType,
-                        normalized,
-                        config.title()
-                    ),
-                typeRich
-            )
-        );
+        final InventoryHolderView holder = new InventoryHolderView();
+        final Inventory inventory = context
+            .frame()
+            .inventoryCreator()
+            .create(
+                holder,
+                inventoryType,
+                normalized,
+                config.title()
+            );
+        holder.setInventory(inventory);
+        return CompletableFuture.completedFuture(new ViewContainerImpl(holder, typeRich));
     }
 
     private ServiceCreateContainer() {}

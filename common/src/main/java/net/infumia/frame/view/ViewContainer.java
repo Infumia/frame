@@ -2,14 +2,14 @@ package net.infumia.frame.view;
 
 import net.infumia.frame.type.InvType;
 import net.infumia.frame.viewer.Viewer;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface ViewContainer {
     @NotNull
-    Inventory inventory();
+    InventoryHolder inventoryHolder();
 
     @NotNull
     InvType type();

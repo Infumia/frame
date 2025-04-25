@@ -4,7 +4,7 @@ import net.infumia.frame.InvTypeRich;
 import net.infumia.frame.InvTypes;
 import net.infumia.frame.type.InvType;
 import net.infumia.frame.viewer.Viewer;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
@@ -12,18 +12,18 @@ import org.jetbrains.annotations.Nullable;
 
 public final class ViewContainerImpl implements ViewContainerRich {
 
-    private final Inventory inventory;
+    private final InventoryHolderView inventoryHolder;
     private final InvTypeRich type;
 
-    public ViewContainerImpl(@NotNull final Inventory inventory, @NotNull final InvTypeRich type) {
-        this.inventory = inventory;
+    public ViewContainerImpl(@NotNull final InventoryHolderView inventoryHolder, @NotNull final InvTypeRich type) {
+        this.inventoryHolder = inventoryHolder;
         this.type = type;
     }
 
     @NotNull
     @Override
-    public Inventory inventory() {
-        return this.inventory;
+    public InventoryHolder inventoryHolder() {
+        return this.inventoryHolder;
     }
 
     @NotNull
@@ -34,7 +34,7 @@ public final class ViewContainerImpl implements ViewContainerRich {
 
     @Override
     public int size() {
-        return this.inventory.getSize();
+        return this.inventoryHolder.getInventory().getSize();
     }
 
     @Override
@@ -71,17 +71,17 @@ public final class ViewContainerImpl implements ViewContainerRich {
 
     @Override
     public boolean hasItem(final int slot) {
-        return this.inventory.getItem(slot) != null;
+        return this.inventoryHolder.getInventory().getItem(slot) != null;
     }
 
     @Override
     public void removeItem(final int slot) {
-        this.inventory.setItem(slot, null);
+        this.inventoryHolder.getInventory().setItem(slot, null);
     }
 
     @Override
     public void addItem(final int slot, @NotNull final ItemStack item) {
-        this.inventory.setItem(slot, item);
+        this.inventoryHolder.getInventory().setItem(slot, item);
     }
 
     @Override
@@ -91,7 +91,7 @@ public final class ViewContainerImpl implements ViewContainerRich {
 
     @Override
     public boolean isPlayerInventory() {
-        return this.inventory instanceof PlayerInventory;
+        return this.inventoryHolder.getInventory() instanceof PlayerInventory;
     }
 
     @Nullable
