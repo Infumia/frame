@@ -89,39 +89,74 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilder hideIf(@NotNull final BooleanSupplier condition) {
-        super.hideIf(condition);
+    public ElementItem build(@NotNull final ContextBase parent) {
+        return new ElementItemImpl(this, parent);
+    }
+
+    @NotNull
+    @Override
+    public ElementItemBuilder cancelOnClick() {
+        super.cancelOnClick();
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemBuilder hideIf(@NotNull final Predicate<ContextElementRender> condition) {
-        super.hideIf(condition);
+    public ElementItemBuilder closeOnClick() {
+        super.closeOnClick();
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemBuilder displayIf(@NotNull final BooleanSupplier condition) {
-        super.displayIf(condition);
+    public ElementItemBuilder updateOnClick() {
+        super.updateOnClick();
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemBuilder displayIf(@NotNull final Predicate<ContextElementRender> condition) {
-        super.displayIf(condition);
+    public ElementItemBuilder cancelOnClick(final boolean cancelOnClick) {
+        super.cancelOnClick(cancelOnClick);
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemBuilder updateOnStateAccess(
-        @NotNull final State<?> state,
-        @NotNull final State<?> @NotNull... otherStates
+    public ElementItemBuilder closeOnClick(final boolean cancelOnClick) {
+        super.closeOnClick(cancelOnClick);
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementItemBuilder updateOnClick(final boolean updateOnClick) {
+        super.updateOnClick(updateOnClick);
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementItemBuilder interactionDelay(@Nullable final Duration interactionDelay) {
+        super.interactionDelay(interactionDelay);
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementItemBuilder onInteractionDelay(
+        @NotNull final Consumer<ContextElementClick> onInteractionDelay
     ) {
-        super.updateOnStateAccess(state, otherStates);
+        super.onInteractionDelay(onInteractionDelay);
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementItemBuilder interactionDelayKey(
+        @NotNull final Function<ContextElementClick, String> interactionDelayKey
+    ) {
+        super.interactionDelayKey(interactionDelayKey);
         return this;
     }
 
@@ -137,74 +172,39 @@ public final class ElementItemBuilderImpl
 
     @NotNull
     @Override
-    public ElementItemBuilder interactionDelayKey(
-        @NotNull final Function<ContextElementClick, String> interactionDelayKey
+    public ElementItemBuilder updateOnStateAccess(
+        @NotNull final State<?> state,
+        @NotNull final State<?> @NotNull... otherStates
     ) {
-        super.interactionDelayKey(interactionDelayKey);
+        super.updateOnStateAccess(state, otherStates);
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemBuilder onInteractionDelay(
-        @NotNull final Consumer<ContextElementClick> onInteractionDelay
-    ) {
-        super.onInteractionDelay(onInteractionDelay);
+    public ElementItemBuilder displayIf(@NotNull final Predicate<ContextElementRender> condition) {
+        super.displayIf(condition);
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemBuilder interactionDelay(@Nullable final Duration interactionDelay) {
-        super.interactionDelay(interactionDelay);
+    public ElementItemBuilder displayIf(@NotNull final BooleanSupplier condition) {
+        super.displayIf(condition);
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemBuilder updateOnClick(final boolean updateOnClick) {
-        super.updateOnClick(updateOnClick);
+    public ElementItemBuilder hideIf(@NotNull final Predicate<ContextElementRender> condition) {
+        super.hideIf(condition);
         return this;
     }
 
     @NotNull
     @Override
-    public ElementItemBuilder closeOnClick(final boolean cancelOnClick) {
-        super.closeOnClick(cancelOnClick);
+    public ElementItemBuilder hideIf(@NotNull final BooleanSupplier condition) {
+        super.hideIf(condition);
         return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder cancelOnClick(final boolean cancelOnClick) {
-        super.cancelOnClick(cancelOnClick);
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder updateOnClick() {
-        super.updateOnClick();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder closeOnClick() {
-        super.closeOnClick();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItemBuilder cancelOnClick() {
-        super.cancelOnClick();
-        return this;
-    }
-
-    @NotNull
-    @Override
-    public ElementItem build(@NotNull final ContextBase parent) {
-        return new ElementItemImpl(this, parent);
     }
 }
