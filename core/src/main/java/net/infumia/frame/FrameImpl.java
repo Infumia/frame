@@ -79,8 +79,7 @@ final class FrameImpl implements FrameRich {
 
     @Override
     public void register() {
-        this.register(__ -> {
-        });
+        this.register(__ -> {});
     }
 
     @Override
@@ -96,15 +95,15 @@ final class FrameImpl implements FrameRich {
             .thenCompose(views -> {
                 this.registeredViews.clear();
                 this.registeredViews.putAll(
-                    views
-                        .stream()
-                        .collect(
-                            Collectors.toMap(
-                                view -> view.instance().getClass(),
-                                Function.identity()
+                        views
+                            .stream()
+                            .collect(
+                                Collectors.toMap(
+                                    view -> view.instance().getClass(),
+                                    Function.identity()
+                                )
                             )
-                        )
-                );
+                    );
                 return this.pipelines.executeListenersRegistered();
             })
             .exceptionally(throwable -> {
@@ -183,7 +182,7 @@ final class FrameImpl implements FrameRich {
     public <T> CompletableFuture<T> loggedFuture(
         @NotNull final CompletableFuture<T> future,
         @NotNull final String message,
-        @NotNull final Object @NotNull ... args
+        @NotNull final Object @NotNull... args
     ) {
         return CompletableFutureExtensions.logError(future, this.logger, message, args);
     }
@@ -213,8 +212,7 @@ final class FrameImpl implements FrameRich {
         @NotNull final Collection<Player> players,
         @NotNull final Class<?> viewClass
     ) {
-        return this.open(players, viewClass, builder -> {
-        });
+        return this.open(players, viewClass, builder -> {});
     }
 
     @NotNull
@@ -232,10 +230,10 @@ final class FrameImpl implements FrameRich {
             this.storageFactory.createImmutableBuilder(new HashMap<>());
         initialDataConfigurer.accept(builder);
         return this.loggedFuture(
-            ((ViewEventHandler) view).simulateOpen(players, builder.build()),
-            "Error occurred while opening view '%s'!",
-            viewClass
-        );
+                ((ViewEventHandler) view).simulateOpen(players, builder.build()),
+                "Error occurred while opening view '%s'!",
+                viewClass
+            );
     }
 
     @NotNull
@@ -259,10 +257,10 @@ final class FrameImpl implements FrameRich {
             "The active context's view must be an instance of ViewEventHandler!"
         );
         return this.loggedFuture(
-            ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
-            "Error occurred while opening an active view '%s'!",
-            view.instance()
-        );
+                ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
+                "Error occurred while opening an active view '%s'!",
+                view.instance()
+            );
     }
 
     @NotNull
@@ -300,8 +298,8 @@ final class FrameImpl implements FrameRich {
         @NotNull final Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer
     ) {
         return this.pipelines.executeViewCreated(views).thenCompose(instances ->
-            this.pipelines.executeViewRegistered(instances, instanceConfigurer)
-        );
+                this.pipelines.executeViewRegistered(instances, instanceConfigurer)
+            );
     }
 
     private void unregisterInternally() {
@@ -315,14 +313,14 @@ final class FrameImpl implements FrameRich {
 
     private void executeViewUnRegistration(@NotNull final Map<Class<?>, View> views) {
         this.pipelines.executeViewUnregistered(views.values()).whenComplete((state, throwable) -> {
-            if (throwable != null) {
-                this.logger.error(
-                    throwable,
-                    "Error occurred while unregistering views '%s'!",
-                    views.keySet()
-                );
-            }
-        });
+                if (throwable != null) {
+                    this.logger.error(
+                            throwable,
+                            "Error occurred while unregistering views '%s'!",
+                            views.keySet()
+                        );
+                }
+            });
     }
 
     @NotNull
