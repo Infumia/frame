@@ -43,6 +43,15 @@ public interface Frame
         return Internal.factory().create(plugin, logger, unregisterOnDisable);
     }
 
+    void register();
+
+    void register(@NotNull Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer);
+
+    void unregister();
+
+    @NotNull
+    Frame with(@NotNull Class<?> viewClass);
+
     @NotNull
     Logger logger();
 
@@ -64,15 +73,6 @@ public interface Frame
     InventoryFactory inventoryFactory();
 
     void inventoryFactory(@NotNull InventoryFactory inventoryFactory);
-
-    void register();
-
-    void register(@NotNull Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer);
-
-    void unregister();
-
-    @NotNull
-    Frame with(@NotNull Class<?> viewClass);
 
     @NotNull
     @ApiStatus.Internal
