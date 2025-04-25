@@ -6,7 +6,7 @@ import net.infumia.frame.injector.InjectorRegistry;
 import net.infumia.frame.pipeline.Pipelined;
 import org.jetbrains.annotations.NotNull;
 
-public interface ViewCreator extends Pipelined<InjectionServicePipeline<Object>> {
+public interface ViewFactory extends Pipelined<InjectionServicePipeline<Object>> {
     @NotNull
     InjectorRegistry<Object> injectors();
 

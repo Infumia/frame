@@ -5,11 +5,11 @@ import net.infumia.frame.view.View;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public final class ViewerCreatorImpl implements ViewerCreator {
+public final class ViewerFactoryImpl implements ViewerFactory {
 
     private final MetadataAccessFactory metadataAccessFactory;
 
-    public ViewerCreatorImpl(@NotNull final MetadataAccessFactory metadataAccessFactory) {
+    public ViewerFactoryImpl(@NotNull final MetadataAccessFactory metadataAccessFactory) {
         this.metadataAccessFactory = metadataAccessFactory;
     }
 

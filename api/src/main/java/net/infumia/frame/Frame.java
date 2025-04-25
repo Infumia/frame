@@ -9,10 +9,10 @@ import net.infumia.frame.pipeline.executor.PipelineExecutorFrame;
 import net.infumia.frame.task.TaskFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
-import net.infumia.frame.view.ViewCreator;
+import net.infumia.frame.view.ViewFactory;
 import net.infumia.frame.view.ViewOpener;
 import net.infumia.frame.view.creator.InventoryFactory;
-import net.infumia.frame.viewer.ViewerCreator;
+import net.infumia.frame.viewer.ViewerFactory;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -50,10 +50,10 @@ public interface Frame
     TaskFactory taskFactory();
 
     @NotNull
-    ViewCreator viewCreator();
+    ViewFactory viewFactory();
 
     @NotNull
-    ViewerCreator viewerCreator();
+    ViewerFactory viewerFactory();
 
     @NotNull
     TypedKeyStorageFactory storageFactory();

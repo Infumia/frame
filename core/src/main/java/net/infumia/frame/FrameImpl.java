@@ -25,13 +25,13 @@ import net.infumia.frame.task.TaskFactoryImpl;
 import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.view.View;
-import net.infumia.frame.view.ViewCreator;
-import net.infumia.frame.view.ViewCreatorImpl;
 import net.infumia.frame.view.ViewEventHandler;
+import net.infumia.frame.view.ViewFactory;
+import net.infumia.frame.view.ViewFactoryImpl;
 import net.infumia.frame.view.creator.InventoryFactory;
 import net.infumia.frame.view.creator.InventoryFactoryBukkit;
-import net.infumia.frame.viewer.ViewerCreator;
-import net.infumia.frame.viewer.ViewerCreatorImpl;
+import net.infumia.frame.viewer.ViewerFactory;
+import net.infumia.frame.viewer.ViewerFactoryImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -45,12 +45,12 @@ final class FrameImpl implements FrameRich {
     private final Map<Class<?>, View> registeredViews = new ConcurrentHashMap<>();
     private final AtomicBoolean registered = new AtomicBoolean(false);
     private final PipelineExecutorFrame pipelines = new PipelineExecutorFrameImpl(this);
-    private final ViewCreator viewCreator = new ViewCreatorImpl();
+    private final ViewFactory viewFactory = new ViewFactoryImpl();
     private final Logger logger;
     private final TaskFactory taskFactory;
     private final InventoryListener listener;
     private final MetadataAccessFactory metadataAccessFactory;
-    private final ViewerCreator viewerCreator;
+    private final ViewerFactory viewerFactory;
     private TypedKeyStorageFactory storageFactory = TypedKeyStorageFactory.create();
     private InventoryFactory inventoryFactory = InventoryFactoryBukkit.bukkitOrPaper();
 
@@ -62,7 +62,7 @@ final class FrameImpl implements FrameRich {
         this.logger = logger;
         this.taskFactory = new TaskFactoryImpl(plugin, logger);
         this.metadataAccessFactory = new MetadataAccessFactoryImpl(plugin);
-        this.viewerCreator = new ViewerCreatorImpl(this.metadataAccessFactory);
+        this.viewerFactory = new ViewerFactoryImpl(this.metadataAccessFactory);
         this.listener = new InventoryListener(
             this,
             plugin,
@@ -101,14 +101,14 @@ final class FrameImpl implements FrameRich {
 
     @NotNull
     @Override
-    public ViewCreator viewCreator() {
-        return this.viewCreator;
+    public ViewFactory viewFactory() {
+        return this.viewFactory;
     }
 
     @NotNull
     @Override
-    public ViewerCreator viewerCreator() {
-        return this.viewerCreator;
+    public ViewerFactory viewerFactory() {
+        return this.viewerFactory;
     }
 
     @NotNull

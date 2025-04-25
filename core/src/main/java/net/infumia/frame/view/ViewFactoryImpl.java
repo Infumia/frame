@@ -10,13 +10,13 @@ import net.infumia.frame.injector.InjectorNoArg;
 import net.infumia.frame.injector.InjectorRegistry;
 import org.jetbrains.annotations.NotNull;
 
-public final class ViewCreatorImpl implements ViewCreator {
+public final class ViewFactoryImpl implements ViewFactory {
 
     private final InjectorRegistry<Object> injectors;
     private final InjectionServicePipeline<Object> pipeline;
     private final InjectionRequester<Object> requester;
 
-    public ViewCreatorImpl() {
+    public ViewFactoryImpl() {
         this.injectors = InjectorRegistry.create().register(new InjectorNoArg());
         this.pipeline = InjectionServicePipeline.create(InjectionService.create(this.injectors));
         this.requester = InjectionRequester.create(this.pipeline);
