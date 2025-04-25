@@ -79,6 +79,16 @@ final class FrameImpl implements FrameRich {
 
     @NotNull
     @Override
+    public <T> CompletableFuture<T> loggedFuture(
+        @NotNull final CompletableFuture<T> future,
+        @NotNull final String message,
+        @NotNull final Object @NotNull... args
+    ) {
+        return CompletableFutureExtensions.logError(future, this.logger, message, args);
+    }
+
+    @NotNull
+    @Override
     public Logger logger() {
         return this.logger;
     }
@@ -219,12 +229,11 @@ final class FrameImpl implements FrameRich {
         final TypedKeyStorageImmutableBuilder builder =
             this.storageFactory.createImmutableBuilder(new HashMap<>());
         initialDataConfigurer.accept(builder);
-        return CompletableFutureExtensions.logError(
-            ((ViewEventHandler) view).simulateOpen(players, builder.build()),
-            this.logger,
-            "Error occurred while opening view '%s'!",
-            viewClass
-        );
+        return this.loggedFuture(
+                ((ViewEventHandler) view).simulateOpen(players, builder.build()),
+                "Error occurred while opening view '%s'!",
+                viewClass
+            );
     }
 
     @NotNull
@@ -247,12 +256,11 @@ final class FrameImpl implements FrameRich {
             view instanceof ViewEventHandler,
             "The active context's view must be an instance of ViewEventHandler!"
         );
-        return CompletableFutureExtensions.logError(
-            ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
-            this.logger,
-            "Error occurred while opening an active view '%s'!",
-            view.instance()
-        );
+        return this.loggedFuture(
+                ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
+                "Error occurred while opening an active view '%s'!",
+                view.instance()
+            );
     }
 
     @NotNull

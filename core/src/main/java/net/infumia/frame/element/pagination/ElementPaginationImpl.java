@@ -21,7 +21,6 @@ import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.element.item.ElementItem;
 import net.infumia.frame.element.item.ElementItemBuilderImpl;
 import net.infumia.frame.element.item.ElementItemBuilderRich;
-import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
 import net.infumia.frame.service.ConsumerService;
@@ -223,12 +222,12 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         if (this.onPageSwitch != null) {
             this.onPageSwitch.accept(host, this);
         }
-        CompletableFutureExtensions.logError(
-            this.update(),
-            this.parent.frame().logger(),
-            "An error occurred while updating the pagination '%s'.",
-            this
-        );
+        this.parent.frame()
+            .loggedFuture(
+                this.update(),
+                "An error occurred while updating the pagination '%s'.",
+                this
+            );
     }
 
     @Override

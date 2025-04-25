@@ -4,7 +4,6 @@ import java.time.Duration;
 import net.infumia.frame.Frame;
 import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.view.ContextRenderRich;
-import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import org.jetbrains.annotations.NotNull;
@@ -37,9 +36,8 @@ public final class ServiceStartUpdate
                 .taskFactory()
                 .sync(
                     () ->
-                        CompletableFutureExtensions.logError(
+                        frame.loggedFuture(
                             context.pipelines().executeUpdate(),
-                            frame.logger(),
                             "An error occurred while running the update task of view '%s'.",
                             context.view().instance()
                         ),

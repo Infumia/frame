@@ -2,7 +2,6 @@ package net.infumia.frame.listener;
 
 import java.util.function.Consumer;
 import net.infumia.frame.Frame;
-import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataAccessFactory;
 import net.infumia.frame.metadata.MetadataKeyHolder;
@@ -60,12 +59,11 @@ public final class InventoryListener implements Listener {
             return;
         }
         this.ifTransitioning(event.getPlayer(), viewer ->
-                CompletableFutureExtensions.logError(
-                    ((ViewEventHandler) viewer.view()).simulateClose(viewer),
-                    this.frame.logger(),
-                    "Error occurred while viewer '%s' closes an inventory",
-                    viewer
-                )
+                this.frame.loggedFuture(
+                        ((ViewEventHandler) viewer.view()).simulateClose(viewer),
+                        "Error occurred while viewer '%s' closes an inventory",
+                        viewer
+                    )
             );
     }
 
@@ -76,12 +74,11 @@ public final class InventoryListener implements Listener {
             return;
         }
         this.ifContextualViewer(event.getWhoClicked(), viewer ->
-                CompletableFutureExtensions.logError(
-                    ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
-                    this.frame.logger(),
-                    "Error occurred while viewer '%s' clicks an inventory!",
-                    viewer
-                )
+                this.frame.loggedFuture(
+                        ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
+                        "Error occurred while viewer '%s' clicks an inventory!",
+                        viewer
+                    )
             );
     }
 

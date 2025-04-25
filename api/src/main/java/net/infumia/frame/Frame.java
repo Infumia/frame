@@ -1,5 +1,6 @@
 package net.infumia.frame;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import net.infumia.frame.feature.FeatureInstaller;
 import net.infumia.frame.logger.Logger;
@@ -13,6 +14,7 @@ import net.infumia.frame.view.ViewOpener;
 import net.infumia.frame.view.creator.InventoryFactory;
 import net.infumia.frame.viewer.ViewerCreator;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 public interface Frame
@@ -71,4 +73,12 @@ public interface Frame
 
     @NotNull
     Frame with(@NotNull Class<?> viewClass);
+
+    @NotNull
+    @ApiStatus.Internal
+    <T> CompletableFuture<T> loggedFuture(
+        @NotNull CompletableFuture<T> future,
+        @NotNull String message,
+        @NotNull final Object @NotNull... args
+    );
 }
