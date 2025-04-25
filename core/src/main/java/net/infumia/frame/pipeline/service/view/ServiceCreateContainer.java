@@ -73,7 +73,7 @@ public final class ServiceCreateContainer
                 normalized,
                 config.title()
             );
-        holder.setInventory(inventory);
+        holder.inventory(inventory);
         return CompletableFuture.completedFuture(new ViewContainerImpl(holder, typeRich));
     }
 
