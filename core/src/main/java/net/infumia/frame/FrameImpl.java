@@ -111,8 +111,8 @@ final class FrameImpl implements FrameRich {
                     throwable = throwable.getCause();
                 }
                 if (throwable != null) {
-                    this.logger.error(throwable, "Error occurred while registering views!");
                     this.unregisterInternally();
+                    this.logger.error(throwable, "Error occurred while registering views!");
                 }
                 return null;
             });
