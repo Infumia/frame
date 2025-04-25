@@ -108,7 +108,9 @@ public final class ServiceFirstRenderAvailableSlotResolution
 
             final BiFunction<Integer, Integer, ElementItemBuilder> factory =
                 availableSlotFinders.get(finderIndex);
-            ctx.addElement(((ElementBuilderRich) factory.apply(finderIndex, currentSlot)).build(context));
+            ctx.addElement(
+                ((ElementBuilderRich) factory.apply(finderIndex, currentSlot)).build(context)
+            );
             finderIndex++;
         }
     }

@@ -15,7 +15,10 @@ public final class ViewContainerImpl implements ViewContainerRich {
     private final InventoryHolderView inventoryHolder;
     private final InvTypeRich type;
 
-    public ViewContainerImpl(@NotNull final InventoryHolderView inventoryHolder, @NotNull final InvTypeRich type) {
+    public ViewContainerImpl(
+        @NotNull final InventoryHolderView inventoryHolder,
+        @NotNull final InvTypeRich type
+    ) {
         this.inventoryHolder = inventoryHolder;
         this.type = type;
     }

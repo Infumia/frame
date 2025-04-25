@@ -96,7 +96,10 @@ public interface PipelineContextViews {
         private final ContextBase context;
         private final Collection<Viewer> viewers;
 
-        public StartTransition(@NotNull final ContextBase context, final Collection<Viewer> viewers) {
+        public StartTransition(
+            @NotNull final ContextBase context,
+            final Collection<Viewer> viewers
+        ) {
             this.context = context;
             this.viewers = viewers;
         }

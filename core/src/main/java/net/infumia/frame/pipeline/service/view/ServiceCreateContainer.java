@@ -67,12 +67,7 @@ public final class ServiceCreateContainer
         final Inventory inventory = context
             .frame()
             .inventoryCreator()
-            .create(
-                holder,
-                inventoryType,
-                normalized,
-                config.title()
-            );
+            .create(holder, inventoryType, normalized, config.title());
         holder.inventory(inventory);
         return CompletableFuture.completedFuture(new ViewContainerImpl(holder, typeRich));
     }

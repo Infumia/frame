@@ -60,13 +60,13 @@ public final class InventoryListener implements Listener {
             return;
         }
         this.ifTransitioning(event.getPlayer(), viewer ->
-            CompletableFutureExtensions.logError(
-                ((ViewEventHandler) viewer.view()).simulateClose(viewer),
-                this.logger,
-                "Error occurred while viewer '%s' closes an inventory",
-                viewer
-            )
-        );
+                CompletableFutureExtensions.logError(
+                    ((ViewEventHandler) viewer.view()).simulateClose(viewer),
+                    this.logger,
+                    "Error occurred while viewer '%s' closes an inventory",
+                    viewer
+                )
+            );
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -76,13 +76,13 @@ public final class InventoryListener implements Listener {
             return;
         }
         this.ifContextualViewer(event.getWhoClicked(), viewer ->
-            CompletableFutureExtensions.logError(
-                ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
-                this.logger,
-                "Error occurred while viewer '%s' clicks an inventory!",
-                viewer
-            )
-        );
+                CompletableFutureExtensions.logError(
+                    ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
+                    this.logger,
+                    "Error occurred while viewer '%s' clicks an inventory!",
+                    viewer
+                )
+            );
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -92,22 +92,22 @@ public final class InventoryListener implements Listener {
             return;
         }
         this.ifContextualViewer(event.getWhoClicked(), viewer ->
-            ((ViewEventHandler) viewer.view()).handleInventoryDrag(viewer, event)
-        );
+                ((ViewEventHandler) viewer.view()).handleInventoryDrag(viewer, event)
+            );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onItemPickup(final PlayerPickupItemEvent event) {
         this.ifContextualViewer(event.getPlayer(), viewer ->
-            ((ViewEventHandler) viewer.view()).handleItemPickup(viewer, event)
-        );
+                ((ViewEventHandler) viewer.view()).handleItemPickup(viewer, event)
+            );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onItemDrop(final PlayerDropItemEvent event) {
         this.ifContextualViewer(event.getPlayer(), viewer ->
-            ((ViewEventHandler) viewer.view()).handleItemDrop(viewer, event)
-        );
+                ((ViewEventHandler) viewer.view()).handleItemDrop(viewer, event)
+            );
     }
 
     private void ifContextualViewer(
@@ -116,8 +116,8 @@ public final class InventoryListener implements Listener {
     ) {
         final ContextualViewer viewer =
             this.metadataAccessFactory.getOrCreate(metadatable).get(
-                MetadataKeyHolder.CONTEXTUAL_VIEWER
-            );
+                    MetadataKeyHolder.CONTEXTUAL_VIEWER
+                );
         if (viewer != null) {
             consumer.accept(viewer);
         }
