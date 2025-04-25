@@ -12,11 +12,11 @@ import org.jetbrains.annotations.Nullable;
 
 public final class ViewContainerImpl implements ViewContainerRich {
 
-    private final InventoryHolderView inventoryHolder;
+    private final InventoryHolder inventoryHolder;
     private final InvTypeRich type;
 
     public ViewContainerImpl(
-        @NotNull final InventoryHolderView inventoryHolder,
+        @NotNull final InventoryHolder inventoryHolder,
         @NotNull final InvTypeRich type
     ) {
         this.inventoryHolder = inventoryHolder;
