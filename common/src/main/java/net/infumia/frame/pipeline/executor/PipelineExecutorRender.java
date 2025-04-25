@@ -15,7 +15,9 @@ public interface PipelineExecutorRender {
     CompletableFuture<ConsumerService.State> executeFirstRender();
 
     @NotNull
-    CompletableFuture<ConsumerService.State> executeStartTransition(@NotNull Collection<Viewer> viewers);
+    CompletableFuture<ConsumerService.State> executeStartTransition(
+        @NotNull Collection<Viewer> viewers
+    );
 
     @NotNull
     CompletableFuture<ConsumerService.State> executeOpenContainer(

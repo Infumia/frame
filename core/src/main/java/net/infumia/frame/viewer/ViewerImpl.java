@@ -49,7 +49,7 @@ public class ViewerImpl implements Viewer {
     @Override
     public void open(@NotNull final ViewContainer container) {
         if (this.player.isOnline()) {
-            this.player.openInventory(container.inventory());
+            this.player.openInventory(container.inventoryHolder().getInventory());
         }
     }
 
