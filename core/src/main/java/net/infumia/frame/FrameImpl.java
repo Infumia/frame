@@ -61,14 +61,14 @@ final class FrameImpl implements FrameRich {
     ) {
         this.logger = logger;
         this.taskFactory = new TaskFactoryImpl(plugin, logger);
-
         this.metadataAccessFactory = new MetadataAccessFactoryImpl(plugin);
-        this.listener = new InventoryListener(plugin, logger, this.metadataAccessFactory, () -> {
-            if (unregisterOnDisable) {
-                this.unregister();
-            }
-        });
         this.viewerCreator = new ViewerCreatorImpl(this.metadataAccessFactory);
+        this.listener = new InventoryListener(
+            this,
+            plugin,
+            this.metadataAccessFactory,
+            unregisterOnDisable
+        );
     }
 
     @NotNull
