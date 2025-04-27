@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface FeatureInstaller<T> {
     @NotNull
-    Frame installFeature(Class<? extends Feature> feature);
+    Frame installFeature(@NotNull Class<? extends Feature> feature);
 
     @NotNull
-    Frame installFeature(Feature feature);
+    Frame installFeature(@NotNull Feature feature);
 }

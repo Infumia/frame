@@ -1,3 +1,13 @@
 package net.infumia.frame.feature;
 
-public interface Feature {}
+import net.infumia.frame.Frame;
+import org.jetbrains.annotations.NotNull;
+
+public interface Feature {
+    @NotNull
+    String name();
+
+    void onInstall(@NotNull Frame frame);
+
+    void onUninstall(@NotNull Frame frame);
+}
