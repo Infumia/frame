@@ -2,6 +2,7 @@ package net.infumia.frame.pipeline.holder;
 
 import io.leangen.geantyref.TypeToken;
 import java.util.Collection;
+import net.infumia.frame.Cloned;
 import net.infumia.frame.pipeline.Pipeline;
 import net.infumia.frame.pipeline.PipelineConsumer;
 import net.infumia.frame.pipeline.PipelineConsumerImpl;
@@ -14,7 +15,6 @@ import net.infumia.frame.pipeline.service.frame.ServiceListenerRegisteredLogging
 import net.infumia.frame.pipeline.service.frame.ServiceViewCreated;
 import net.infumia.frame.pipeline.service.frame.ServiceViewRegistered;
 import net.infumia.frame.pipeline.service.frame.ServiceViewUnregisteredLogging;
-import net.infumia.frame.util.Cloned;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 

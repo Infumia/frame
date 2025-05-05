@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.ContextBase;
-import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextState;
 import net.infumia.frame.pipeline.executor.PipelineExecutorState;
@@ -52,12 +51,12 @@ public final class StateValueHostImpl implements StateValueHostRich {
                 .debug("State '%s' not found in '%s'!", state, this.values);
             return null;
         }
-        CompletableFutureExtensions.logError(
-            this.pipelines.executeAccess(state, value),
-            this.context.frame().logger(),
-            "An error occurred while accessing state '%s'!",
-            state
-        );
+        this.context.frame()
+            .loggedFuture(
+                this.pipelines.executeAccess(state, value),
+                "An error occurred while accessing state '%s'!",
+                state
+            );
         return (StateValue<T>) value;
     }
 
@@ -73,12 +72,12 @@ public final class StateValueHostImpl implements StateValueHostRich {
         }
         final T oldValue = stateValue.value();
         stateValue.value(value);
-        CompletableFutureExtensions.logError(
-            this.pipelines.executeUpdate(state, oldValue, stateValue),
-            this.context.frame().logger(),
-            "An error occurred while updating state '%s'!",
-            state
-        );
+        this.context.frame()
+            .loggedFuture(
+                this.pipelines.executeUpdate(state, oldValue, stateValue),
+                "An error occurred while updating state '%s'!",
+                state
+            );
         return stateValue;
     }
 
@@ -89,12 +88,12 @@ public final class StateValueHostImpl implements StateValueHostRich {
         if (stateValue == null) {
             return null;
         }
-        CompletableFutureExtensions.logError(
-            this.pipelines.executeUpdate(state, stateValue.value(), stateValue),
-            this.context.frame().logger(),
-            "An error occurred while updating state '%s'!",
-            state
-        );
+        this.context.frame()
+            .loggedFuture(
+                this.pipelines.executeUpdate(state, stateValue.value(), stateValue),
+                "An error occurred while updating state '%s'!",
+                state
+            );
         return stateValue;
     }
 

@@ -26,4 +26,8 @@ public final class CompletableFutureExtensions {
             return null;
         });
     }
+
+    private CompletableFutureExtensions() {
+        throw new IllegalStateException("Utility class!");
+    }
 }

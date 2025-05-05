@@ -3,13 +3,13 @@ package net.infumia.frame.state;
 import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.concurrent.CompletableFuture;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.state.value.StateValue;
 import net.infumia.frame.state.value.StateValueFactory;
 import net.infumia.frame.state.value.StateValueHostHolder;
 import net.infumia.frame.state.value.StateValueHostRich;
 import net.infumia.frame.state.watcher.StateWatcherAccess;
 import net.infumia.frame.state.watcher.StateWatcherUpdate;
-import net.infumia.frame.util.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,7 +58,7 @@ public class StateImpl<T> implements StateRich<T> {
 
     @NotNull
     @Override
-    public T getOtThrow(@NotNull final StateValueHostHolder host) {
+    public T getOrThrow(@NotNull final StateValueHostHolder host) {
         return Preconditions.stateNotNull(
             this.get(host),
             "Value for state '%s' not found!",

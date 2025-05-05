@@ -12,6 +12,9 @@ dependencies {
     // Base modules
     implementation "net.infumia:frame:VERSION"
     runtimeOnly "net.infumia:frame-core:VERSION"
+
+    // Annotation modules
+    implementation "net.infumia:frame-annotations:VERSION"
 }
 ```
 ### Code
@@ -19,18 +22,20 @@ dependencies {
 public final class Plugin extends JavaPlugin {
     public static final TypedKey<CommandSender> CONSOLE_KEY =
         TypedKey.of(CommandSender.class, "console");
-    
+
     private final Frame frame = Frame.create(this)
-        .with(ViewExample.class);
-    
+        .with(ViewExample.class)
+        .with(ViewAnnotationExample.class)
+        .install(AnnotationFeature.class);
+ 
     @Override
     public void onEnable() {
-        /*this.frame.register();*/
         this.frame.register(builder -> 
             builder.add(Plugin.CONSOLE_KEY, Bukkit.getConsoleSender()));
     }
 }
-
+```
+```java
 public final class ViewExample implements ViewHandler {
 
     @Override
@@ -58,11 +63,43 @@ public final class ViewExample implements ViewHandler {
 
         ctx
             .layoutSlot('a', new ItemStack(Material.DIAMOND))
-            .cancelOnClick()
             .onClick(context -> {
                 context.closeForViewer();
                 sender.sendMessage("Player " + context.clicker().player() + " clicked to a diamond!");
             });
+    }
+}
+```
+```java
+@ViewCancelOnClick
+@ViewType(InvType.CHEST)
+@ViewLayout({
+    "xxxxxxxxx",
+    "xxxxaxxxx",
+    "xxxxxxxxx"
+})
+public final class ViewAnnotationExample {
+
+    @ViewTitle
+    public String onTitle(final Player viewer) {
+        return "Player: " + player.getName();
+    }
+
+    @ElementSlot(layout = 'x')
+    @ElementItem(configKey = "fill-item")
+    public void glasses() {}
+
+    @ElementCloseOnClick
+    @ElementSlot(layout = 'a')
+    @ElementItemStack(configKey = "diamond-item")
+    public void diamond(
+        final Player viewer,
+        /*
+        Optional if there is only one CommandSender.class registered.
+        @InstanceKey("console")*/
+        final CommandSender sender
+    ) {
+        sender.sendMessage("Player " + viewer.getName() + " clicked to a diamond!");
     }
 }
 ```
