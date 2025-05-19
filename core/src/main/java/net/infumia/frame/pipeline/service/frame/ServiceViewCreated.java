@@ -27,7 +27,7 @@ public final class ServiceViewCreated
         final CompletableFuture<Object>[] created = ctx
             .registeredViews()
             .stream()
-            .map(ctx.frame().viewCreator()::create)
+            .map(ctx.frame().viewFactory()::create)
             .toArray(CompletableFuture[]::new);
         return CompletableFuture.allOf(created).thenApply(__ -> {
             final Collection<Object> views = Arrays.stream(created)
