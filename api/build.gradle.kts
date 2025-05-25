@@ -3,9 +3,9 @@ import net.infumia.gradle.applyPublish
 applyPublish()
 
 dependencies {
-    compileOnly(project(":common"))
-    compileOnly(project(":injector"))
-    compileOnly(project(":service"))
+    compileOnlyApi(project(":common"))
+    compileOnlyApi(project(":injector"))
+    compileOnlyApi(project(":service"))
 
     runtimeOnly(project(":core"))
 

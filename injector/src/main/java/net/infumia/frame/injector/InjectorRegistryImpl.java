@@ -25,6 +25,14 @@ final class InjectorRegistryImpl<C> implements InjectorRegistry<C> {
     }
 
     @Override
+    public InjectorRegistry<C> unregister(Injector<C> injector) {
+        Objects.requireNonNull(injector, "injector");
+
+        this.providers.removeIf(pair -> pair.second().equals(injector));
+        return this;
+    }
+
+    @Override
     public synchronized InjectorRegistry<C> register(
         final Class<?> cls,
         final Injector<C> injector

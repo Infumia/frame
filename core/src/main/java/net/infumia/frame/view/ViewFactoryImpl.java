@@ -17,7 +17,7 @@ public final class ViewFactoryImpl implements ViewFactory {
     private final InjectionRequester<Object> requester;
 
     public ViewFactoryImpl() {
-        this.injectors = InjectorRegistry.create().register(new InjectorNoArg());
+        this.injectors = InjectorRegistry.create().register(InjectorNoArg.INSTANCE);
         this.pipeline = InjectionServicePipeline.create(InjectionService.create(this.injectors));
         this.requester = InjectionRequester.create(this.pipeline);
     }
