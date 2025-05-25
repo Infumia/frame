@@ -10,7 +10,6 @@ dependencies {
     runtimeOnly(project(":core"))
 
     compileOnly(libs.minecraft.one.eight.eight.paper)
-    compileOnly(libs.guice) { isTransitive = false }
     compileOnly(libs.geantyref)
     compileOnly(libs.adventure.api)
     compileOnly(libs.annotations)
