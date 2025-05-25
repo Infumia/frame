@@ -76,7 +76,7 @@ public class StateImpl<T> implements StateRich<T> {
 
     @NotNull
     @Override
-    public CompletableFuture<T> getOtThrowWait(@NotNull final StateValueHostHolder host) {
+    public CompletableFuture<T> getOrThrowWait(@NotNull final StateValueHostHolder host) {
         return this.getWait(host).thenApply(value ->
                 Preconditions.stateNotNull(value, "Value for state '%s' not found!", this.id)
             );

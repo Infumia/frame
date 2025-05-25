@@ -31,7 +31,7 @@ public final class ServiceFirstRenderPagination
         final Collection<CompletableFuture<ElementPagination>> futures = new ArrayList<>();
         for (final net.infumia.frame.state.State<?> state : context.stateRegistry()) {
             if (state instanceof StatePagination) {
-                futures.add(((StatePagination) state).getOtThrowWait(context));
+                futures.add(((StatePagination) state).getOrThrowWait(context));
             }
         }
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
