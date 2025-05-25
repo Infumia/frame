@@ -9,7 +9,7 @@ import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
 
-public interface ElementPaginationRich<T>
+public interface ElementPaginationRich
     extends ElementRich, ElementPagination, ElementEventHandlerHolder {
     @NotNull
     State<ElementPagination> associated();
@@ -31,8 +31,4 @@ public interface ElementPaginationRich<T>
     Collection<Element> modifiableElements();
 
     void clearElements();
-
-    @NotNull
-    @Override
-    ElementPaginationBuilder<T> toBuilder();
 }

@@ -1,6 +1,7 @@
 package net.infumia.frame.pipeline.holder;
 
 import io.leangen.geantyref.TypeToken;
+import net.infumia.frame.Cloned;
 import net.infumia.frame.pipeline.PipelineConsumer;
 import net.infumia.frame.pipeline.PipelineConsumerImpl;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
@@ -17,7 +18,6 @@ import net.infumia.frame.pipeline.service.element.ServiceRender;
 import net.infumia.frame.pipeline.service.element.ServiceRenderLogging;
 import net.infumia.frame.pipeline.service.element.ServiceUpdate;
 import net.infumia.frame.pipeline.service.element.ServiceUpdateLogging;
-import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
 public final class PipelineHolderElement implements Cloned<PipelineHolderElement> {

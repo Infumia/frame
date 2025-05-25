@@ -25,7 +25,7 @@ public interface ViewEventHandler {
     );
 
     @NotNull
-    CompletableFuture<ContextRender> simulateOpenActive(
+    CompletableFuture<@NotNull ContextRender> simulateOpenActive(
         @NotNull ContextRender activeContext,
         @NotNull Collection<Player> viewers
     );

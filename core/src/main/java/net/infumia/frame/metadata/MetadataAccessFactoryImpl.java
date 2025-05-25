@@ -35,8 +35,8 @@ public final class MetadataAccessFactoryImpl implements MetadataAccessFactory {
     }
 
     @Override
-    public void clearCache(@NotNull final Collection<? extends Metadatable> metadatables) {
-        metadatables
+    public void clearCache(@NotNull final Collection<? extends Metadatable> list) {
+        list
             .stream()
             .map(this.cacheKeyExtractor)
             .map(this.cache::remove)

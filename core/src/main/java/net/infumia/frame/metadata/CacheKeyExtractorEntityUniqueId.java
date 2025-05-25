@@ -1,6 +1,6 @@
 package net.infumia.frame.metadata;
 
-import net.infumia.frame.util.Preconditions;
+import net.infumia.frame.Preconditions;
 import org.bukkit.entity.Entity;
 import org.bukkit.metadata.Metadatable;
 import org.jetbrains.annotations.NotNull;

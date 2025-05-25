@@ -11,30 +11,27 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
-import net.infumia.frame.element.ElementItem;
-import net.infumia.frame.element.ElementItemBuilderImpl;
-import net.infumia.frame.element.ElementItemBuilderRich;
 import net.infumia.frame.element.ElementRich;
-import net.infumia.frame.extension.CompletableFutureExtensions;
+import net.infumia.frame.element.item.ElementItem;
+import net.infumia.frame.element.item.ElementItemBuilderImpl;
+import net.infumia.frame.element.item.ElementItemBuilderRich;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
 import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.state.State;
-import net.infumia.frame.state.pagination.ElementConfigurer;
+import net.infumia.frame.state.pagination.PaginationElementConfigurer;
 import net.infumia.frame.state.pagination.StatePagination;
-import net.infumia.frame.util.Preconditions;
 import net.infumia.frame.view.ViewContainer;
 import org.jetbrains.annotations.NotNull;
 
-public final class ElementPaginationImpl<T>
-    extends ElementImpl
-    implements ElementPaginationRich<T> {
+public final class ElementPaginationImpl<T> extends ElementImpl implements ElementPaginationRich {
 
     private final ReadWriteLock elementLock = new ReentrantReadWriteLock();
     private final PipelineExecutorElement pipelines = new PipelineExecutorElementImpl(this);
@@ -44,7 +41,7 @@ public final class ElementPaginationImpl<T>
     final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory;
     final char layout;
     final BiConsumer<ContextBase, ElementPagination> onPageSwitch;
-    final ElementConfigurer<T> elementConfigurer;
+    final PaginationElementConfigurer<T> elementConfigurer;
     final State<ElementPagination> associated;
     private final Function<ContextBase, CompletableFuture<List<T>>> sourceFactory;
     private List<Element> elements = new ArrayList<>();
@@ -75,7 +72,7 @@ public final class ElementPaginationImpl<T>
         this.onPageSwitch = builder.onPageSwitch;
 
         if (this.sourceProvider instanceof SourceProvider.Immutable) {
-            this.currentSource = this.sourceProvider.apply(this.parent()).join();
+            this.currentSource = this.sourceProvider.apply(this.parent).join();
             this.sourceFactory = null;
         } else {
             this.sourceFactory = this.sourceProvider;
@@ -210,7 +207,7 @@ public final class ElementPaginationImpl<T>
 
     @Override
     public void switchTo(final int pageIndex) {
-        Preconditions.argumentNotNull(
+        Preconditions.state(
             this.hasPage(pageIndex),
             "Page index not found (%d > %d)",
             pageIndex,
@@ -221,16 +218,16 @@ public final class ElementPaginationImpl<T>
         }
         this.currentPageIndex = pageIndex;
         this.pageWasChanged = true;
-        final ContextRender host = (ContextRender) this.parent();
+        final ContextRender host = (ContextRender) this.parent;
         if (this.onPageSwitch != null) {
             this.onPageSwitch.accept(host, this);
         }
-        CompletableFutureExtensions.logError(
-            this.update(),
-            this.parent().frame().logger(),
-            "An error occurred while updating the pagination '%s'.",
-            this
-        );
+        this.parent.frame()
+            .loggedFuture(
+                this.update(),
+                "An error occurred while updating the pagination '%s'.",
+                this
+            );
     }
 
     @Override
@@ -319,30 +316,24 @@ public final class ElementPaginationImpl<T>
 
     @NotNull
     @Override
-    public ElementPaginationBuilderRich<T> toBuilder() {
-        return new ElementPaginationBuilderImpl<>(this);
-    }
-
-    @NotNull
-    @Override
     public CompletableFuture<ConsumerService.State> update() {
         Preconditions.state(
-            this.parent() instanceof ContextRender,
+            this.parent instanceof ContextRender,
             "You cannot update the element '%s' when the parent is not a ContextRender!",
             this
         );
-        return this.pipelines.executeUpdate((ContextRender) this.parent(), false);
+        return this.pipelines.executeUpdate((ContextRender) this.parent, false);
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> forceUpdate() {
         Preconditions.state(
-            this.parent() instanceof ContextRender,
+            this.parent instanceof ContextRender,
             "You cannot update the element '%s' when the parent is not a ContextRender!",
             this
         );
-        return this.pipelines.executeUpdate((ContextRender) this.parent(), true);
+        return this.pipelines.executeUpdate((ContextRender) this.parent, true);
     }
 
     @NotNull
@@ -376,9 +367,9 @@ public final class ElementPaginationImpl<T>
         int index = 0;
         for (int slot = container.firstSlot(); slot < lastSlot; slot++) {
             final T value = contents.get(slot);
-            final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
-                .slot(slot)
-                .root(this);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl();
+            builder.root(this);
+            builder.slot(slot);
             this.elementConfigurer.configure(context, builder, index++, slot, value);
             this.elements.add(builder.build(context));
         }
@@ -396,9 +387,9 @@ public final class ElementPaginationImpl<T>
                 break;
             }
             final T value = contents.get(index);
-            final ElementItemBuilderRich builder = new ElementItemBuilderImpl()
-                .slot(slot)
-                .root(this);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl();
+            builder.root(this);
+            builder.slot(slot);
             this.elementConfigurer.configure(context, builder, index++, slot, value);
             this.elements.add(builder.build(context));
         }

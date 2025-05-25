@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.element.ElementBuilderRich;
-import net.infumia.frame.element.ElementItemBuilder;
+import net.infumia.frame.element.item.ElementItemBuilder;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import net.infumia.frame.slot.LayoutSlot;
@@ -122,14 +122,16 @@ public final class ServiceFirstRenderAvailableSlotResolution
         if (slot < 0 || slot >= context.container().size()) {
             return true;
         }
-        return (
-            !((ViewContainerRich) context.container()).typeRich().canPlayerInteractOn(slot) ||
-            context.container().hasItem(slot) ||
-            ((ContextRenderRich) context).slotFinder()
-                .nonRenderedBuilders()
-                .stream()
-                .anyMatch(builder -> builder.slot() == slot)
-        );
+        if (!((ViewContainerRich) context.container()).typeRich().canPlayerInteractOn(slot)) {
+            return true;
+        }
+        if (context.container().hasItem(slot)) {
+            return true;
+        }
+        return ((ContextRenderRich) context).slotFinder()
+            .nonRenderedBuilders()
+            .stream()
+            .anyMatch(builder -> builder.slot() == slot);
     }
 
     private ServiceFirstRenderAvailableSlotResolution() {}

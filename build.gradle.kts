@@ -4,6 +4,7 @@ plugins { java }
 
 subprojects {
     apply<JavaPlugin>()
+    apply<JavaLibraryPlugin>()
 
     repositories {
         mavenCentral()

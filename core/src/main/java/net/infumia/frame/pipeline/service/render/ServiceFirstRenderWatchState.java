@@ -5,7 +5,6 @@ import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementContainer;
 import net.infumia.frame.element.ElementRich;
-import net.infumia.frame.extension.CompletableFutureExtensions;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import org.jetbrains.annotations.NotNull;
@@ -56,13 +55,14 @@ public final class ServiceFirstRenderWatchState
         }
         for (final net.infumia.frame.state.State<?> state : states) {
             state.watchAccess(context, update ->
-                CompletableFutureExtensions.logError(
-                    element.update(),
-                    context.frame().logger(),
-                    "An error occurred while updating element '%s' due to state '%s' access!",
-                    element.key(),
-                    state
-                )
+                context
+                    .frame()
+                    .loggedFuture(
+                        element.update(),
+                        "An error occurred while updating element '%s' due to state '%s' access!",
+                        element.key(),
+                        state
+                    )
             );
         }
     }
@@ -77,13 +77,14 @@ public final class ServiceFirstRenderWatchState
         }
         for (final net.infumia.frame.state.State<?> state : states) {
             state.watchUpdate(context, update ->
-                CompletableFutureExtensions.logError(
-                    element.update(),
-                    context.frame().logger(),
-                    "An error occurred while updating element '%s' due to state '%s' change!",
-                    element.key(),
-                    state
-                )
+                context
+                    .frame()
+                    .loggedFuture(
+                        element.update(),
+                        "An error occurred while updating element '%s' due to state '%s' change!",
+                        element.key(),
+                        state
+                    )
             );
         }
     }

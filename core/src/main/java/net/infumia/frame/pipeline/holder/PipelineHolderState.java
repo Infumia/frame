@@ -1,13 +1,13 @@
 package net.infumia.frame.pipeline.holder;
 
 import io.leangen.geantyref.TypeToken;
+import net.infumia.frame.Cloned;
 import net.infumia.frame.pipeline.PipelineConsumer;
 import net.infumia.frame.pipeline.PipelineConsumerImpl;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextState;
 import net.infumia.frame.pipeline.service.state.ServiceAccessLogging;
 import net.infumia.frame.pipeline.service.state.ServiceUpdateLogging;
-import net.infumia.frame.util.Cloned;
 import org.jetbrains.annotations.NotNull;
 
 public final class PipelineHolderState implements Cloned<PipelineHolderState> {

@@ -1,7 +1,5 @@
 package net.infumia.frame;
 
-import net.infumia.frame.util.Preconditions;
-
 public final class SlotConverter {
 
     public static int convertSlot(

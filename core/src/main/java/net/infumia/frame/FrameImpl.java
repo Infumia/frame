@@ -13,6 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.extension.CompletableFutureExtensions;
+import net.infumia.frame.feature.Feature;
 import net.infumia.frame.listener.InventoryListener;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.metadata.MetadataAccessFactory;
@@ -23,15 +24,14 @@ import net.infumia.frame.task.TaskFactory;
 import net.infumia.frame.task.TaskFactoryImpl;
 import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
-import net.infumia.frame.util.Preconditions;
 import net.infumia.frame.view.View;
-import net.infumia.frame.view.ViewCreator;
-import net.infumia.frame.view.ViewCreatorImpl;
 import net.infumia.frame.view.ViewEventHandler;
-import net.infumia.frame.view.creator.InventoryCreator;
-import net.infumia.frame.view.creator.InventoryCreatorBukkit;
-import net.infumia.frame.viewer.ViewerCreator;
-import net.infumia.frame.viewer.ViewerCreatorImpl;
+import net.infumia.frame.view.ViewFactory;
+import net.infumia.frame.view.ViewFactoryImpl;
+import net.infumia.frame.view.creator.InventoryFactory;
+import net.infumia.frame.view.creator.InventoryFactoryBukkit;
+import net.infumia.frame.viewer.ViewerFactory;
+import net.infumia.frame.viewer.ViewerFactoryImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -45,14 +45,14 @@ final class FrameImpl implements FrameRich {
     private final Map<Class<?>, View> registeredViews = new ConcurrentHashMap<>();
     private final AtomicBoolean registered = new AtomicBoolean(false);
     private final PipelineExecutorFrame pipelines = new PipelineExecutorFrameImpl(this);
-    private final ViewCreator viewCreator = new ViewCreatorImpl();
+    private final ViewFactory viewFactory = new ViewFactoryImpl();
     private final Logger logger;
     private final TaskFactory taskFactory;
     private final InventoryListener listener;
     private final MetadataAccessFactory metadataAccessFactory;
-    private final ViewerCreator viewerCreator;
+    private final ViewerFactory viewerFactory;
     private TypedKeyStorageFactory storageFactory = TypedKeyStorageFactory.create();
-    private InventoryCreator inventoryCreator = InventoryCreatorBukkit.bukkitOrPaper();
+    private InventoryFactory inventoryFactory = InventoryFactoryBukkit.bukkitOrPaper();
 
     FrameImpl(
         @NotNull final Plugin plugin,
@@ -61,14 +61,14 @@ final class FrameImpl implements FrameRich {
     ) {
         this.logger = logger;
         this.taskFactory = new TaskFactoryImpl(plugin, logger);
-
         this.metadataAccessFactory = new MetadataAccessFactoryImpl(plugin);
-        this.listener = new InventoryListener(plugin, logger, this.metadataAccessFactory, () -> {
-            if (unregisterOnDisable) {
-                this.unregister();
-            }
-        });
-        this.viewerCreator = new ViewerCreatorImpl(this.metadataAccessFactory);
+        this.viewerFactory = new ViewerFactoryImpl(this.metadataAccessFactory);
+        this.listener = new InventoryListener(
+            this,
+            plugin,
+            this.metadataAccessFactory,
+            unregisterOnDisable
+        );
     }
 
     @NotNull
@@ -77,55 +77,9 @@ final class FrameImpl implements FrameRich {
         return this.listener;
     }
 
-    @NotNull
-    @Override
-    public Logger logger() {
-        return this.logger;
-    }
-
-    @NotNull
-    @Override
-    public TaskFactory taskFactory() {
-        return this.taskFactory;
-    }
-
-    @NotNull
-    @Override
-    public ViewCreator viewCreator() {
-        return this.viewCreator;
-    }
-
-    @NotNull
-    @Override
-    public ViewerCreator viewerCreator() {
-        return this.viewerCreator;
-    }
-
-    @NotNull
-    @Override
-    public TypedKeyStorageFactory storageFactory() {
-        return this.storageFactory;
-    }
-
-    @Override
-    public void storageFactory(@NotNull final TypedKeyStorageFactory storageFactory) {
-        this.storageFactory = storageFactory;
-    }
-
-    @NotNull
-    @Override
-    public InventoryCreator inventoryCreator() {
-        return this.inventoryCreator;
-    }
-
-    @Override
-    public void inventoryCreator(@NotNull final InventoryCreator inventoryCreator) {
-        this.inventoryCreator = inventoryCreator;
-    }
-
     @Override
     public void register() {
-        this.register(builder -> {});
+        this.register(__ -> {});
     }
 
     @Override
@@ -157,8 +111,8 @@ final class FrameImpl implements FrameRich {
                     throwable = throwable.getCause();
                 }
                 if (throwable != null) {
-                    this.logger.error(throwable, "Error occurred while registering views!");
                     this.unregisterInternally();
+                    this.logger.error(throwable, "Error occurred while registering views!");
                 }
                 return null;
             });
@@ -175,6 +129,62 @@ final class FrameImpl implements FrameRich {
         Preconditions.argument(!this.registered.get(), "This frame is registered!");
         this.intoUnregisteredViews(viewClass);
         return this;
+    }
+
+    @NotNull
+    @Override
+    public Logger logger() {
+        return this.logger;
+    }
+
+    @NotNull
+    @Override
+    public TaskFactory taskFactory() {
+        return this.taskFactory;
+    }
+
+    @NotNull
+    @Override
+    public ViewFactory viewFactory() {
+        return this.viewFactory;
+    }
+
+    @NotNull
+    @Override
+    public ViewerFactory viewerFactory() {
+        return this.viewerFactory;
+    }
+
+    @NotNull
+    @Override
+    public TypedKeyStorageFactory storageFactory() {
+        return this.storageFactory;
+    }
+
+    @Override
+    public void storageFactory(@NotNull final TypedKeyStorageFactory storageFactory) {
+        this.storageFactory = storageFactory;
+    }
+
+    @NotNull
+    @Override
+    public InventoryFactory inventoryFactory() {
+        return this.inventoryFactory;
+    }
+
+    @Override
+    public void inventoryFactory(@NotNull final InventoryFactory inventoryFactory) {
+        this.inventoryFactory = inventoryFactory;
+    }
+
+    @NotNull
+    @Override
+    public <T> CompletableFuture<T> loggedFuture(
+        @NotNull final CompletableFuture<T> future,
+        @NotNull final String message,
+        @NotNull final Object @NotNull... args
+    ) {
+        return CompletableFutureExtensions.logError(future, this.logger, message, args);
     }
 
     @NotNull
@@ -219,12 +229,11 @@ final class FrameImpl implements FrameRich {
         final TypedKeyStorageImmutableBuilder builder =
             this.storageFactory.createImmutableBuilder(new HashMap<>());
         initialDataConfigurer.accept(builder);
-        return CompletableFutureExtensions.logError(
-            ((ViewEventHandler) view).simulateOpen(players, builder.build()),
-            this.logger,
-            "Error occurred while opening view '%s'!",
-            viewClass
-        );
+        return this.loggedFuture(
+                ((ViewEventHandler) view).simulateOpen(players, builder.build()),
+                "Error occurred while opening view '%s'!",
+                viewClass
+            );
     }
 
     @NotNull
@@ -243,15 +252,15 @@ final class FrameImpl implements FrameRich {
         @NotNull final ContextRender activeContext
     ) {
         final View view = activeContext.view();
-        if (!(view instanceof ViewEventHandler)) {
-            return CompletableFuture.completedFuture(null);
-        }
-        return CompletableFutureExtensions.logError(
-            ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
-            this.logger,
-            "Error occurred while opening an active view '%s'!",
-            view.instance()
+        Preconditions.argument(
+            view instanceof ViewEventHandler,
+            "The active context's view must be an instance of ViewEventHandler!"
         );
+        return this.loggedFuture(
+                ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
+                "Error occurred while opening an active view '%s'!",
+                view.instance()
+            );
     }
 
     @NotNull
@@ -312,5 +321,19 @@ final class FrameImpl implements FrameRich {
                         );
                 }
             });
+    }
+
+    @NotNull
+    @Override
+    public Frame installFeature(@NotNull final Class<? extends Feature> feature) {
+        // TODO: portlek, Implement this.
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public Frame installFeature(@NotNull final Feature feature) {
+        // TODO: portlek, Implement this.
+        return this;
     }
 }

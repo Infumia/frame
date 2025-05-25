@@ -19,24 +19,26 @@ import org.jetbrains.annotations.Nullable;
 public class ElementImpl implements ElementRich {
 
     private final String key;
-    final ContextBase parent;
-    final Element root;
-    final boolean cancelOnClick;
-    final boolean updateOnClick;
-    final boolean closeOnClick;
-    final Duration interactionDelay;
-    final Consumer<ContextElementClick> onInteractionDelay;
-    final Function<ContextElementClick, String> interactionDelayKey;
-    final Predicate<ContextElementRender> displayIf;
-    final Collection<State<?>> updateOnStateChange;
-    final Collection<State<?>> updateOnStateAccess;
+    protected final ContextBase parent;
+    protected final Element root;
+    protected final boolean cancelOnClick;
+    protected final boolean updateOnClick;
+    protected final boolean closeOnClick;
+    protected final Duration interactionDelay;
+    protected final Consumer<ContextElementClick> onInteractionDelay;
+    protected final Function<ContextElementClick, String> interactionDelayKey;
+    protected final Predicate<ContextElementRender> displayIf;
+    protected final Collection<State<?>> updateOnStateChange;
+    protected final Collection<State<?>> updateOnStateAccess;
     private boolean visible = true;
 
     public ElementImpl(
-        @NotNull final ElementBuilderImpl<?> builder,
+        @NotNull final ElementBuilderImpl builder,
         @NotNull final ContextBase parent
     ) {
         this.key = UUID.randomUUID().toString();
+        this.parent = parent;
+        this.root = builder.root;
         this.cancelOnClick = builder.cancelOnClick;
         this.updateOnClick = builder.updateOnClick;
         this.closeOnClick = builder.closeOnClick;
@@ -46,14 +48,6 @@ public class ElementImpl implements ElementRich {
         this.displayIf = builder.displayIf;
         this.updateOnStateChange = builder.updateOnStateChange;
         this.updateOnStateAccess = builder.updateOnStateAccess;
-        this.parent = parent;
-        this.root = builder.root;
-    }
-
-    @NotNull
-    @Override
-    public ContextBase parent() {
-        return this.parent;
     }
 
     @Nullable
@@ -85,12 +79,6 @@ public class ElementImpl implements ElementRich {
     @Override
     public boolean intersects(@NotNull final Element element) {
         return false;
-    }
-
-    @NotNull
-    @Override
-    public ElementBuilder toBuilder() {
-        return new ElementBuilderImpl<>(this);
     }
 
     @Override

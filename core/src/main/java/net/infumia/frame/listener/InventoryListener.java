@@ -1,8 +1,7 @@
 package net.infumia.frame.listener;
 
 import java.util.function.Consumer;
-import net.infumia.frame.extension.CompletableFutureExtensions;
-import net.infumia.frame.logger.Logger;
+import net.infumia.frame.Frame;
 import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataAccessFactory;
 import net.infumia.frame.metadata.MetadataKeyHolder;
@@ -26,20 +25,20 @@ import org.jetbrains.annotations.NotNull;
 public final class InventoryListener implements Listener {
 
     private final Plugin plugin;
-    private final Logger logger;
     private final MetadataAccessFactory metadataAccessFactory;
-    private final Runnable onUnregister;
+    private final boolean unregisterOnDisable;
+    private final Frame frame;
 
     public InventoryListener(
+        @NotNull final Frame frame,
         @NotNull final Plugin plugin,
-        @NotNull final Logger logger,
         @NotNull final MetadataAccessFactory metadataAccessFactory,
-        @NotNull final Runnable onUnregister
+        final boolean unregisterOnDisable
     ) {
+        this.frame = frame;
         this.plugin = plugin;
-        this.logger = logger;
         this.metadataAccessFactory = metadataAccessFactory;
-        this.onUnregister = onUnregister;
+        this.unregisterOnDisable = unregisterOnDisable;
     }
 
     public void register() {
@@ -48,8 +47,8 @@ public final class InventoryListener implements Listener {
 
     @EventHandler
     public void onPluginDisable(final PluginDisableEvent event) {
-        if (event.getPlugin().getName().equals(this.plugin.getName())) {
-            this.onUnregister.run();
+        if (this.unregisterOnDisable && event.getPlugin().getName().equals(this.plugin.getName())) {
+            this.frame.unregister();
         }
     }
 
@@ -60,12 +59,11 @@ public final class InventoryListener implements Listener {
             return;
         }
         this.ifTransitioning(event.getPlayer(), viewer ->
-                CompletableFutureExtensions.logError(
-                    ((ViewEventHandler) viewer.view()).simulateClose(viewer),
-                    this.logger,
-                    "Error occurred while viewer '%s' closes an inventory",
-                    viewer
-                )
+                this.frame.loggedFuture(
+                        ((ViewEventHandler) viewer.view()).simulateClose(viewer),
+                        "Error occurred while viewer '%s' closes an inventory",
+                        viewer
+                    )
             );
     }
 
@@ -76,12 +74,11 @@ public final class InventoryListener implements Listener {
             return;
         }
         this.ifContextualViewer(event.getWhoClicked(), viewer ->
-                CompletableFutureExtensions.logError(
-                    ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
-                    this.logger,
-                    "Error occurred while viewer '%s' clicks an inventory!",
-                    viewer
-                )
+                this.frame.loggedFuture(
+                        ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
+                        "Error occurred while viewer '%s' clicks an inventory!",
+                        viewer
+                    )
             );
     }
 

@@ -1,11 +1,8 @@
 import net.infumia.gradle.applyPublish
 
-applyPublish()
+applyPublish("common")
 
 dependencies {
-    compileOnly(libs.minecraft.one.eight.eight.paper)
-
-    compileOnly(libs.guice) { isTransitive = false }
+    compileOnly(libs.annotations)
     compileOnly(libs.geantyref)
-    compileOnly(libs.adventure.api)
 }

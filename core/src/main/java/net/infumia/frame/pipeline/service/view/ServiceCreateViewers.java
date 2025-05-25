@@ -7,7 +7,7 @@ import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.context.PipelineContextView;
 import net.infumia.frame.view.View;
 import net.infumia.frame.viewer.Viewer;
-import net.infumia.frame.viewer.ViewerCreator;
+import net.infumia.frame.viewer.ViewerFactory;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceCreateViewers
@@ -26,12 +26,12 @@ public final class ServiceCreateViewers
         @NotNull final PipelineContextView.CreateViewers ctx
     ) {
         final View view = ctx.view();
-        final ViewerCreator viewerCreator = view.context().frame().viewerCreator();
+        final ViewerFactory viewerFactory = view.context().frame().viewerFactory();
         return CompletableFuture.completedFuture(
             ctx
                 .viewers()
                 .stream()
-                .map(player -> viewerCreator.create(player, view))
+                .map(player -> viewerFactory.create(player, view))
                 .collect(Collectors.toSet())
         );
     }

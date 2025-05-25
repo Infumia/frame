@@ -8,13 +8,13 @@ import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.ContextBaseImpl;
 import net.infumia.frame.element.Element;
-import net.infumia.frame.element.ElementItemBuilder;
-import net.infumia.frame.element.ElementItemBuilderImpl;
-import net.infumia.frame.element.ElementItemBuilderRich;
-import net.infumia.frame.extension.CompletableFutureExtensions;
+import net.infumia.frame.element.item.ElementItemBuilder;
+import net.infumia.frame.element.item.ElementItemBuilderImpl;
+import net.infumia.frame.element.item.ElementItemBuilderRich;
 import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataKeyHolder;
 import net.infumia.frame.pipeline.executor.PipelineExecutorRender;
@@ -24,7 +24,6 @@ import net.infumia.frame.pipeline.executor.PipelineExecutorViewerImpl;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.slot.SlotFinder;
-import net.infumia.frame.util.Preconditions;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.config.ViewConfig;
 import net.infumia.frame.viewer.Viewer;
@@ -107,19 +106,19 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
         if (previousContexts.isEmpty()) {
             metadata.remove(MetadataKeyHolder.PREVIOUS_VIEWS);
         }
-        CompletableFutureExtensions.logError(
-            this.frame()
-                .openActive(viewer.player(), previousContext)
-                .thenCompose(__ ->
-                    ((ContextRenderRich) previousContext).simulateResume(
-                            this,
-                            Collections.singleton(viewer)
-                        )
-                ),
-            this.frame().logger(),
-            "An error occurred while going back to view '%s'.",
-            previousContext.view().instance()
-        );
+        this.frame()
+            .loggedFuture(
+                this.frame()
+                    .openActive(viewer.player(), previousContext)
+                    .thenCompose(__ ->
+                        ((ContextRenderRich) previousContext).simulateResume(
+                                this,
+                                Collections.singleton(viewer)
+                            )
+                    ),
+                "An error occurred while going back to view '%s'.",
+                previousContext.view().instance()
+            );
     }
 
     @Override
