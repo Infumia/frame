@@ -8,5 +8,5 @@ public interface MetadataAccessFactory {
     @NotNull
     MetadataAccess getOrCreate(@NotNull Metadatable metadatable);
 
-    void clearCache(@NotNull Collection<? extends Metadatable> metadatables);
+    void clearCache(@NotNull Collection<? extends Metadatable> list);
 }

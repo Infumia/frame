@@ -32,37 +32,41 @@ public final class PluginLogger implements Logger {
         @NotNull final String message,
         @NotNull final Object @NotNull... args
     ) {
+        final String formatted = String.format(message, args);
         if (PaperLib.isPaper()) {
-            this.plugin.getSLF4JLogger().error(String.format(message, args), throwable);
+            this.plugin.getSLF4JLogger().error(formatted, throwable);
         } else {
-            this.plugin.getLogger().log(Level.SEVERE, String.format(message, args), throwable);
+            this.plugin.getLogger().log(Level.SEVERE, formatted, throwable);
         }
     }
 
     @Override
     public void error(@NotNull final String message, @NotNull final Object @NotNull... args) {
+        final String formatted = String.format(message, args);
         if (PaperLib.isPaper()) {
-            this.plugin.getSLF4JLogger().error(String.format(message, args));
+            this.plugin.getSLF4JLogger().error(formatted);
         } else {
-            this.plugin.getLogger().severe(String.format(message, args));
+            this.plugin.getLogger().severe(formatted);
         }
     }
 
     @Override
     public void warn(@NotNull final String message, @NotNull final Object @NotNull... args) {
+        final String formatted = String.format(message, args);
         if (PaperLib.isPaper()) {
-            this.plugin.getSLF4JLogger().warn(String.format(message, args));
+            this.plugin.getSLF4JLogger().warn(formatted);
         } else {
-            this.plugin.getLogger().warning(String.format(message, args));
+            this.plugin.getLogger().warning(formatted);
         }
     }
 
     @Override
     public void info(@NotNull final String message, @NotNull final Object @NotNull... args) {
+        final String formatted = String.format(message, args);
         if (PaperLib.isPaper()) {
-            this.plugin.getSLF4JLogger().info(String.format(message, args));
+            this.plugin.getSLF4JLogger().info(formatted);
         } else {
-            this.plugin.getLogger().info(String.format(message, args));
+            this.plugin.getLogger().info(formatted);
         }
     }
 
