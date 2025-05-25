@@ -4,12 +4,27 @@ import java.lang.reflect.Field;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A utility class for reflection.
+ */
 public final class Reflection {
 
+    /**
+     * Checks if a class exists.
+     *
+     * @param className The class name.
+     * @return True if the class exists, false otherwise.
+     */
     public static boolean hasClass(@NotNull final String className) {
         return Reflection.findClass(className) != null;
     }
 
+    /**
+     * Finds a class.
+     *
+     * @param className The class name.
+     * @return The class, or null if it does not exist.
+     */
     @Nullable
     public static Class<?> findClass(@NotNull final String className) {
         try {
@@ -19,6 +34,13 @@ public final class Reflection {
         }
     }
 
+    /**
+     * Finds an instance from a field.
+     *
+     * @param className The class name.
+     * @param fieldName The field name.
+     * @return The instance.
+     */
     @NotNull
     @SuppressWarnings("unchecked")
     public static <T> T findInstanceFromField(

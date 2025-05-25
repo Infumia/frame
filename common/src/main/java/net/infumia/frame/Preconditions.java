@@ -3,8 +3,18 @@ package net.infumia.frame;
 import java.util.Objects;
 import org.jetbrains.annotations.Contract;
 
+/**
+ * A utility class for preconditions.
+ */
 public final class Preconditions {
 
+    /**
+     * Checks if an argument is null.
+     *
+     * @param check The check.
+     * @param message The message.
+     * @param args The arguments.
+     */
     @Contract("false, _, _ -> fail")
     public static void argument(final boolean check, final String message, final Object... args) {
         Objects.requireNonNull(args, "args");
@@ -15,6 +25,14 @@ public final class Preconditions {
         }
     }
 
+    /**
+     * Checks if an argument is not null.
+     *
+     * @param object The object.
+     * @param message The message.
+     * @param args The arguments.
+     * @return The object.
+     */
     @Contract("null, _, _ -> fail")
     public static <T> T argumentNotNull(
         final T object,
@@ -28,6 +46,13 @@ public final class Preconditions {
         return object;
     }
 
+    /**
+     * Checks if a state is valid.
+     *
+     * @param check The check.
+     * @param message The message.
+     * @param args The arguments.
+     */
     @Contract("false, _, _ -> fail")
     public static void state(final boolean check, final String message, final Object... args) {
         Objects.requireNonNull(args, "args");
@@ -38,6 +63,14 @@ public final class Preconditions {
         }
     }
 
+    /**
+     * Checks if a state is not null.
+     *
+     * @param object The object.
+     * @param message The message.
+     * @param args The arguments.
+     * @return The object.
+     */
     @Contract("null, _, _ -> fail")
     public static <T> T stateNotNull(final T object, final String message, final Object... args) {
         Objects.requireNonNull(args, "args");

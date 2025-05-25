@@ -12,4 +12,5 @@ dependencies {
     compileOnly(libs.guice) { isTransitive = false }
     compileOnly(libs.geantyref)
     compileOnly(libs.adventure.api)
+    compileOnly(libs.annotations)
 }

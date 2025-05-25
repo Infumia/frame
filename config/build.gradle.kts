@@ -6,4 +6,5 @@ dependencies {
     compileOnly(project(":common"))
 
     compileOnly(libs.minecraft.one.eight.eight.paper)
+    compileOnly(libs.annotations)
 }
