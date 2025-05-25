@@ -8,6 +8,9 @@ dependencies {
     compileOnlyApi(project(":service"))
 
     runtimeOnly(project(":core"))
+    runtimeOnly(project(":common"))
+    runtimeOnly(project(":injector"))
+    runtimeOnly(project(":service"))
 
     compileOnly(libs.minecraft.one.eight.eight.paper)
     compileOnly(libs.geantyref)
