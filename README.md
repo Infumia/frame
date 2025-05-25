@@ -11,10 +11,12 @@ repositories {
 dependencies {
     // Base modules
     implementation "net.infumia:frame:VERSION"
-    runtimeOnly "net.infumia:frame-core:VERSION"
 
     // Annotation modules
     implementation "net.infumia:frame-annotations:VERSION"
+    
+    // Guice (optional)
+    implementation "com.google.inject:guice:7.0.0"
 }
 ```
 ### Code

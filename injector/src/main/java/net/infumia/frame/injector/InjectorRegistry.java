@@ -11,6 +11,8 @@ public interface InjectorRegistry<C> {
 
     InjectorRegistry<C> register(Injector<C> injector);
 
+    InjectorRegistry<C> unregister(Injector<C> injector);
+
     InjectorRegistry<C> register(Class<?> cls, Injector<C> injector);
 
     InjectorRegistry<C> register(TypeToken<?> type, Injector<C> injector);
