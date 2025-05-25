@@ -230,7 +230,9 @@ final class FrameImpl implements FrameRich {
             this.storageFactory.createImmutableBuilder(new HashMap<>());
         initialDataConfigurer.accept(builder);
         return this.loggedFuture(
-                ((ViewEventHandler) view).simulateOpen(players, builder.build()),
+                this.taskFactory.handleFuture(() ->
+                        ((ViewEventHandler) view).simulateOpen(players, builder.build())
+                    ),
                 "Error occurred while opening view '%s'!",
                 viewClass
             );

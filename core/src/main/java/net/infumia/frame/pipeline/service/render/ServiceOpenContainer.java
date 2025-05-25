@@ -1,10 +1,8 @@
 package net.infumia.frame.pipeline.service.render;
 
-import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
 import net.infumia.frame.viewer.Viewer;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceOpenContainer
@@ -21,27 +19,12 @@ public final class ServiceOpenContainer
         return ServiceOpenContainer.KEY;
     }
 
-    @NotNull
     @Override
-    public CompletableFuture<State> handle(@NotNull final PipelineContextRender.OpenContainer ctx) {
-        if (Bukkit.isPrimaryThread()) {
-            this.openUnsafe(ctx);
-            return CompletableFuture.completedFuture(State.CONTINUE);
-        } else {
-            return ctx
-                .context()
-                .frame()
-                .taskFactory()
-                .syncFuture(() -> this.openUnsafe(ctx))
-                .thenApply(__ -> State.CONTINUE);
-        }
-    }
-
-    private ServiceOpenContainer() {}
-
-    private void openUnsafe(@NotNull final PipelineContextRender.OpenContainer ctx) {
+    public void accept(@NotNull final PipelineContextRender.OpenContainer ctx) {
         for (final Viewer viewer : ctx.viewers()) {
             ctx.context().container().open(viewer);
         }
     }
+
+    private ServiceOpenContainer() {}
 }

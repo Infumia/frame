@@ -34,7 +34,7 @@ public final class ServiceStartUpdate
         context.updateTask(
             frame
                 .taskFactory()
-                .sync(
+                .run(
                     () ->
                         frame.loggedFuture(
                             context.pipelines().executeUpdate(),
