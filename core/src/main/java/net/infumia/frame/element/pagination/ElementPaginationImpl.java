@@ -207,7 +207,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
 
     @Override
     public void switchTo(final int pageIndex) {
-        Preconditions.argumentNotNull(
+        Preconditions.state(
             this.hasPage(pageIndex),
             "Page index not found (%d > %d)",
             pageIndex,

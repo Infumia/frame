@@ -1,7 +1,8 @@
 package net.infumia.frame;
 
-import java.util.Objects;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A utility class for preconditions.
@@ -14,12 +15,14 @@ public final class Preconditions {
      * @param check The check.
      * @param message The message.
      * @param args The arguments.
+     * @throws IllegalArgumentException If the check is false.
      */
     @Contract("false, _, _ -> fail")
-    public static void argument(final boolean check, final String message, final Object... args) {
-        Objects.requireNonNull(args, "args");
-        Objects.requireNonNull(message, "message");
-
+    public static void argument(
+        final boolean check,
+        @NotNull final String message,
+        final Object @NotNull... args
+    ) {
         if (!check) {
             throw new IllegalArgumentException(String.format(message, args));
         }
@@ -32,16 +35,14 @@ public final class Preconditions {
      * @param message The message.
      * @param args The arguments.
      * @return The object.
+     * @throws IllegalArgumentException If the object is null.
      */
     @Contract("null, _, _ -> fail")
     public static <T> T argumentNotNull(
-        final T object,
-        final String message,
-        final Object... args
+        @Nullable final T object,
+        @NotNull final String message,
+        final Object @NotNull... args
     ) {
-        Objects.requireNonNull(args, "args");
-        Objects.requireNonNull(message, "message");
-
         Preconditions.argument(object != null, message, args);
         return object;
     }
@@ -52,12 +53,14 @@ public final class Preconditions {
      * @param check The check.
      * @param message The message.
      * @param args The arguments.
+     * @throws IllegalStateException If the check is false.
      */
     @Contract("false, _, _ -> fail")
-    public static void state(final boolean check, final String message, final Object... args) {
-        Objects.requireNonNull(args, "args");
-        Objects.requireNonNull(message, "message");
-
+    public static void state(
+        final boolean check,
+        @NotNull final String message,
+        final Object @NotNull... args
+    ) {
         if (!check) {
             throw new IllegalStateException(String.format(message, args));
         }
@@ -70,12 +73,14 @@ public final class Preconditions {
      * @param message The message.
      * @param args The arguments.
      * @return The object.
+     * @throws IllegalStateException If the object is null.
      */
     @Contract("null, _, _ -> fail")
-    public static <T> T stateNotNull(final T object, final String message, final Object... args) {
-        Objects.requireNonNull(args, "args");
-        Objects.requireNonNull(message, "message");
-
+    public static <T> T stateNotNull(
+        @Nullable final T object,
+        @NotNull final String message,
+        final Object @NotNull... args
+    ) {
         Preconditions.state(object != null, message, args);
         return object;
     }
