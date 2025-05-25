@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
-import net.infumia.frame.logger.Logger;
 import net.infumia.frame.util.Ticks;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -14,11 +13,9 @@ import org.jetbrains.annotations.NotNull;
 public final class TaskFactoryImpl implements TaskFactory {
 
     private final Plugin plugin;
-    private final Logger logger;
 
-    public TaskFactoryImpl(@NotNull final Plugin plugin, @NotNull final Logger logger) {
+    public TaskFactoryImpl(@NotNull final Plugin plugin) {
         this.plugin = plugin;
-        this.logger = logger;
     }
 
     @NotNull
@@ -37,10 +34,6 @@ public final class TaskFactoryImpl implements TaskFactory {
                             future.complete(result);
                         } else {
                             future.completeExceptionally(throwable);
-                            this.logger.error(
-                                    throwable,
-                                    "An error occurred while running a sync task."
-                                );
                         }
                     })
             );
