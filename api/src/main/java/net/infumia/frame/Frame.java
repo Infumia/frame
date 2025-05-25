@@ -17,8 +17,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-public interface Frame
-    extends ViewOpener, FeatureInstaller, Pipelined<PipelineExecutorFrame> {
+public interface Frame extends ViewOpener, FeatureInstaller, Pipelined<PipelineExecutorFrame> {
     @NotNull
     static Frame create(@NotNull final Plugin plugin) {
         return Internal.factory().create(plugin);

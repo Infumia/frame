@@ -2,6 +2,7 @@ package net.infumia.frame.injector;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import org.jetbrains.annotations.NotNull;
 
 final class InjectionServiceImpl<C> implements InjectionService<C> {
 
@@ -13,6 +14,13 @@ final class InjectionServiceImpl<C> implements InjectionService<C> {
         this.registry = Objects.requireNonNull(registry, "registry");
     }
 
+    @NotNull
+    @Override
+    public String key() {
+        return InjectionServiceImpl.KEY;
+    }
+
+    @NotNull
     @Override
     public CompletableFuture<Object> handle(final InjectionRequest<C> request) {
         Objects.requireNonNull(request, "request");
@@ -25,10 +33,5 @@ final class InjectionServiceImpl<C> implements InjectionService<C> {
                 .findFirst()
                 .orElse(null)
         );
-    }
-
-    @Override
-    public String key() {
-        return InjectionServiceImpl.KEY;
     }
 }
