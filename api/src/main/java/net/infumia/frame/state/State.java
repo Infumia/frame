@@ -18,7 +18,7 @@ public interface State<T> {
     CompletableFuture<@Nullable T> getWait(@NotNull StateValueHostHolder host);
 
     @NotNull
-    CompletableFuture<T> getOtThrowWait(@NotNull StateValueHostHolder host);
+    CompletableFuture<T> getOrThrowWait(@NotNull StateValueHostHolder host);
 
     void watchAccess(@NotNull StateValueHostHolder host, @NotNull StateWatcherAccess<T> watcher);
 
