@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
-import net.infumia.frame.RunnableThrowable;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.util.Ticks;
 import org.bukkit.Bukkit;
@@ -37,11 +36,11 @@ public final class TaskFactoryImpl implements TaskFactory {
                         if (throwable == null) {
                             future.complete(result);
                         } else {
+                            future.completeExceptionally(throwable);
                             this.logger.error(
                                     throwable,
                                     "An error occurred while running a sync task."
                                 );
-                            future.completeExceptionally(throwable);
                         }
                     })
             );
@@ -51,22 +50,11 @@ public final class TaskFactoryImpl implements TaskFactory {
     @NotNull
     @Override
     public Closeable run(
-        @NotNull final RunnableThrowable task,
+        @NotNull final Runnable task,
         @NotNull final Duration delay,
         @NotNull final Duration period
     ) {
         return Bukkit.getScheduler()
-            .runTaskTimer(
-                this.plugin,
-                () -> {
-                    try {
-                        task.run();
-                    } catch (final Throwable e) {
-                        this.logger.error(e, "An error occurred while running a sync task.");
-                    }
-                },
-                Ticks.toTicks(delay),
-                Ticks.toTicks(period)
-            )::cancel;
+            .runTaskTimer(this.plugin, task, Ticks.toTicks(delay), Ticks.toTicks(period))::cancel;
     }
 }
