@@ -18,7 +18,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 public interface Frame
-    extends ViewOpener, FeatureInstaller<Frame>, Pipelined<PipelineExecutorFrame> {
+    extends ViewOpener, FeatureInstaller, Pipelined<PipelineExecutorFrame> {
     @NotNull
     static Frame create(@NotNull final Plugin plugin) {
         return Internal.factory().create(plugin);
