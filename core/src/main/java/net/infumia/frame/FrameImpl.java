@@ -60,7 +60,7 @@ final class FrameImpl implements FrameRich {
         final boolean unregisterOnDisable
     ) {
         this.logger = logger;
-        this.taskFactory = new TaskFactoryImpl(plugin, logger);
+        this.taskFactory = new TaskFactoryImpl(plugin);
         this.metadataAccessFactory = new MetadataAccessFactoryImpl(plugin);
         this.viewerFactory = new ViewerFactoryImpl(this.metadataAccessFactory);
         this.listener = new InventoryListener(
@@ -230,7 +230,9 @@ final class FrameImpl implements FrameRich {
             this.storageFactory.createImmutableBuilder(new HashMap<>());
         initialDataConfigurer.accept(builder);
         return this.loggedFuture(
-                ((ViewEventHandler) view).simulateOpen(players, builder.build()),
+                this.taskFactory.handleFuture(() ->
+                        ((ViewEventHandler) view).simulateOpen(players, builder.build())
+                    ),
                 "Error occurred while opening view '%s'!",
                 viewClass
             );
