@@ -4,6 +4,6 @@ rootProject.name = "frame"
 
 include("common", "config", "injector", "service")
 
-include("api", "annotations")
+include("api")
 
 include("core")
