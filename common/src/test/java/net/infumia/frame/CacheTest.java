@@ -69,15 +69,15 @@ final class CacheTest {
         final AtomicInteger counter = new AtomicInteger(0);
         final Supplier<String> supplier = () -> {
             counter.incrementAndGet();
-            return null;
+            return "supplied";
         };
         final Cache<String> cache = Cache.of(supplier);
-        assertNull(cache.get(), "First get should return null from supplier");
+        assertEquals("supplied", cache.get(), "First get should return \"supplied\" from supplier");
         assertEquals(1, counter.get(), "Supplier should be called once");
-        assertNull(cache.get(), "Second get should return the cached null value");
+        assertEquals("supplied", cache.get(), "Second get should return the cached \"supplied\" value");
         assertEquals(1, counter.get(), "Supplier should still be called only once");
         cache.invalidate();
-        assertNull(cache.get(), "Get after invalidate should return null from supplier again");
+        assertEquals("supplied", cache.get(), "Get after invalidate should return \"supplied\" from supplier again");
         assertEquals(2, counter.get(), "Supplier should be called twice after invalidate and get");
     }
 

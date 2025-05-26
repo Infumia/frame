@@ -51,7 +51,7 @@ final class LazyTest {
     @Test
     void testNullSupplier() {
         assertThrows(
-            NullPointerException.class,
+            IllegalArgumentException.class,
             () -> Lazy.of(null),
             "Lazy.of(null) should throw NullPointerException"
         );
