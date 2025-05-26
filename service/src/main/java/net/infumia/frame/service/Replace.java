@@ -6,8 +6,6 @@ import java.util.ListIterator;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 final class Replace<Context, Result> implements Implementation<Context, Result> {
 
@@ -16,9 +14,9 @@ final class Replace<Context, Result> implements Implementation<Context, Result> 
     private final Collection<Predicate<Context>> filters;
 
     Replace(
-        @NotNull final String serviceKey,
-        @NotNull final UnaryOperator<Service<Context, Result>> service,
-        @Nullable final Collection<Predicate<Context>> filters
+        final String serviceKey,
+        final UnaryOperator<Service<Context, Result>> service,
+        final Collection<Predicate<Context>> filters
     ) {
         this.serviceKey = serviceKey;
         this.service = service;
@@ -26,7 +24,7 @@ final class Replace<Context, Result> implements Implementation<Context, Result> 
     }
 
     @Override
-    public void handle(@NotNull final ServiceRepository<Context, Result> repository) {
+    public void handle(final ServiceRepository<Context, Result> repository) {
         final List<ServiceWrapper<Context, Result>> implementations = repository.implementations;
         final ListIterator<ServiceWrapper<Context, Result>> iterator =
             implementations.listIterator();

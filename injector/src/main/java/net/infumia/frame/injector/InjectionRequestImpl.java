@@ -1,7 +1,7 @@
 package net.infumia.frame.injector;
 
 import io.leangen.geantyref.TypeToken;
-import java.util.Objects;
+import net.infumia.frame.Preconditions;
 
 final class InjectionRequestImpl<C> implements InjectionRequest<C> {
 
@@ -14,9 +14,12 @@ final class InjectionRequestImpl<C> implements InjectionRequest<C> {
         final C context,
         final AnnotationAccessor annotationAccessor
     ) {
-        this.injectedType = Objects.requireNonNull(injectedType, "injectedType");
-        this.context = Objects.requireNonNull(context, "context");
-        this.annotationAccessor = Objects.requireNonNull(annotationAccessor, "annotationAccessor");
+        this.injectedType = Preconditions.argumentNotNull(injectedType, "injectedType");
+        this.context = Preconditions.argumentNotNull(context, "context");
+        this.annotationAccessor = Preconditions.argumentNotNull(
+            annotationAccessor,
+            "annotationAccessor"
+        );
     }
 
     @Override

@@ -20,7 +20,9 @@ public final class TaskFactoryImpl implements TaskFactory {
 
     @NotNull
     @Override
-    public <T> CompletableFuture<T> handleFuture(@NotNull Supplier<CompletableFuture<T>> task) {
+    public <T> CompletableFuture<T> handleFuture(
+        @NotNull final Supplier<CompletableFuture<T>> task
+    ) {
         if (Bukkit.isPrimaryThread()) {
             return task.get();
         }

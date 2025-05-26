@@ -8,8 +8,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.infumia.frame.Preconditions;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 final class ServiceSpigot<Context, Result> {
 
@@ -18,28 +16,25 @@ final class ServiceSpigot<Context, Result> {
     private final Context context;
 
     ServiceSpigot(
-        @NotNull final ServicePipeline pipeline,
-        @NotNull final ServiceRepository<Context, Result> repository,
-        @NotNull final Context context
+        final ServicePipeline pipeline,
+        final ServiceRepository<Context, Result> repository,
+        final Context context
     ) {
         this.pipeline = pipeline;
         this.repository = repository;
         this.context = context;
     }
 
-    @NotNull
-    public CompletableFuture<Result> complete() {
+    CompletableFuture<Result> complete() {
         return this.completeInternally(Runnable::run);
     }
 
-    @NotNull
-    public CompletableFuture<Result> completeAsync() {
+    CompletableFuture<Result> completeAsync() {
         return this.completeInternally(this.pipeline.executor);
     }
 
-    @NotNull
-    private CompletableFuture<Result> completeInternally(@NotNull final Executor executor) {
-        final CompletableFuture<@Nullable Result> future = new CompletableFuture<>();
+    private CompletableFuture<Result> completeInternally(final Executor executor) {
+        final CompletableFuture<Result> future = new CompletableFuture<>();
         final ScheduledFuture<?> delayer = this.scheduleTimeout(future);
         final AtomicBoolean isConsumerService = new AtomicBoolean(false);
 
@@ -58,11 +53,8 @@ final class ServiceSpigot<Context, Result> {
         return future.thenApply(result -> this.checkFinalResult(isConsumerService, result));
     }
 
-    @NotNull
-    private CompletableFuture<@Nullable Result> processServices(
-        @NotNull final AtomicBoolean isConsumerService
-    ) {
-        CompletableFuture<@Nullable Result> job = CompletableFuture.completedFuture(null);
+    private CompletableFuture<Result> processServices(final AtomicBoolean isConsumerService) {
+        CompletableFuture<Result> job = CompletableFuture.completedFuture(null);
         final LinkedList<ServiceWrapper<Context, Result>> queue = this.repository.queue();
         ServiceWrapper<Context, Result> wrapper;
 
@@ -72,11 +64,10 @@ final class ServiceSpigot<Context, Result> {
         return job;
     }
 
-    @NotNull
-    private CompletableFuture<@Nullable Result> processService(
-        @NotNull final AtomicBoolean isConsumerService,
-        @NotNull final ServiceWrapper<Context, Result> wrapper,
-        @NotNull final CompletableFuture<@Nullable Result> job
+    private CompletableFuture<Result> processService(
+        final AtomicBoolean isConsumerService,
+        final ServiceWrapper<Context, Result> wrapper,
+        final CompletableFuture<Result> job
     ) {
         final Service<Context, Result> service = wrapper.implementation;
         isConsumerService.set(service instanceof ConsumerService);
@@ -90,10 +81,7 @@ final class ServiceSpigot<Context, Result> {
         );
     }
 
-    private boolean shouldContinue(
-        @NotNull final AtomicBoolean isConsumerService,
-        @Nullable final Result result
-    ) {
+    private boolean shouldContinue(final AtomicBoolean isConsumerService, final Result result) {
         if (this.isCancelled()) {
             return false;
         }
@@ -103,12 +91,8 @@ final class ServiceSpigot<Context, Result> {
         return isConsumerService.get() && result != ConsumerService.State.FINISHED;
     }
 
-    @NotNull
     @SuppressWarnings("unchecked")
-    private Result checkFinalResult(
-        @NotNull final AtomicBoolean isConsumerService,
-        @Nullable final Result result
-    ) {
+    private Result checkFinalResult(final AtomicBoolean isConsumerService, final Result result) {
         if (isConsumerService.get()) {
             return (Result) ConsumerService.State.FINISHED;
         }
@@ -119,8 +103,7 @@ final class ServiceSpigot<Context, Result> {
         return this.context instanceof Cancellable && ((Cancellable) this.context).cancelled();
     }
 
-    @NotNull
-    private ScheduledFuture<?> scheduleTimeout(@NotNull final CompletableFuture<?> future) {
+    private ScheduledFuture<?> scheduleTimeout(final CompletableFuture<?> future) {
         return this.pipeline.delayer.schedule(
                 () -> this.tryTimeout(future),
                 this.pipeline.timeout.toMillis(),
@@ -128,7 +111,7 @@ final class ServiceSpigot<Context, Result> {
             );
     }
 
-    private void tryTimeout(@NotNull final CompletableFuture<?> future) {
+    private void tryTimeout(final CompletableFuture<?> future) {
         if (future.isDone()) {
             return;
         }

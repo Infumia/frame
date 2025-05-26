@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import net.infumia.frame.Preconditions;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 final class RegisterAfter<Context, Result> implements Implementation<Context, Result> {
 
@@ -15,9 +13,9 @@ final class RegisterAfter<Context, Result> implements Implementation<Context, Re
     private final Collection<Predicate<Context>> filters;
 
     RegisterAfter(
-        @NotNull final String serviceKey,
-        @NotNull final Service<Context, Result> service,
-        @Nullable final Collection<Predicate<Context>> filters
+        final String serviceKey,
+        final Service<Context, Result> service,
+        final Collection<Predicate<Context>> filters
     ) {
         this.serviceKey = serviceKey;
         this.service = service;
@@ -25,7 +23,7 @@ final class RegisterAfter<Context, Result> implements Implementation<Context, Re
     }
 
     @Override
-    public void handle(@NotNull final ServiceRepository<Context, Result> repository) {
+    public void handle(final ServiceRepository<Context, Result> repository) {
         final List<ServiceWrapper<Context, Result>> implementations = repository.implementations;
         for (int index = 0; index < implementations.size(); index++) {
             final ServiceWrapper<Context, Result> wrapper = implementations.get(index);

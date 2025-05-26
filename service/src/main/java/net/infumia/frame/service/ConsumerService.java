@@ -3,28 +3,30 @@ package net.infumia.frame.service;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import net.infumia.frame.Preconditions;
 
+/**
+ * A service that consumes a context.
+ *
+ * @param <Context> the context type.
+ */
 public interface ConsumerService<Context>
     extends
         Service<Context, ConsumerService.State>,
         BiConsumer<CompletableFuture<ConsumerService.State>, Context>,
         Consumer<Context> {
     @Override
-    @ApiStatus.OverrideOnly
     default void accept(final Context ctx) {}
 
     @Override
-    @ApiStatus.OverrideOnly
-    default void accept(@NotNull final CompletableFuture<State> future, final Context ctx) {
+    default void accept(final CompletableFuture<State> future, final Context ctx) {
+        Preconditions.argumentNotNull(future, "future");
+
         this.accept(ctx);
         future.complete(State.CONTINUE);
     }
 
-    @NotNull
     @Override
-    @ApiStatus.NonExtendable
     default CompletableFuture<State> handle(final Context ctx) {
         final CompletableFuture<State> future = new CompletableFuture<>();
         try {
@@ -35,8 +37,17 @@ public interface ConsumerService<Context>
         return future;
     }
 
+    /**
+     * Represents the state of a {@link ConsumerService}.
+     */
     enum State {
+        /**
+         * Indicates that the service should continue processing.
+         */
         CONTINUE,
+        /**
+         * Indicates that the service has finished processing.
+         */
         FINISHED,
     }
 }

@@ -37,7 +37,7 @@ public final class PipelineConsumerImpl<Context> implements PipelineConsumer<Con
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> completeWith(@NotNull final Context context) {
-        return this.repository.completeWith(context);
+        return this.repository.completeDirect(context);
     }
 
     @NotNull
@@ -45,7 +45,7 @@ public final class PipelineConsumerImpl<Context> implements PipelineConsumer<Con
     public CompletableFuture<ConsumerService.State> completeWithAsync(
         @NotNull final Context context
     ) {
-        return this.repository.completeWithAsync(context);
+        return this.repository.completeAsync(context);
     }
 
     @NotNull

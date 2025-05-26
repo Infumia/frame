@@ -34,13 +34,13 @@ public class PipelineImpl<Context, Result> implements Pipeline<Context, Result> 
     @NotNull
     @Override
     public CompletableFuture<Result> completeWith(@NotNull final Context context) {
-        return this.repository.completeWith(context);
+        return this.repository.completeDirect(context);
     }
 
     @NotNull
     @Override
     public CompletableFuture<Result> completeWithAsync(@NotNull final Context context) {
-        return this.repository.completeWithAsync(context);
+        return this.repository.completeAsync(context);
     }
 
     @NotNull

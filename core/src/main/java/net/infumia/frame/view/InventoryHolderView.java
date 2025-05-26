@@ -1,6 +1,6 @@
 package net.infumia.frame.view;
 
-import java.util.Objects;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.view.ContextRender;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -13,7 +13,7 @@ public final class InventoryHolderView implements InventoryHolder {
 
     @NotNull
     public ContextRender context() {
-        return Objects.requireNonNull(this.context, "context");
+        return Preconditions.stateNotNull(this.context, "context");
     }
 
     public void context(@NotNull final ContextRender context) {
@@ -27,6 +27,6 @@ public final class InventoryHolderView implements InventoryHolder {
     @NotNull
     @Override
     public Inventory getInventory() {
-        return Objects.requireNonNull(this.inventory, "inventory");
+        return Preconditions.stateNotNull(this.inventory, "inventory");
     }
 }

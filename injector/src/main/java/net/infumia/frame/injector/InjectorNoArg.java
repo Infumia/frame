@@ -1,7 +1,7 @@
 package net.infumia.frame.injector;
 
 import java.lang.reflect.Constructor;
-import java.util.Objects;
+import net.infumia.frame.Preconditions;
 
 public final class InjectorNoArg implements Injector<Object> {
 
@@ -11,7 +11,7 @@ public final class InjectorNoArg implements Injector<Object> {
 
     @Override
     public Object inject(final InjectionRequest<Object> ctx) {
-        Objects.requireNonNull(ctx, "ctx");
+        Preconditions.argumentNotNull(ctx, "ctx");
 
         final Class<?> viewClass = ctx.injectedClass();
         Constructor<?> constructor = null;

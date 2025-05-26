@@ -7,18 +7,19 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import net.infumia.frame.Preconditions;
 
 final class AnnotationAccessorMultiDelegate implements AnnotationAccessor {
 
     private final AnnotationAccessor[] accessors;
 
     AnnotationAccessorMultiDelegate(final AnnotationAccessor[] accessors) {
-        this.accessors = Objects.requireNonNull(accessors, "accessors");
+        this.accessors = Preconditions.argumentNotNull(accessors, "accessors");
     }
 
     @Override
     public <A extends Annotation> A annotation(final Class<A> cls) {
-        Objects.requireNonNull(cls, "cls");
+        Preconditions.argumentNotNull(cls, "cls");
 
         return Arrays.stream(this.accessors)
             .map(accessor -> accessor.annotation(cls))

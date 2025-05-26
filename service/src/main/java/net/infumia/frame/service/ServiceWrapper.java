@@ -4,8 +4,6 @@ import io.leangen.geantyref.TypeToken;
 import java.util.Collection;
 import java.util.function.Predicate;
 import net.infumia.frame.service.exception.PipelineException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 final class ServiceWrapper<Context, Result> implements Comparable<ServiceWrapper<Context, Result>> {
 
@@ -15,10 +13,10 @@ final class ServiceWrapper<Context, Result> implements Comparable<ServiceWrapper
     final boolean defaultImplementation;
 
     ServiceWrapper(
-        @NotNull final TypeToken<? extends Service<Context, Result>> serviceType,
-        @NotNull final Service<Context, Result> implementation,
+        final TypeToken<? extends Service<Context, Result>> serviceType,
+        final Service<Context, Result> implementation,
         final boolean defaultImplementation,
-        @Nullable final Collection<Predicate<Context>> filters
+        final Collection<Predicate<Context>> filters
     ) {
         this.serviceType = serviceType;
         this.implementation = implementation;
@@ -26,7 +24,7 @@ final class ServiceWrapper<Context, Result> implements Comparable<ServiceWrapper
         this.filters = filters;
     }
 
-    boolean passes(@NotNull final Context context) {
+    boolean passes(final Context context) {
         if (this.defaultImplementation || this.filters == null) {
             return true;
         }
@@ -50,7 +48,7 @@ final class ServiceWrapper<Context, Result> implements Comparable<ServiceWrapper
     }
 
     @Override
-    public int compareTo(@NotNull final ServiceWrapper<Context, Result> o) {
+    public int compareTo(final ServiceWrapper<Context, Result> o) {
         return Boolean.compare(o.defaultImplementation, this.defaultImplementation);
     }
 

@@ -2,6 +2,7 @@ package net.infumia.frame.injector;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import net.infumia.frame.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
 final class InjectionServiceImpl<C> implements InjectionService<C> {
@@ -11,7 +12,7 @@ final class InjectionServiceImpl<C> implements InjectionService<C> {
     private final InjectorRegistry<C> registry;
 
     InjectionServiceImpl(final InjectorRegistry<C> registry) {
-        this.registry = Objects.requireNonNull(registry, "registry");
+        this.registry = Preconditions.argumentNotNull(registry, "registry");
     }
 
     @NotNull
@@ -23,7 +24,7 @@ final class InjectionServiceImpl<C> implements InjectionService<C> {
     @NotNull
     @Override
     public CompletableFuture<Object> handle(final InjectionRequest<C> request) {
-        Objects.requireNonNull(request, "request");
+        Preconditions.argumentNotNull(request, "request");
 
         return CompletableFuture.completedFuture(
             this.registry.injectors(request.injectedType())
