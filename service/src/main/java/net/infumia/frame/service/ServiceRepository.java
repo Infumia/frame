@@ -58,13 +58,13 @@ public final class ServiceRepository<Context, Result>
         }
     }
 
-    public CompletableFuture<Result> completeWith(final Context context) {
+    public CompletableFuture<Result> completeDirect(final Context context) {
         Objects.requireNonNull(context, "context");
 
         return new ServiceSpigot<>(this.pipeline, this, context).complete();
     }
 
-    public CompletableFuture<Result> completeWithAsync(final Context context) {
+    public CompletableFuture<Result> completeAsync(final Context context) {
         Objects.requireNonNull(context, "context");
 
         return new ServiceSpigot<>(this.pipeline, this, context).completeAsync();

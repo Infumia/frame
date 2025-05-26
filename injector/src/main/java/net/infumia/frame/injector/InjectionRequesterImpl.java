@@ -37,7 +37,7 @@ final class InjectionRequesterImpl<C> implements InjectionRequester<C> {
         Objects.requireNonNull(annotationAccessor, "annotationAccessor");
 
         final InjectionRequest<C> request = InjectionRequest.of(type, context, annotationAccessor);
-        return this.pipeline.completeWith(request).thenApply(rawResult -> {
+        return this.pipeline.completeDirect(request).thenApply(rawResult -> {
                 if (rawResult == null) {
                     return null;
                 }

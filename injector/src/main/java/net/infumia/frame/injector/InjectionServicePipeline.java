@@ -16,7 +16,7 @@ public interface InjectionServicePipeline<C> {
 
     void apply(Implementation<InjectionRequest<C>, Object> operation);
 
-    CompletableFuture<Object> completeWith(InjectionRequest<C> request);
+    CompletableFuture<Object> completeDirect(InjectionRequest<C> request);
 
-    CompletableFuture<Object> completeWithAsync(InjectionRequest<C> request);
+    CompletableFuture<Object> completeAsync(InjectionRequest<C> request);
 }

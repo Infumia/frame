@@ -21,16 +21,16 @@ final class InjectionServicePipelineImpl<C> implements InjectionServicePipeline<
     }
 
     @Override
-    public CompletableFuture<Object> completeWith(final InjectionRequest<C> request) {
+    public CompletableFuture<Object> completeDirect(final InjectionRequest<C> request) {
         Objects.requireNonNull(request, "request");
 
-        return this.delegate.completeWith(request);
+        return this.delegate.completeDirect(request);
     }
 
     @Override
-    public CompletableFuture<Object> completeWithAsync(final InjectionRequest<C> request) {
+    public CompletableFuture<Object> completeAsync(final InjectionRequest<C> request) {
         Objects.requireNonNull(request, "request");
 
-        return this.delegate.completeWithAsync(request);
+        return this.delegate.completeAsync(request);
     }
 }
