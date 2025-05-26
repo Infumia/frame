@@ -1,8 +1,8 @@
+package net.infumia.frame.service.exception;
+
 /**
  * An exception thrown when an error occurs within the service pipeline.
  */
-package net.infumia.frame.service.exception;
-
 public final class PipelineException extends RuntimeException {
 
     /**
