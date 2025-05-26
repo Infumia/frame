@@ -13,7 +13,6 @@ dependencies {
     runtimeOnly(project(":service"))
 
     compileOnly(libs.minecraft.one.eight.eight.paper)
-    compileOnly(libs.geantyref)
     compileOnly(libs.adventure.api)
     compileOnly(libs.annotations)
 }
