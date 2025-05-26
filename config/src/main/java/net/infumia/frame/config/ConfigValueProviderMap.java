@@ -10,19 +10,19 @@ public final class ConfigValueProviderMap implements ConfigValueProvider {
     private final Map<String, Object> config;
 
     public ConfigValueProviderMap(final Map<String, Object> config) {
-        this.config = Objects.requireNonNull(config, "config");
+        this.config = Preconditions.argumentNotNull(config, "config");
     }
 
     @Override
     public Object getRaw(final String key) {
-        Objects.requireNonNull(key, "key");
+        Preconditions.argumentNotNull(key, "key");
 
         return this.config.get(key);
     }
 
     @Override
     public Integer getInt(final String key) {
-        Objects.requireNonNull(key, "key");
+        Preconditions.argumentNotNull(key, "key");
 
         final Object raw = this.getRaw(key);
         if (raw == null) {
@@ -34,7 +34,7 @@ public final class ConfigValueProviderMap implements ConfigValueProvider {
 
     @Override
     public String getString(final String key) {
-        Objects.requireNonNull(key, "key");
+        Preconditions.argumentNotNull(key, "key");
 
         final Object raw = this.getRaw(key);
         if (raw == null) {
@@ -46,7 +46,7 @@ public final class ConfigValueProviderMap implements ConfigValueProvider {
 
     @Override
     public ItemStack getItem(final String key) {
-        Objects.requireNonNull(key, "key");
+        Preconditions.argumentNotNull(key, "key");
 
         final Object raw = this.getRaw(key);
         if (raw == null) {

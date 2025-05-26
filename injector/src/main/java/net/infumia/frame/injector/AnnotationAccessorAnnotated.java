@@ -5,19 +5,19 @@ import java.lang.reflect.AnnotatedElement;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Objects;
+import net.infumia.frame.Preconditions;
 
 final class AnnotationAccessorAnnotated implements AnnotationAccessor {
 
     private final AnnotatedElement element;
 
     AnnotationAccessorAnnotated(final AnnotatedElement element) {
-        this.element = Objects.requireNonNull(element, "element");
+        this.element = Preconditions.argumentNotNull(element, "element");
     }
 
     @Override
     public <A extends Annotation> A annotation(final Class<A> cls) {
-        Objects.requireNonNull(cls, "cls");
+        Preconditions.argumentNotNull(cls, "cls");
 
         return this.element.getAnnotation(cls);
     }

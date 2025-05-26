@@ -13,11 +13,11 @@ public final class Lazy<T> implements Supplier<T> {
     private volatile boolean initialized = false;
     private T value;
 
-    private Lazy(Supplier<T> supplier) {
+    private Lazy(final Supplier<T> supplier) {
         this.supplier = supplier;
     }
 
-    private Lazy(T value) {
+    private Lazy(final T value) {
         this.value = value;
         this.initialized = true;
     }
@@ -47,7 +47,7 @@ public final class Lazy<T> implements Supplier<T> {
         if (!this.initialized) {
             synchronized (this) {
                 if (!this.initialized) {
-                    T t = this.supplier.get();
+                    final T t = this.supplier.get();
 
                     this.value = t;
                     this.initialized = true;

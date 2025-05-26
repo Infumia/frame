@@ -6,7 +6,6 @@ dependencies {
     compileOnly(project(":common"))
 
     compileOnly(libs.geantyref)
-    compileOnly(libs.annotations)
 
     testImplementation(project(":common"))
     testImplementation(libs.geantyref)

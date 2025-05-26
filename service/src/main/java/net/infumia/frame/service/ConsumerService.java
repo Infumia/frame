@@ -3,8 +3,7 @@ package net.infumia.frame.service;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import net.infumia.frame.Preconditions;
 
 public interface ConsumerService<Context>
     extends
@@ -12,19 +11,17 @@ public interface ConsumerService<Context>
         BiConsumer<CompletableFuture<ConsumerService.State>, Context>,
         Consumer<Context> {
     @Override
-    @ApiStatus.OverrideOnly
     default void accept(final Context ctx) {}
 
     @Override
-    @ApiStatus.OverrideOnly
-    default void accept(@NotNull final CompletableFuture<State> future, final Context ctx) {
+    default void accept(final CompletableFuture<State> future, final Context ctx) {
+        Preconditions.argumentNotNull(future, "future");
+
         this.accept(ctx);
         future.complete(State.CONTINUE);
     }
 
-    @NotNull
     @Override
-    @ApiStatus.NonExtendable
     default CompletableFuture<State> handle(final Context ctx) {
         final CompletableFuture<State> future = new CompletableFuture<>();
         try {

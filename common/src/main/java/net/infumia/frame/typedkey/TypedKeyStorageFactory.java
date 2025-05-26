@@ -8,6 +8,16 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface TypedKeyStorageFactory {
     /**
+     * Creates a new typed key storage factory.
+     *
+     * @return the new typed key storage factory
+     */
+    @NotNull
+    static TypedKeyStorageFactory create() {
+        return new TypedKeyStorageFactoryImpl();
+    }
+
+    /**
      * Creates a new typed key storage.
      *
      * @param base the base map

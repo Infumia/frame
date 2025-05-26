@@ -1,15 +1,15 @@
 package net.infumia.frame.injector;
 
 import io.leangen.geantyref.TypeToken;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import net.infumia.frame.Preconditions;
 
 final class InjectionRequesterImpl<C> implements InjectionRequester<C> {
 
     private final InjectionServicePipeline<C> pipeline;
 
     InjectionRequesterImpl(final InjectionServicePipeline<C> pipeline) {
-        this.pipeline = Objects.requireNonNull(pipeline, "pipeline");
+        this.pipeline = Preconditions.argumentNotNull(pipeline, "pipeline");
     }
 
     @Override
@@ -18,9 +18,9 @@ final class InjectionRequesterImpl<C> implements InjectionRequester<C> {
         final C context,
         final AnnotationAccessor annotationAccessor
     ) {
-        Objects.requireNonNull(cls, "cls");
-        Objects.requireNonNull(context, "context");
-        Objects.requireNonNull(annotationAccessor, "annotationAccessor");
+        Preconditions.argumentNotNull(cls, "cls");
+        Preconditions.argumentNotNull(context, "context");
+        Preconditions.argumentNotNull(annotationAccessor, "annotationAccessor");
 
         return this.request(TypeToken.get(cls), context, annotationAccessor);
     }
@@ -32,9 +32,9 @@ final class InjectionRequesterImpl<C> implements InjectionRequester<C> {
         final C context,
         final AnnotationAccessor annotationAccessor
     ) {
-        Objects.requireNonNull(type, "type");
-        Objects.requireNonNull(context, "context");
-        Objects.requireNonNull(annotationAccessor, "annotationAccessor");
+        Preconditions.argumentNotNull(type, "type");
+        Preconditions.argumentNotNull(context, "context");
+        Preconditions.argumentNotNull(annotationAccessor, "annotationAccessor");
 
         final InjectionRequest<C> request = InjectionRequest.of(type, context, annotationAccessor);
         return this.pipeline.completeDirect(request).thenApply(rawResult -> {

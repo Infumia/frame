@@ -3,82 +3,94 @@ package net.infumia.frame.service;
 import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.infumia.frame.Preconditions;
 
 public interface Implementation<Context, Result> {
-    @NotNull
-    static <Context, Result> Implementation<Context, Result> remove(
-        @NotNull final String serviceKey
-    ) {
-        return new Remove<>(serviceKey);
+    static <Context, Result> Implementation<Context, Result> remove(final String serviceKey) {
+        return new Remove<>(Preconditions.argumentNotNull(serviceKey, "serviceKey"));
     }
 
-    @NotNull
     static <Context, Result> Implementation<Context, Result> register(
-        @NotNull final Service<Context, Result> service,
-        @Nullable final Collection<Predicate<Context>> filters
+        final Service<Context, Result> service,
+        final Collection<Predicate<Context>> filters
     ) {
-        return new Register<>(service, filters);
+        return new Register<>(Preconditions.argumentNotNull(service, "service"), filters);
     }
 
-    @NotNull
     static <Context, Result> Implementation<Context, Result> register(
-        @NotNull final Service<Context, Result> service
+        final Service<Context, Result> service
     ) {
-        return Implementation.register(service, null);
+        return Implementation.register(Preconditions.argumentNotNull(service, "service"), null);
     }
 
-    @NotNull
     static <Context, Result> Implementation<Context, Result> registerBefore(
-        @NotNull final String serviceKey,
-        @NotNull final Service<Context, Result> service,
-        @Nullable final Collection<Predicate<Context>> filters
+        final String serviceKey,
+        final Service<Context, Result> service,
+        final Collection<Predicate<Context>> filters
     ) {
-        return new RegisterBefore<>(serviceKey, service, filters);
+        return new RegisterBefore<>(
+            Preconditions.argumentNotNull(serviceKey, "serviceKey"),
+            Preconditions.argumentNotNull(service, "service"),
+            filters
+        );
     }
 
-    @NotNull
     static <Context, Result> Implementation<Context, Result> registerBefore(
-        @NotNull final String serviceKey,
-        @NotNull final Service<Context, Result> service
+        final String serviceKey,
+        final Service<Context, Result> service
     ) {
-        return Implementation.registerBefore(serviceKey, service, null);
+        return Implementation.registerBefore(
+            Preconditions.argumentNotNull(serviceKey, "serviceKey"),
+            Preconditions.argumentNotNull(service, "service"),
+            null
+        );
     }
 
-    @NotNull
     static <Context, Result> Implementation<Context, Result> registerAfter(
-        @NotNull final String serviceKey,
-        @NotNull final Service<Context, Result> service,
-        @Nullable final Collection<Predicate<Context>> filters
+        final String serviceKey,
+        final Service<Context, Result> service,
+        final Collection<Predicate<Context>> filters
     ) {
-        return new RegisterAfter<>(serviceKey, service, filters);
+        return new RegisterAfter<>(
+            Preconditions.argumentNotNull(serviceKey, "serviceKey"),
+            Preconditions.argumentNotNull(service, "service"),
+            filters
+        );
     }
 
-    @NotNull
     static <Context, Result> Implementation<Context, Result> registerAfter(
-        @NotNull final String serviceKey,
-        @NotNull final Service<Context, Result> service
+        final String serviceKey,
+        final Service<Context, Result> service
     ) {
-        return Implementation.registerAfter(serviceKey, service, null);
+        return Implementation.registerAfter(
+            Preconditions.argumentNotNull(serviceKey, "serviceKey"),
+            Preconditions.argumentNotNull(service, "service"),
+            null
+        );
     }
 
-    @NotNull
     static <Context, Result> Implementation<Context, Result> replace(
-        @NotNull final String serviceKey,
-        @NotNull final UnaryOperator<Service<Context, Result>> service,
-        @Nullable final Collection<Predicate<Context>> filters
+        final String serviceKey,
+        final UnaryOperator<Service<Context, Result>> service,
+        final Collection<Predicate<Context>> filters
     ) {
-        return new Replace<>(serviceKey, service, filters);
+        return new Replace<>(
+            Preconditions.argumentNotNull(serviceKey, "serviceKey"),
+            Preconditions.argumentNotNull(service, "service"),
+            filters
+        );
     }
 
-    @NotNull
     static <Context, Result> Implementation<Context, Result> replace(
-        @NotNull final String serviceKey,
-        @NotNull final UnaryOperator<Service<Context, Result>> service
+        final String serviceKey,
+        final UnaryOperator<Service<Context, Result>> service
     ) {
-        return Implementation.replace(serviceKey, service, null);
+        return Implementation.replace(
+            Preconditions.argumentNotNull(serviceKey, "serviceKey"),
+            Preconditions.argumentNotNull(service, "service"),
+            null
+        );
     }
 
-    void handle(@NotNull ServiceRepository<Context, Result> repository);
+    void handle(ServiceRepository<Context, Result> repository);
 }
