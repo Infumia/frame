@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.util.Objects;
 
 public final class InjectorNoArg implements Injector<Object> {
+
     public static final Injector<Object> INSTANCE = new InjectorNoArg();
 
     private InjectorNoArg() {}
