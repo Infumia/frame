@@ -9,8 +9,7 @@ import java.lang.reflect.Constructor;
 
 final class ReflectionTest {
 
-    // A dummy class for testing reflection
-    private static class TestClass {
+    private static final class TestClass {
 
         private static final String STATIC_FINAL_FIELD = "staticFinalValue";
         private static String staticField = "staticValue";
@@ -25,7 +24,6 @@ final class ReflectionTest {
 
     private static class EmptyClass {}
 
-    // A class that doesn't exist, for testing negative cases
     private static final String NON_EXISTENT_CLASS_NAME = "net.infumia.frame.NonExistentTestClass";
 
     @Test
@@ -58,7 +56,7 @@ final class ReflectionTest {
 
     @Test
     void testFindInstanceFromField_staticField() {
-        TestClass.staticField = "newStaticValue"; // Modify for test
+        TestClass.staticField = "newStaticValue";
         final String value = Reflection.findInstanceFromField(TestClass.class.getName(), "staticField");
         assertEquals("newStaticValue", value, "Should retrieve static field value");
     }
@@ -75,24 +73,20 @@ final class ReflectionTest {
     @Test
     void testFindInstanceFromField_fieldNotFound() {
         final Exception exception = assertThrows(
-            RuntimeException.class, // As per current implementation detail
+            RuntimeException.class,
             () -> Reflection.findInstanceFromField(TestClass.class.getName(), "nonExistentField")
         );
         assertTrue(exception.getMessage().contains("Field 'nonExistentField' not found"));
         assertNotNull(exception.getCause());
-        assertTrue(exception.getCause() instanceof NoSuchFieldException);
+        assertInstanceOf(NoSuchFieldException.class, exception.getCause());
     }
 
+    public static final class TestClassWithNullableField {
+        public static String nullableStaticField = null;
+    }
+    
     @Test
     void testFindInstanceFromField_fieldIsNull() {
-        // Temporarily set a static field to null for testing purposes
-        // This requires a public static non-final field or a more complex setup
-        // For simplicity, we'll assume we have a field that *can* be null.
-        // Let's add a new class with a nullable static field.
-        final class TestClassWithNullableField {
-            public static String nullableStaticField = null;
-        }
-
         final Exception exception = assertThrows(
             IllegalArgumentException.class,
             () ->
@@ -105,11 +99,6 @@ final class ReflectionTest {
             exception.getMessage().contains("Field 'nullableStaticField' value is null")
         );
     }
-
-    // Cannot directly test IllegalAccessException for get(null) on an instance field via findInstanceFromField,
-    // as it specifically calls field.get(null), which is for static fields.
-    // Testing IllegalAccessException for a private static field would be similar to fieldNotFound if it's truly inaccessible,
-    // or would succeed if setAccessible(true) works, which is what the method does.
 
     @Test
     void testConstructor() {
