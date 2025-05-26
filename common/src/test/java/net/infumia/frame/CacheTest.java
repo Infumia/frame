@@ -40,7 +40,11 @@ final class CacheTest {
         assertFalse(cache.ifPresent().isPresent(), "ifPresent should be empty before first get");
         cache.get();
         assertTrue(cache.ifPresent().isPresent(), "ifPresent should not be empty after first get");
-        assertEquals("testValue", cache.ifPresent().get(), "ifPresent should return the cached value");
+        assertEquals(
+            "testValue",
+            cache.ifPresent().get(),
+            "ifPresent should return the cached value"
+        );
     }
 
     @Test
@@ -75,7 +79,6 @@ final class CacheTest {
         cache.invalidate();
         assertNull(cache.get(), "Get after invalidate should return null from supplier again");
         assertEquals(2, counter.get(), "Supplier should be called twice after invalidate and get");
-
     }
 
     @Test
@@ -108,6 +111,10 @@ final class CacheTest {
         t1.join();
         t2.join();
         assertEquals("testValue", cache.get(), "Value should be correct after concurrent access");
-        assertEquals(1, counter.get(), "Supplier should be called only once with concurrent access");
+        assertEquals(
+            1,
+            counter.get(),
+            "Supplier should be called only once with concurrent access"
+        );
     }
-} 
+}

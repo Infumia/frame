@@ -48,11 +48,11 @@ fun Project.applySpotless() {
 
         kotlin {
             target(
-                "buildSrc/src/main/kotlin/**/*.kt",
+                "buildSrc/src/**/kotlin/**/*.kt",
                 "buildSrc/**/*.gradle.kts",
                 "*.gradle.kts",
                 *subProjects.map { "$it/*.gradle.kts" }.toTypedArray(),
-                *subProjects.map { "$it/src/main/kotlin/**/*.kt" }.toTypedArray(),
+                *subProjects.map { "$it/src/**/kotlin/**/*.kt" }.toTypedArray(),
             )
             endWithNewline()
             trimTrailingWhitespace()
@@ -65,7 +65,7 @@ fun Project.applySpotless() {
         }
 
         java {
-            target(*subProjects.map { "$it/src/main/java/**/*.java" }.toTypedArray())
+            target(*subProjects.map { "$it/src/**/java/**/*.java" }.toTypedArray())
             importOrder()
             removeUnusedImports()
             endWithNewline()

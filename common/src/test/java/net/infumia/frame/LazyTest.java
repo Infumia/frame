@@ -78,6 +78,10 @@ final class LazyTest {
         t1.join();
         t2.join();
         assertEquals("testValue", lazy.get(), "Value should be correct after concurrent access");
-        assertEquals(1, counter.get(), "Supplier should be called only once with concurrent access");
+        assertEquals(
+            1,
+            counter.get(),
+            "Supplier should be called only once with concurrent access"
+        );
     }
-} 
+}

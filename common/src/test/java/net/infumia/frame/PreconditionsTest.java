@@ -2,9 +2,8 @@ package net.infumia.frame;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Constructor;
+import org.junit.jupiter.api.Test;
 
 final class PreconditionsTest {
 
@@ -15,9 +14,8 @@ final class PreconditionsTest {
 
     @Test
     void testArgument_false() {
-        final Exception exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> Preconditions.argument(false, "Error message with %s", "arg")
+        final Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            Preconditions.argument(false, "Error message with %s", "arg")
         );
         assertEquals("Error message with arg", exception.getMessage());
     }
@@ -30,9 +28,8 @@ final class PreconditionsTest {
 
     @Test
     void testArgumentNotNull_null() {
-        final Exception exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> Preconditions.argumentNotNull(null, "Error with %s and %s", "param1", "param2")
+        final Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            Preconditions.argumentNotNull(null, "Error with %s and %s", "param1", "param2")
         );
         assertEquals("Error with param1 and param2", exception.getMessage());
     }
@@ -44,9 +41,8 @@ final class PreconditionsTest {
 
     @Test
     void testState_false() {
-        final Exception exception = assertThrows(
-            IllegalStateException.class,
-            () -> Preconditions.state(false, "State error with %s", "stateArg")
+        final Exception exception = assertThrows(IllegalStateException.class, () ->
+            Preconditions.state(false, "State error with %s", "stateArg")
         );
         assertEquals("State error with stateArg", exception.getMessage());
     }
@@ -59,9 +55,8 @@ final class PreconditionsTest {
 
     @Test
     void testStateNotNull_null() {
-        final Exception exception = assertThrows(
-            IllegalStateException.class,
-            () -> Preconditions.stateNotNull(null, "State error for null object %s", "arg")
+        final Exception exception = assertThrows(IllegalStateException.class, () ->
+            Preconditions.stateNotNull(null, "State error for null object %s", "arg")
         );
         assertEquals("State error for null object arg", exception.getMessage());
     }
@@ -71,9 +66,10 @@ final class PreconditionsTest {
         // Test that the private constructor throws an IllegalStateException
         // This requires reflection as the constructor is private.
         assertThrows(ReflectiveOperationException.class, () -> {
-            final Constructor<Preconditions> constructor = Preconditions.class.getDeclaredConstructor();
+            final Constructor<Preconditions> constructor =
+                Preconditions.class.getDeclaredConstructor();
             constructor.setAccessible(true);
             constructor.newInstance();
         });
     }
-} 
+}

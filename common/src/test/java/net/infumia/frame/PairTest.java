@@ -50,7 +50,9 @@ final class PairTest {
         final Pair<String, Integer> pair3 = Pair.of("three", 3);
 
         @SuppressWarnings("unchecked")
-        final Map<String, Integer> map = Stream.of(pair1, pair2, pair3).collect(Pair.mapCollector());
+        final Map<String, Integer> map = Stream.of(pair1, pair2, pair3).collect(
+            Pair.mapCollector()
+        );
 
         assertNotNull(map, "Collected map should not be null");
         assertEquals(3, map.size(), "Map size should be 3");
@@ -82,7 +84,11 @@ final class PairTest {
     void testToString() {
         final Pair<String, Integer> pair = Pair.of("hello", 42);
         final String expectedString = "Pair[first=hello, second=42]";
-        assertEquals(expectedString, pair.toString(), "toString() should produce the correct format");
+        assertEquals(
+            expectedString,
+            pair.toString(),
+            "toString() should produce the correct format"
+        );
 
         final Pair<String, Integer> pairWithNulls = Pair.of(null, null);
         final String expectedStringWithNulls = "Pair[first=null, second=null]";
@@ -92,4 +98,4 @@ final class PairTest {
             "toString() should handle nulls correctly"
         );
     }
-} 
+}

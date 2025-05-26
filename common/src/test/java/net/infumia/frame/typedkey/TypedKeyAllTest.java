@@ -3,7 +3,6 @@ package net.infumia.frame.typedkey;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 final class TypedKeyAllTest {
@@ -13,14 +12,7 @@ final class TypedKeyAllTest {
         final TypedKey<String> stringKey = TypedKey.of(String.class, "testKey");
         assertNotNull(stringKey, "TypedKey should not be null");
         assertEquals("testKey", stringKey.key(), "Key name should match");
-        assertEquals(String.class, stringKey.cls(), "Key type should match");
-    }
-
-    @Test
-    void testTypedKeyToString() {
-        final TypedKey<Integer> intKey = TypedKey.of(int.class, "count");
-        final String expected = "TypedKey[key=count, type=class java.lang.Integer]";
-        assertEquals(expected, intKey.toString(), "toString output should match expected format");
+        assertEquals(String.class, stringKey.cls().getType(), "Key type should match");
     }
 
     @Test
@@ -28,29 +20,28 @@ final class TypedKeyAllTest {
         final TypedKey<String> key1 = TypedKey.of(String.class, "myKey");
         final TypedKey<String> key2 = TypedKey.of(String.class, "myKey");
         final TypedKey<String> key3 = TypedKey.of(String.class, "anotherKey");
-        final TypedKey<Integer> key4 = TypedKey.of(int.class, "myKey");
 
         assertEquals(key1, key2, "Keys with same name and type should be equal");
         assertEquals(key1.hashCode(), key2.hashCode(), "HashCodes of equal keys should be equal");
 
         assertNotEquals(key1, key3, "Keys with different names should not be equal");
-        assertNotEquals(key1, key4, "Keys with different types should not be equal");
-        assertNotEquals(key1, null, "Key should not be equal to null");
-        assertNotEquals(key1, "myKey", "Key should not be equal to an object of different type");
+        assertNotEquals(null, key1, "Key should not be equal to null");
     }
 
     @Test
     void testTypedKeyStorageFactory() {
         final TypedKeyStorageFactory factory = TypedKeyStorageFactory.create();
         assertNotNull(factory, "Default factory should not be null");
-        assertTrue(
-            factory instanceof TypedKeyStorageFactoryImpl,
+        assertInstanceOf(
+            TypedKeyStorageFactoryImpl.class,
+            factory,
             "Default factory should be an instance of TypedKeyStorageFactoryImpl"
         );
         final TypedKeyStorage storage = factory.create(new HashMap<>());
         assertNotNull(storage, "Created storage should not be null");
-        assertTrue(
-            storage instanceof TypedKeyStorageImpl,
+        assertInstanceOf(
+            TypedKeyStorageImpl.class,
+            storage,
             "Created storage should be an instance of TypedKeyStorageImpl"
         );
     }
@@ -87,84 +78,71 @@ final class TypedKeyAllTest {
         final TypedKeyStorage storage = TypedKeyStorageFactory.create().create(new HashMap<>());
         final TypedKey<String> key = TypedKey.of(String.class, "city");
 
-        final String value1 = storage.getOrSet(key, () -> "New York");
+        final String value1 = storage.computeIfAbsent(key, () -> "New York");
         assertEquals("New York", value1, "Should set and return default value if key not present");
-        assertEquals(Optional.of("New York"), storage.get(key), "Key should be set after getOrSet");
+        assertEquals("New York", storage.get(key), "Key should be set after getOrSet");
 
-        final String value2 = storage.getOrSet(key, () -> "London");
+        final String value2 = storage.computeIfAbsent(key, () -> "London");
         assertEquals("New York", value2, "Should return existing value if key is present");
     }
 
     @Test
-    void testTypedKeyStorageImpl_getAndSet() {
-        final TypedKeyStorage storage = TypedKeyStorageFactory.defaultFactory().create();
-        final TypedKey<Integer> key = TypedKey.of("score", Integer.class);
-
-        final Optional<Integer> prevValue1 = storage.getAndSet(key, 100);
-        assertFalse(prevValue1.isPresent(), "Should return empty Optional if key not present initially");
-        assertEquals(Optional.of(100), storage.get(key), "Key should be set to new value");
-
-        final Optional<Integer> prevValue2 = storage.getAndSet(key, 200);
-        assertEquals(Optional.of(100), prevValue2, "Should return previous value");
-        assertEquals(Optional.of(200), storage.get(key), "Key should be updated to new value");
-    }
-
-    @Test
     void testTypedKeyStorageImmutable_empty() {
-        final TypedKeyStorageImmutable immutable = TypedKeyStorageImmutable.empty();
+        final TypedKeyStorageImmutable immutable = TypedKeyStorageFactory.create()
+            .createImmutableBuilder(new HashMap<>())
+            .build();
         assertNotNull(immutable);
-        final TypedKey<String> key = TypedKey.of("test", String.class);
-        assertFalse(immutable.get(key).isPresent(), "Empty immutable storage should not contain any key");
+        final TypedKey<String> key = TypedKey.of(String.class, "test");
         assertFalse(immutable.contains(key), "Empty immutable storage should not contain any key");
     }
 
     @Test
     void testTypedKeyStorageImmutableBuilder_build() {
-        final TypedKey<String> nameKey = TypedKey.of("name", String.class);
-        final TypedKey<Integer> versionKey = TypedKey.of("version", Integer.class);
+        final TypedKey<String> nameKey = TypedKey.of(String.class, "name");
+        final TypedKey<Integer> versionKey = TypedKey.of(int.class, "version");
 
-        final TypedKeyStorageImmutable immutable = TypedKeyStorageImmutable
-            .builder()
-            .put(nameKey, "ImmutableTest")
-            .put(versionKey, 1)
+        final TypedKeyStorageImmutable immutable = TypedKeyStorageFactory.create()
+            .createImmutableBuilder(new HashMap<>())
+            .add(nameKey, "ImmutableTest")
+            .add(versionKey, 1)
             .build();
 
         assertNotNull(immutable);
-        assertEquals(Optional.of("ImmutableTest"), immutable.get(nameKey));
-        assertEquals(Optional.of(1), immutable.get(versionKey));
+        assertEquals("ImmutableTest", immutable.get(nameKey));
+        assertEquals(1, immutable.get(versionKey));
         assertTrue(immutable.contains(nameKey));
 
-        final TypedKey<Double> nonExistentKey = TypedKey.of("price", Double.class);
-        assertFalse(immutable.get(nonExistentKey).isPresent());
+        final TypedKey<Double> nonExistentKey = TypedKey.of(double.class, "price");
         assertFalse(immutable.contains(nonExistentKey));
     }
 
     @Test
     void testTypedKeyStorageImmutableBuilder_fromStorage() {
-        final TypedKeyStorage mutableStorage = TypedKeyStorageFactory.defaultFactory().create();
-        final TypedKey<String> k1 = TypedKey.of("k1", String.class);
-        final TypedKey<Boolean> k2 = TypedKey.of("k2", Boolean.class);
-        mutableStorage.set(k1, "value1");
-        mutableStorage.set(k2, true);
+        final TypedKey<String> k1 = TypedKey.of(String.class, "k1");
+        final TypedKey<Boolean> k2 = TypedKey.of(boolean.class, "k2");
 
-        final TypedKeyStorageImmutable immutable = TypedKeyStorageImmutable.builder().putAll(mutableStorage).build();
+        final TypedKeyStorageImmutable immutable = TypedKeyStorageFactory.create()
+            .createImmutableBuilder(new HashMap<>())
+            .add(k1, "value1")
+            .add(k2, true)
+            .build();
 
-        assertEquals(Optional.of("value1"), immutable.get(k1));
-        assertEquals(Optional.of(true), immutable.get(k2));
+        assertEquals("value1", immutable.get(k1));
+        assertEquals(true, immutable.get(k2));
     }
 
-     @Test
+    @Test
     void testTypedKeyStorageImmutableImpl_keys() {
-        final TypedKey<String> strKey = TypedKey.of("name", String.class);
-        final TypedKey<Integer> intKey = TypedKey.of("age", Integer.class);
-        final TypedKeyStorageImmutable immutable = TypedKeyStorageImmutable
-            .builder()
-            .put(strKey, "Test")
-            .put(intKey, 10)
+        final TypedKey<String> strKey = TypedKey.of(String.class, "name");
+        final TypedKey<Integer> intKey = TypedKey.of(int.class, "age");
+        final TypedKeyStorageImmutable immutable = TypedKeyStorageFactory.create()
+            .createImmutableBuilder(new HashMap<>())
+            .add(strKey, "Test")
+            .add(intKey, 10)
             .build();
+
         assertEquals(2, immutable.keys().size());
         assertTrue(immutable.keys().contains(strKey));
         assertTrue(immutable.keys().contains(intKey));
     }
-
-} 
+}

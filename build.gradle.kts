@@ -13,12 +13,12 @@ subprojects {
 
     dependencies {
         testImplementation(platform(rootProject.libs.junit))
-        testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation("org.junit.jupiter:junit-jupiter-api")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     }
 
-    tasks.withType<Test> {
-        useJUnitPlatform()
-    }
+    tasks.withType<Test> { useJUnitPlatform() }
 }
 
 applySpotless()
