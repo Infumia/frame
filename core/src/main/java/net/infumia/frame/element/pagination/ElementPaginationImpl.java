@@ -436,7 +436,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
                 this.loading = false;
                 final int previousPage = Math.min(
                     this.currentPageIndex,
-                    Math.min(0, this.pageCount - 1)
+                    Math.max(0, this.pageCount - 1)
                 );
                 if (previousPage != this.currentPageIndex) {
                     this.switchTo(previousPage);
