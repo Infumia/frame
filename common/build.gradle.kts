@@ -5,4 +5,6 @@ applyPublish("common")
 dependencies {
     compileOnly(libs.geantyref)
     compileOnly(libs.annotations)
+
+    testImplementation(libs.geantyref)
 }
