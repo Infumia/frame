@@ -5,6 +5,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.infumia.frame.Preconditions;
 
+/**
+ * A service that consumes a context.
+ *
+ * @param <Context> the context type.
+ */
 public interface ConsumerService<Context>
     extends
         Service<Context, ConsumerService.State>,
@@ -32,8 +37,17 @@ public interface ConsumerService<Context>
         return future;
     }
 
+    /**
+     * Represents the state of a {@link ConsumerService}.
+     */
     enum State {
+        /**
+         * Indicates that the service should continue processing.
+         */
         CONTINUE,
+        /**
+         * Indicates that the service has finished processing.
+         */
         FINISHED,
     }
 }
