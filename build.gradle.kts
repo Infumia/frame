@@ -10,6 +10,15 @@ subprojects {
         mavenCentral()
         maven("https://repo.papermc.io/repository/maven-public/")
     }
+
+    dependencies {
+        testImplementation(platform(rootProject.libs.junit))
+        testImplementation("org.junit.jupiter:junit-jupiter")
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
 
 applySpotless()
