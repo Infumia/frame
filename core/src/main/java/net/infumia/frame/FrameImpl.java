@@ -259,11 +259,11 @@ final class FrameImpl implements FrameRich {
             "The active context's view must be an instance of ViewEventHandler!"
         );
         return this.loggedFuture(
-                this.taskFactory.handleFuture(
-                        () -> ((ViewEventHandler) view).simulateOpenActive(activeContext, players),
-                        "Error occurred while opening an active view '%s'!",
-                        view.instance()
-                    )
+                this.taskFactory.handleFuture(() ->
+                        ((ViewEventHandler) view).simulateOpenActive(activeContext, players)
+                    ),
+                "Error occurred while opening an active view '%s'!",
+                view.instance()
             );
     }
 
