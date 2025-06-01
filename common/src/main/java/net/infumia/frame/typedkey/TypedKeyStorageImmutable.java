@@ -73,10 +73,9 @@ public interface TypedKeyStorageImmutable {
     boolean contains(@NotNull TypedKey<?> key);
 
     /**
-     * Checks if the storage contains a key.
+     * Gets the keys from the storage.
      *
-     * @param key the key
-     * @return true if the storage contains a key, false otherwise
+     * @return the keys
      */
     @NotNull
     @UnmodifiableView
