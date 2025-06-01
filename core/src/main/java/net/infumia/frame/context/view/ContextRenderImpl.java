@@ -107,17 +107,12 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
             metadata.remove(MetadataKeyHolder.PREVIOUS_VIEWS);
         }
         this.frame()
-            .loggedFuture(
-                this.frame()
-                    .openActive(viewer.player(), previousContext)
-                    .thenCompose(__ ->
-                        ((ContextRenderRich) previousContext).simulateResume(
-                                this,
-                                Collections.singleton(viewer)
-                            )
-                    ),
-                "An error occurred while going back to view '%s'.",
-                previousContext.view().instance()
+            .openActive(viewer.player(), previousContext)
+            .thenCompose(__ ->
+                ((ContextRenderRich) previousContext).simulateResume(
+                        this,
+                        Collections.singleton(viewer)
+                    )
             );
     }
 
