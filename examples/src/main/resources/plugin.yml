@@ -1,0 +1,6 @@
+name: Example
+version: 1.0.0-SNAPSHOT
+main: net.infumia.examples.ExamplePlugin
+api-version: "1.13"
+commands:
+  test:
