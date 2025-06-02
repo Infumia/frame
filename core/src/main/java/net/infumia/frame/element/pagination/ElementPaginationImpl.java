@@ -413,10 +413,9 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         if (this.sourceFactory == null) {
             return CompletableFuture.completedFuture(Collections.emptyList());
         }
-        return this.sourceFactory.apply(context).thenApplyAsync(
-                this.pageCalculation,
-                this.pageCalculationExecutor
-            );
+        return this.sourceFactory.apply(context)
+            .thenApply(this.pageCalculation)
+            .thenApplyAsync(Function.identity(), this.pageCalculationExecutor);
     }
 
     private int calculatePagesCount(@NotNull final List<T> source) {
