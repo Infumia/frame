@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.CompletableFuture;
+
 public final class ExamplePlugin extends JavaPlugin implements CommandExecutor {
     public static final TypedKey<CommandSender> CONSOLE_KEY =
         TypedKey.of(CommandSender.class, "console");
@@ -26,7 +28,7 @@ public final class ExamplePlugin extends JavaPlugin implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, final String @NotNull [] args) {
-        Bukkit.getScheduler().runTaskAsynchronously(this, () ->
+        CompletableFuture.runAsync(() ->
             this.frame.open(((Player) sender), ViewExample.class));
         return true;
     }
