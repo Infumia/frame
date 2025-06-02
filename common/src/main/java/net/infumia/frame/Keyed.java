@@ -1,7 +1,7 @@
 package net.infumia.frame;
 
 /**
- * A keyed interface is a interface that is used to create keyed objects.
+ * A keyed interface is an interface that is used to create keyed objects.
  *
  * @param <T> the type of the key
  */
