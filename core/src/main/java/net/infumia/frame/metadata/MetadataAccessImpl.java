@@ -48,6 +48,12 @@ public final class MetadataAccessImpl implements MetadataAccess {
         );
     }
 
+    @Override
+    public <T> T getOrDefault(@NotNull final TypedKey<T> key, @Nullable final T defaultValue) {
+        final T value = this.get(key);
+        return value == null ? defaultValue : value;
+    }
+
     @Nullable
     @Override
     public <T> T remove(@NotNull final TypedKey<T> key) {

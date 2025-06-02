@@ -7,8 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.infumia.frame.Preconditions;
@@ -27,25 +26,24 @@ import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.state.State;
 import net.infumia.frame.state.pagination.PaginationElementConfigurer;
-import net.infumia.frame.state.pagination.StatePagination;
 import net.infumia.frame.view.ViewContainer;
 import org.jetbrains.annotations.NotNull;
 
 public final class ElementPaginationImpl<T> extends ElementImpl implements ElementPaginationRich {
 
-    private final ReadWriteLock elementLock = new ReentrantReadWriteLock();
     private final PipelineExecutorElement pipelines = new PipelineExecutorElementImpl(this);
     private final ElementEventHandler eventHandler = ElementEventHandlerPagination.INSTANCE;
     private LayoutSlot currentLayoutSlot;
-    final SourceProvider<T> sourceProvider;
-    final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory;
-    final char layout;
-    final BiConsumer<ContextBase, ElementPagination> onPageSwitch;
-    final PaginationElementConfigurer<T> elementConfigurer;
-    final State<ElementPagination> associated;
+    private final SourceProvider<T> sourceProvider;
+    private final char layout;
+    private final BiConsumer<ContextBase, ElementPagination> onPageSwitch;
+    private final PaginationElementConfigurer<T> elementConfigurer;
+    private final State<ElementPagination> associated;
     private final Function<ContextBase, CompletableFuture<List<T>>> sourceFactory;
+    private final Function<List<T>, List<T>> pageCalculation;
+    private final Executor continuationExecutor;
     private List<Element> elements = new ArrayList<>();
-    private int currentPageIndex = 0;
+    private int currentPageIndex;
     private boolean pageWasChanged;
     private boolean initialized = false;
     private int pageCount;
@@ -67,7 +65,6 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
             "Element configurer cannot be null for ElementPagination!"
         );
         this.sourceProvider = builder.sourceProvider;
-        this.stateFactory = builder.stateFactory;
         this.layout = builder.layout;
         this.onPageSwitch = builder.onPageSwitch;
 
@@ -77,6 +74,28 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         } else {
             this.sourceFactory = this.sourceProvider;
         }
+
+        if (this.sourceProvider.async()) {
+            this.continuationExecutor = parent.frame().taskFactory().asExecutor();
+        } else {
+            this.continuationExecutor = Runnable::run;
+        }
+
+        this.pageCalculation = result -> {
+            this.loading = false;
+            this.currentSource = result;
+            this.pageCount = this.calculatePagesCount(result);
+            final int lastOrCurrentPage = Math.min(this.currentPageIndex, this.lastPageIndex());
+            if (lastOrCurrentPage != this.currentPageIndex) {
+                this.switchTo(lastOrCurrentPage);
+            }
+            return ElementPaginationImpl.splitSourceForPage(
+                this.currentPageIndex,
+                this.pageSize(),
+                this.pageCount,
+                result
+            );
+        };
     }
 
     @NotNull
@@ -136,22 +155,12 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     @NotNull
     @Override
     public Collection<Element> modifiableElements() {
-        try {
-            this.elementLock.readLock().lock();
-            return this.elements;
-        } finally {
-            this.elementLock.readLock().unlock();
-        }
+        return this.elements;
     }
 
     @Override
     public void clearElements() {
-        try {
-            this.elementLock.writeLock().lock();
-            this.elements = new ArrayList<>();
-        } finally {
-            this.elementLock.writeLock().unlock();
-        }
+        this.elements = new ArrayList<>();
     }
 
     @Override
@@ -216,7 +225,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         if (this.loading) {
             return;
         }
-        this.currentPageIndex = pageIndex;
+        this.currentPageIndex = Math.max(0, pageIndex);
         this.pageWasChanged = true;
         final ContextRender host = (ContextRender) this.parent;
         if (this.onPageSwitch != null) {
@@ -233,25 +242,25 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     @Override
     public void advance() {
         if (this.canAdvance()) {
-            this.switchTo(this.currentPageIndex + 1);
+            this.switchTo(this.nextPageIndex());
         }
     }
 
     @Override
     public boolean canAdvance() {
-        return this.hasPage(this.currentPageIndex + 1);
+        return this.hasPage(this.nextPageIndex());
     }
 
     @Override
     public void back() {
         if (this.canBack()) {
-            this.switchTo(this.currentPageIndex - 1);
+            this.switchTo(this.previousPageIndex());
         }
     }
 
     @Override
     public boolean canBack() {
-        return this.hasPage(this.currentPageIndex - 1);
+        return this.hasPage(this.previousPageIndex());
     }
 
     @NotNull
@@ -262,56 +271,37 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
 
     @Override
     public void visible(final boolean visible) {
-        try {
-            this.elementLock.readLock().lock();
-            super.visible(visible);
-            for (final Element child : this.elements) {
-                ((ElementRich) child).visible(visible);
-            }
-        } finally {
-            this.elementLock.readLock().unlock();
+        super.visible(visible);
+        for (final Element child : this.elements) {
+            ((ElementRich) child).visible(visible);
         }
     }
 
     @Override
     public boolean containedWithin(final int position) {
-        try {
-            this.elementLock.readLock().lock();
-            if (this.currentLayoutSlot != null) {
-                return Arrays.stream(this.currentLayoutSlot.slots()).anyMatch(
-                    slot -> slot == position
-                );
-            }
-            return this.elements.stream()
-                .anyMatch(element -> ((ElementRich) element).containedWithin(position));
-        } finally {
-            this.elementLock.readLock().unlock();
+        if (this.currentLayoutSlot != null) {
+            return Arrays.stream(this.currentLayoutSlot.slots()).anyMatch(slot -> slot == position);
         }
+        return this.elements.stream()
+            .anyMatch(element -> ((ElementRich) element).containedWithin(position));
     }
 
     @Override
     public boolean intersects(@NotNull final Element element) {
-        try {
-            this.elementLock.readLock().lock();
-            for (final Element child : this.elements) {
-                final ElementRich e = (ElementRich) child;
-                if (e.intersects(element)) {
-                    return true;
-                }
-                if (e instanceof ElementItem) {
-                    final int slot = ((ElementItem) e).slot();
-                    if (this.currentLayoutSlot != null) {
-                        return Arrays.stream(this.currentLayoutSlot.slots()).anyMatch(
-                            s -> s == slot
-                        );
-                    }
-                    return e.containedWithin(slot);
-                }
+        for (final Element child : this.elements) {
+            final ElementRich e = (ElementRich) child;
+            if (e.intersects(element)) {
+                return true;
             }
-            return false;
-        } finally {
-            this.elementLock.readLock().unlock();
+            if (e instanceof ElementItem) {
+                final int slot = ((ElementItem) e).slot();
+                if (this.currentLayoutSlot != null) {
+                    return Arrays.stream(this.currentLayoutSlot.slots()).anyMatch(s -> s == slot);
+                }
+                return e.containedWithin(slot);
+            }
         }
+        return false;
     }
 
     @NotNull
@@ -345,12 +335,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     @NotNull
     @Override
     public List<Element> elements() {
-        try {
-            this.elementLock.readLock().lock();
-            return Collections.unmodifiableList(this.elements);
-        } finally {
-            this.elementLock.readLock().unlock();
-        }
+        return Collections.unmodifiableList(this.elements);
     }
 
     private void addComponentsForUnconstrainedPagination(
@@ -401,12 +386,10 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         final boolean forced
     ) {
         final boolean isLazy = this.sourceProvider.lazy();
-        final boolean reuseLazy = isLazy && this.initialized;
-        if (
-            (this.sourceProvider.provided() || reuseLazy) &&
-            !this.sourceProvider.computed() &&
-            !forced
-        ) {
+        final boolean lazyInitialized = isLazy && this.initialized;
+        final boolean canReuse = this.sourceProvider.provided() || lazyInitialized;
+        final boolean notComputing = !this.sourceProvider.computed();
+        if (canReuse && notComputing && !forced) {
             final List<T> currentSource = Preconditions.stateNotNull(
                 this.currentSource,
                 "Current source cannot be null in this stage"
@@ -430,26 +413,9 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         if (this.sourceFactory == null) {
             return CompletableFuture.completedFuture(Collections.emptyList());
         }
-        return this.sourceFactory.apply(context).thenApply(result -> {
-                this.currentSource = result;
-                this.pageCount = this.calculatePagesCount(result);
-                this.loading = false;
-                final int previousPage = Math.min(
-                    this.currentPageIndex,
-                    Math.max(0, this.pageCount - 1)
-                );
-                if (previousPage != this.currentPageIndex) {
-                    this.switchTo(previousPage);
-                }
-                return isLazy
-                    ? ElementPaginationImpl.splitSourceForPage(
-                        this.currentPageIndex,
-                        this.pageSize(),
-                        this.pageCount,
-                        result
-                    )
-                    : result;
-            });
+        return this.sourceFactory.apply(context)
+            .thenApply(this.pageCalculation)
+            .thenApplyAsync(Function.identity(), this.continuationExecutor);
     }
 
     private int calculatePagesCount(@NotNull final List<T> source) {

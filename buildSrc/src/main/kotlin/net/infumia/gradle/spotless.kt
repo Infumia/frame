@@ -39,7 +39,7 @@ fun Project.applySpotless() {
         }
 
         format("toml") {
-            target("gradle/libs.versions.toml")
+            target("gradle/libs.versions.toml", "examples/gradle/libs.versions.toml")
             endWithNewline()
             trimTrailingWhitespace()
             prettier(prettierConfig)
@@ -50,6 +50,8 @@ fun Project.applySpotless() {
             target(
                 "buildSrc/src/**/kotlin/**/*.kt",
                 "buildSrc/**/*.gradle.kts",
+                "examples/src/**/kotlin/**/*.kt",
+                "examples/**/*.gradle.kts",
                 "*.gradle.kts",
                 *subProjects.map { "$it/*.gradle.kts" }.toTypedArray(),
                 *subProjects.map { "$it/src/**/kotlin/**/*.kt" }.toTypedArray(),
@@ -65,7 +67,10 @@ fun Project.applySpotless() {
         }
 
         java {
-            target(*subProjects.map { "$it/src/**/java/**/*.java" }.toTypedArray())
+            target(
+                *subProjects.map { "$it/src/**/java/**/*.java" }.toTypedArray(),
+                "examples/src/**/java/**/*.java",
+            )
             importOrder()
             removeUnusedImports()
             endWithNewline()

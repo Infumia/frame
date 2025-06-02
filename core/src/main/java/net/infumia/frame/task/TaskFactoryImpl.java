@@ -3,6 +3,7 @@ package net.infumia.frame.task;
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 import net.infumia.frame.util.Ticks;
 import org.bukkit.Bukkit;
@@ -28,15 +29,24 @@ public final class TaskFactoryImpl implements TaskFactory {
         }
         final CompletableFuture<T> future = new CompletableFuture<>();
         Bukkit.getScheduler()
-            .runTask(this.plugin, () -> {
-                try {
-                    final T result = task.get().join();
-                    future.complete(result);
-                } catch (final Throwable throwable) {
-                    future.completeExceptionally(throwable);
-                }
-            });
+            .runTask(this.plugin, () ->
+                task
+                    .get()
+                    .whenComplete((result, throwable) -> {
+                        if (throwable == null) {
+                            future.complete(result);
+                        } else {
+                            future.completeExceptionally(throwable);
+                        }
+                    })
+            );
         return future;
+    }
+
+    @NotNull
+    @Override
+    public Executor asExecutor() {
+        return command -> Bukkit.getScheduler().runTask(this.plugin, command);
     }
 
     @NotNull
