@@ -24,7 +24,14 @@ public final class ViewExample implements ViewHandler {
         ctx.configBuilder().type(InvType.CHEST).cancelOnClick();
         this.pagination = ctx
             .buildComputedAsyncPaginationState(() ->
-                CompletableFuture.supplyAsync(() -> List.of("test-1", "test-2", "test-3", "test-4"))
+                CompletableFuture.supplyAsync(() -> {
+                    try {
+                        Thread.sleep(5000L);
+                    } catch (final InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return List.of("test-1", "test-2", "test-3", "test-4");
+                })
             )
             .elementConfigurer((builder, text) -> {
                 final ItemStack item = new ItemStack(Material.CHEST);

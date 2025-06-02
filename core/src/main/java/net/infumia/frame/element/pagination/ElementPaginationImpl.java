@@ -41,7 +41,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     private final State<ElementPagination> associated;
     private final Function<ContextBase, CompletableFuture<List<T>>> sourceFactory;
     private final Function<List<T>, List<T>> pageCalculation;
-    private final Executor pageCalculationExecutor;
+    private final Executor continuationExecutor;
     private List<Element> elements = new ArrayList<>();
     private int currentPageIndex;
     private boolean pageWasChanged;
@@ -76,9 +76,9 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         }
 
         if (this.sourceProvider.async()) {
-            this.pageCalculationExecutor = parent.frame().taskFactory().asExecutor();
+            this.continuationExecutor = parent.frame().taskFactory().asExecutor();
         } else {
-            this.pageCalculationExecutor = Runnable::run;
+            this.continuationExecutor = Runnable::run;
         }
 
         this.pageCalculation = result -> {
@@ -415,7 +415,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         }
         return this.sourceFactory.apply(context)
             .thenApply(this.pageCalculation)
-            .thenApplyAsync(Function.identity(), this.pageCalculationExecutor);
+            .thenApplyAsync(Function.identity(), this.continuationExecutor);
     }
 
     private int calculatePagesCount(@NotNull final List<T> source) {
