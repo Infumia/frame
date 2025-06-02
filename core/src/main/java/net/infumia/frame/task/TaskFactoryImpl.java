@@ -28,14 +28,17 @@ public final class TaskFactoryImpl implements TaskFactory {
         }
         final CompletableFuture<T> future = new CompletableFuture<>();
         Bukkit.getScheduler()
-            .runTask(this.plugin, () -> {
-                try {
-                    final T result = task.get().join();
-                    future.complete(result);
-                } catch (final Throwable throwable) {
-                    future.completeExceptionally(throwable);
-                }
-            });
+            .runTask(this.plugin, () ->
+                task
+                    .get()
+                    .whenComplete((result, throwable) -> {
+                        if (throwable == null) {
+                            future.complete(result);
+                        } else {
+                            future.completeExceptionally(throwable);
+                        }
+                    })
+            );
         return future;
     }
 
