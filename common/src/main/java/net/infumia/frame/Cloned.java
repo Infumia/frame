@@ -1,7 +1,7 @@
 package net.infumia.frame;
 
 /**
- * A cloned interface is a interface that is used to create cloned objects.
+ * A cloned interface is an interface that is used to create cloned objects.
  *
  * @param <This> the type of the cloned object
  */

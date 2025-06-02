@@ -49,7 +49,6 @@ final class PairTest {
         final Pair<String, Integer> pair2 = Pair.of("two", 2);
         final Pair<String, Integer> pair3 = Pair.of("three", 3);
 
-        @SuppressWarnings("unchecked")
         final Map<String, Integer> map = Stream.of(pair1, pair2, pair3).collect(
             Pair.mapCollector()
         );
@@ -67,7 +66,6 @@ final class PairTest {
         final Pair<String, Integer> pair2 = Pair.of("two", 2);
         final Pair<String, Integer> pair3 = Pair.of("one", 3); // Duplicate key
 
-        @SuppressWarnings("unchecked")
         final Stream<Pair<String, Integer>> stream = Stream.of(pair1, pair2, pair3);
 
         // Collectors.toMap throws IllegalStateException on duplicate keys by default.
