@@ -66,6 +66,15 @@ public class StateImpl<T> implements StateRich<T> {
         );
     }
 
+    @Override
+    public T getOrDefault(
+        @NotNull final StateValueHostHolder host,
+        @Nullable final T defaultValue
+    ) {
+        final T value = this.get(host);
+        return value == null ? defaultValue : value;
+    }
+
     @NotNull
     @Override
     public CompletableFuture<@Nullable T> getWait(@NotNull final StateValueHostHolder host) {
@@ -80,6 +89,15 @@ public class StateImpl<T> implements StateRich<T> {
         return this.getWait(host).thenApply(value ->
                 Preconditions.stateNotNull(value, "Value for state '%s' not found!", this.id)
             );
+    }
+
+    @NotNull
+    @Override
+    public CompletableFuture<T> getOrDefaultWait(
+        @NotNull final StateValueHostHolder host,
+        @Nullable final T defaultValue
+    ) {
+        return this.getWait(host).thenApply(value -> value == null ? defaultValue : value);
     }
 
     @Override

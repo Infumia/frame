@@ -2,6 +2,7 @@ package net.infumia.frame.typedkey;
 
 import java.util.Collection;
 import java.util.Map;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -46,6 +47,9 @@ public interface TypedKeyStorageImmutable {
     @NotNull
     <T> T getOrThrow(@NotNull TypedKey<T> key);
 
+    @Contract("_, null -> null; _, !null -> !null")
+    <T> T getOrDefault(@NotNull TypedKey<T> key, @Nullable T defaultValue);
+
     /**
      * Gets a value from the storage.
      *
@@ -54,6 +58,9 @@ public interface TypedKeyStorageImmutable {
      */
     @NotNull
     Object getOrThrow(@NotNull String key);
+
+    @Contract("_, null -> null; _, !null -> !null")
+    Object getOrDefault(@NotNull String key, @Nullable Object defaultValue);
 
     /**
      * Gets a value from the storage.

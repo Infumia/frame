@@ -53,10 +53,22 @@ class TypedKeyStorageImmutableImpl implements TypedKeyStorageImmutable {
         return Preconditions.argumentNotNull(this.get(key), "Key '%s' not found!", key);
     }
 
+    @Override
+    public <T> T getOrDefault(@NotNull final TypedKey<T> key, @Nullable final T defaultValue) {
+        final T value = this.get(key);
+        return value == null ? defaultValue : value;
+    }
+
     @NotNull
     @Override
     public Object getOrThrow(@NotNull final String key) {
         return Preconditions.argumentNotNull(this.get(key), "Key '%s' not found!", key);
+    }
+
+    @Override
+    public Object getOrDefault(@NotNull final String key, @Nullable final Object defaultValue) {
+        final Object value = this.get(key);
+        return value == null ? defaultValue : value;
     }
 
     @NotNull

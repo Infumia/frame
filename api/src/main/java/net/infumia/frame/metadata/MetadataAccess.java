@@ -3,6 +3,7 @@ package net.infumia.frame.metadata;
 import java.util.concurrent.Callable;
 import net.infumia.frame.typedkey.TypedKey;
 import org.bukkit.metadata.LazyMetadataValue;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +13,9 @@ public interface MetadataAccess {
 
     @NotNull
     <T> T getOrThrow(@NotNull TypedKey<T> key);
+
+    @Contract("_, null -> null; _, !null -> !null")
+    <T> T getOrDefault(@NotNull TypedKey<T> key, @Nullable T defaultValue);
 
     @Nullable
     <T> T remove(@NotNull TypedKey<T> key);
