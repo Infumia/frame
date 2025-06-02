@@ -21,8 +21,8 @@ public final class ElementPaginationBuilderImpl<T>
     extends ElementBuilderImpl
     implements ElementPaginationBuilderRich<T> {
 
+    private final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory;
     final SourceProvider<T> sourceProvider;
-    final Function<ElementPaginationBuilder<T>, StatePagination> stateFactory;
     char layout = '0';
     BiConsumer<ContextBase, ElementPagination> onPageSwitch;
     PaginationElementConfigurer<T> elementConfigurer;

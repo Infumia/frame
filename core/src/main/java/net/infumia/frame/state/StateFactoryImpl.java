@@ -219,6 +219,7 @@ public class StateFactoryImpl implements StateFactory {
             new SourceProvider.Computed<>(
                 () -> CompletableFuture.completedFuture(source.get()),
                 true,
+                false,
                 false
             ),
             this::createPaginationState
@@ -234,6 +235,7 @@ public class StateFactoryImpl implements StateFactory {
             new SourceProvider.Computed<>(
                 context -> CompletableFuture.completedFuture(source.apply(context)),
                 true,
+                false,
                 false
             ),
             this::createPaginationState
@@ -246,7 +248,7 @@ public class StateFactoryImpl implements StateFactory {
         @NotNull final Supplier<CompletableFuture<List<T>>> source
     ) {
         return new ElementPaginationBuilderImpl<>(
-            new SourceProvider.Computed<>(source, true, false),
+            new SourceProvider.Computed<>(source, true, false, true),
             this::createPaginationState
         );
     }
@@ -257,7 +259,7 @@ public class StateFactoryImpl implements StateFactory {
         @NotNull final Function<ContextBase, CompletableFuture<List<T>>> source
     ) {
         return new ElementPaginationBuilderImpl<>(
-            new SourceProvider.Computed<>(source, true, false),
+            new SourceProvider.Computed<>(source, true, false, true),
             this::createPaginationState
         );
     }
@@ -271,7 +273,8 @@ public class StateFactoryImpl implements StateFactory {
             new SourceProvider.Computed<>(
                 () -> CompletableFuture.completedFuture(source.get()),
                 false,
-                true
+                true,
+                false
             ),
             this::createPaginationState
         );
@@ -286,7 +289,8 @@ public class StateFactoryImpl implements StateFactory {
             new SourceProvider.Computed<>(
                 context -> CompletableFuture.completedFuture(source.apply(context)),
                 false,
-                true
+                true,
+                false
             ),
             this::createPaginationState
         );
@@ -298,7 +302,7 @@ public class StateFactoryImpl implements StateFactory {
         @NotNull final Supplier<CompletableFuture<List<T>>> source
     ) {
         return new ElementPaginationBuilderImpl<>(
-            new SourceProvider.Computed<>(source, false, true),
+            new SourceProvider.Computed<>(source, false, true, true),
             this::createPaginationState
         );
     }
@@ -309,7 +313,7 @@ public class StateFactoryImpl implements StateFactory {
         @NotNull final Function<ContextBase, CompletableFuture<List<T>>> source
     ) {
         return new ElementPaginationBuilderImpl<>(
-            new SourceProvider.Computed<>(source, false, true),
+            new SourceProvider.Computed<>(source, false, true, true),
             this::createPaginationState
         );
     }
