@@ -1,5 +1,7 @@
 package net.infumia.examples;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.view.ContextInit;
 import net.infumia.frame.context.view.ContextOpen;
 import net.infumia.frame.context.view.ContextRender;
@@ -12,17 +14,17 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 public final class ViewExample implements ViewHandler {
+
     private StatePagination pagination;
 
     @Override
     public void onInit(final ContextInit ctx) {
         ctx.configBuilder().type(InvType.CHEST).cancelOnClick();
-        this.pagination = ctx.buildLazyAsyncPaginationState(() ->
-                CompletableFuture.supplyAsync(() -> List.of("test-1", "test-2")))
+        this.pagination = ctx
+            .buildLazyAsyncPaginationState(() ->
+                CompletableFuture.supplyAsync(() -> List.of("test-1", "test-2"))
+            )
             .elementConfigurer((builder, text) -> {
                 final ItemStack item = new ItemStack(Material.CHEST);
                 item.editMeta(meta -> meta.displayName(Component.text(text)));
@@ -37,11 +39,7 @@ public final class ViewExample implements ViewHandler {
         final Viewer viewer = ctx.viewer();
         ctx
             .modifyConfig()
-            .layout(new String[]{
-                "xxxxxxxxx",
-                "xxxaaaxxx",
-                "xxxxxxxxx"
-            })
+            .layout(new String[] { "xxxxxxxxx", "xxxaaaxxx", "xxxxxxxxx" })
             .title("Player: " + viewer.player().getName());
     }
 
@@ -54,7 +52,9 @@ public final class ViewExample implements ViewHandler {
             .layoutSlot('a', new ItemStack(Material.DIAMOND))
             .onClick(context -> {
                 context.closeForViewer();
-                sender.sendMessage("Player " + context.clicker().player() + " clicked to a diamond!");
+                sender.sendMessage(
+                    "Player " + context.clicker().player() + " clicked to a diamond!"
+                );
             });
     }
 }

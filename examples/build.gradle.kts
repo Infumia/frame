@@ -5,6 +5,7 @@ plugins {
 }
 
 group = "net.infumia"
+
 version = "1.0.0-SNAPSHOT"
 
 repositories {
