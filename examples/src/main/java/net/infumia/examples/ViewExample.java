@@ -26,9 +26,11 @@ public final class ViewExample implements ViewHandler {
 
     @Override
     public void onInit(@NotNull final ContextInit ctx) {
-        ctx.configBuilder().type(InvType.CHEST)
-                .addOption(ViewConfigOptions.CANCEL_ON_DROP, false)
-                .addOption(ViewConfigOptions.CANCEL_ON_CLICK, false);
+        ctx
+            .configBuilder()
+            .type(InvType.CHEST)
+            .addOption(ViewConfigOptions.CANCEL_ON_DROP, false)
+            .addOption(ViewConfigOptions.CANCEL_ON_CLICK, false);
         this.pagination = ctx
             .buildComputedAsyncPaginationState(() ->
                 CompletableFuture.supplyAsync(() -> {
