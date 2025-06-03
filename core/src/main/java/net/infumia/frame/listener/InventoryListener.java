@@ -1,14 +1,17 @@
 package net.infumia.frame.listener;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.infumia.frame.Frame;
-import net.infumia.frame.metadata.MetadataAccess;
+import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.metadata.MetadataAccessFactory;
 import net.infumia.frame.metadata.MetadataKeyHolder;
-import net.infumia.frame.view.InventoryHolderView;
+import net.infumia.frame.view.InventoryHolderFrame;
 import net.infumia.frame.view.ViewEventHandler;
 import net.infumia.frame.viewer.ContextualViewer;
+import net.infumia.frame.viewer.Viewer;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,6 +20,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.metadata.Metadatable;
 import org.bukkit.plugin.Plugin;
@@ -54,13 +58,9 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(final InventoryCloseEvent event) {
-        final InventoryHolder inventoryHolder = event.getInventory().getHolder();
-        if (!(inventoryHolder instanceof InventoryHolderView)) {
-            return;
-        }
-        this.ifTransitioning(event.getPlayer(), viewer ->
+        this.extractContext(event.getInventory(), event.getPlayer(), (viewer, ctx) ->
                 this.frame.loggedFuture(
-                        ((ViewEventHandler) viewer.view()).simulateClose(viewer),
+                        ((ViewEventHandler) viewer.view()).simulateClose(ctx, viewer),
                         "Error occurred while viewer '%s' closes an inventory",
                         viewer
                     )
@@ -69,13 +69,9 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(final InventoryClickEvent event) {
-        final InventoryHolder inventoryHolder = event.getInventory().getHolder();
-        if (!(inventoryHolder instanceof InventoryHolderView)) {
-            return;
-        }
-        this.ifContextualViewer(event.getWhoClicked(), viewer ->
+        this.extractContext(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
                 this.frame.loggedFuture(
-                        ((ViewEventHandler) viewer.view()).simulateClick(viewer, event),
+                        ((ViewEventHandler) viewer.view()).simulateClick(ctx, viewer, event),
                         "Error occurred while viewer '%s' clicks an inventory!",
                         viewer
                     )
@@ -84,30 +80,26 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryDrag(final InventoryDragEvent event) {
-        final InventoryHolder inventoryHolder = event.getInventory().getHolder();
-        if (!(inventoryHolder instanceof InventoryHolderView)) {
-            return;
-        }
-        this.ifContextualViewer(event.getWhoClicked(), viewer ->
-                ((ViewEventHandler) viewer.view()).handleInventoryDrag(viewer, event)
+        this.extractContext(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
+                ((ViewEventHandler) viewer.view()).handleInventoryDrag(ctx, event)
             );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onItemPickup(final PlayerPickupItemEvent event) {
-        this.ifContextualViewer(event.getPlayer(), viewer ->
-                ((ViewEventHandler) viewer.view()).handleItemPickup(viewer, event)
+        this.extractViewer(event.getPlayer(), viewer ->
+                ((ViewEventHandler) viewer.view()).handleItemPickup(viewer.context(), event)
             );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onItemDrop(final PlayerDropItemEvent event) {
-        this.ifContextualViewer(event.getPlayer(), viewer ->
-                ((ViewEventHandler) viewer.view()).handleItemDrop(viewer, event)
+        this.extractViewer(event.getPlayer(), viewer ->
+                ((ViewEventHandler) viewer.view()).handleItemDrop(viewer.context(), event)
             );
     }
 
-    private void ifContextualViewer(
+    private void extractViewer(
         @NotNull final Metadatable metadatable,
         @NotNull final Consumer<ContextualViewer> consumer
     ) {
@@ -120,16 +112,21 @@ public final class InventoryListener implements Listener {
         }
     }
 
-    private void ifTransitioning(
-        @NotNull final Metadatable metadatable,
-        @NotNull final Consumer<ContextualViewer> consumer
+    private void extractContext(
+        @NotNull final Inventory inventory,
+        @NotNull final Entity involved,
+        @NotNull final BiConsumer<Viewer, ContextRender> function
     ) {
-        final MetadataAccess access = this.metadataAccessFactory.getOrCreate(metadatable);
-        final ContextualViewer transitioningFrom = access.get(MetadataKeyHolder.TRANSITIONING_FROM);
-        if (transitioningFrom == null) {
-            this.ifContextualViewer(metadatable, consumer);
-        } else {
-            consumer.accept(transitioningFrom);
+        final InventoryHolder inventoryHolder = inventory.getHolder();
+        if (!(inventoryHolder instanceof InventoryHolderFrame)) {
+            return;
         }
+        final ContextRender ctx = ((InventoryHolderFrame) inventoryHolder).context();
+        ctx
+            .viewers()
+            .stream()
+            .filter(viewer -> viewer.player().getUniqueId().equals(involved.getUniqueId()))
+            .findFirst()
+            .ifPresent(viewer -> function.accept(viewer, ctx));
     }
 }

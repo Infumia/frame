@@ -12,14 +12,14 @@ import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataKeyHolder;
-import net.infumia.frame.pipeline.executor.PipelineExecutorView;
-import net.infumia.frame.pipeline.executor.PipelineExecutorViewImpl;
+import net.infumia.frame.pipeline.executor.PipelinesView;
+import net.infumia.frame.pipeline.executor.PipelinesViewImpl;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
 import net.infumia.frame.view.config.ViewConfig;
 import net.infumia.frame.view.config.option.ViewConfigOptions;
-import net.infumia.frame.viewer.ContextualViewer;
+import net.infumia.frame.viewer.Viewer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class ViewImpl implements View, ViewEventHandler {
 
-    private final PipelineExecutorView pipelines = new PipelineExecutorViewImpl(this);
+    private final PipelinesView pipelines = new PipelinesViewImpl(this);
     private final Object instance;
     private final ContextInit context;
 
@@ -53,7 +53,7 @@ public final class ViewImpl implements View, ViewEventHandler {
 
     @NotNull
     @Override
-    public PipelineExecutorView pipelines() {
+    public PipelinesView pipelines() {
         return this.pipelines;
     }
 
@@ -77,56 +77,54 @@ public final class ViewImpl implements View, ViewEventHandler {
     @NotNull
     @Override
     public CompletableFuture<ContextRender> simulateOpenActive(
-        @NotNull final ContextRender activeContext,
+        @NotNull final ContextRender ctx,
         @NotNull final Collection<Player> viewers
     ) {
         return this.pipelines.executeCreateViewers(viewers)
-            .thenCompose(((ContextRenderRich) activeContext)::simulateNavigate)
-            .thenApply(__ -> activeContext);
+            .thenCompose(((ContextRenderRich) ctx)::simulateNavigate)
+            .thenApply(__ -> ctx);
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> simulateClick(
-        @NotNull final ContextualViewer viewer,
+        @NotNull final ContextRender ctx,
+        @NotNull final Viewer viewer,
         @NotNull final InventoryClickEvent event
     ) {
-        return this.pipelines.executeClick(viewer, event);
+        return this.pipelines.executeClick(ctx, viewer, event);
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> simulateClose(
-        @NotNull final ContextualViewer viewer
+        @NotNull final ContextRender ctx,
+        @NotNull final Viewer viewer
     ) {
         final MetadataAccess metadata = viewer.metadata();
         final boolean transitioningFromFrame =
             metadata.remove(MetadataKeyHolder.TRANSITIONING_FROM) != null;
         final Boolean forcedClose = metadata.remove(MetadataKeyHolder.FORCED_CLOSE);
         final boolean forced = transitioningFromFrame || (forcedClose != null && forcedClose);
-        return this.pipelines.executeClose(viewer, forced);
+        return this.pipelines.executeClose(ctx, viewer, forced);
     }
 
     @Override
     public void handleItemPickup(
-        @NotNull final ContextualViewer viewer,
+        @NotNull final ContextRender ctx,
         @NotNull final PlayerPickupItemEvent event
     ) {
-        final ContextRender context = viewer.context();
-        final ViewConfigRich config = (ViewConfigRich) context.config();
-        config
-            .option(ViewConfigOptions.CANCEL_ON_PICKUP)
+        ((ViewConfigRich) ctx.config()).option(ViewConfigOptions.CANCEL_ON_PICKUP)
             .filter(l -> l)
             .ifPresent(cancel -> event.setCancelled(true));
     }
 
     @Override
     public void handleItemDrop(
-        @NotNull final ContextualViewer viewer,
+        @NotNull final ContextRender ctx,
         @NotNull final PlayerDropItemEvent event
     ) {
-        final ContextRender context = viewer.context();
-        final ViewConfigRich config = (ViewConfigRich) context.config();
+        final ViewConfigRich config = (ViewConfigRich) ctx.config();
         config
             .option(ViewConfigOptions.CANCEL_ON_DROP)
             .filter(l -> l)
@@ -135,11 +133,10 @@ public final class ViewImpl implements View, ViewEventHandler {
 
     @Override
     public void handleInventoryDrag(
-        @NotNull final ContextualViewer viewer,
+        @NotNull final ContextRender ctx,
         @NotNull final InventoryDragEvent event
     ) {
-        final ContextRender context = viewer.context();
-        final ViewConfigRich config = (ViewConfigRich) context.config();
+        final ViewConfigRich config = (ViewConfigRich) ctx.config();
         config
             .option(ViewConfigOptions.CANCEL_ON_DRAG)
             .filter(l -> l)

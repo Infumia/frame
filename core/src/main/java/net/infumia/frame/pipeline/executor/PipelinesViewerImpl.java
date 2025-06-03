@@ -11,12 +11,12 @@ import net.infumia.frame.service.Implementation;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineExecutorViewerImpl implements PipelineExecutorViewer {
+public final class PipelinesViewerImpl implements PipelinesViewer {
 
     private final PipelineHolderViewer pipelines = PipelineHolderViewer.BASE.cloned();
     private final ContextRender context;
 
-    public PipelineExecutorViewerImpl(@NotNull final ContextRender context) {
+    public PipelinesViewerImpl(@NotNull final ContextRender context) {
         this.context = context;
     }
 

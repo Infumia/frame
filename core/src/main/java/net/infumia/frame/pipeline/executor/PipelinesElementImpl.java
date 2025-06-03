@@ -15,12 +15,12 @@ import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.service.Implementation;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineExecutorElementImpl implements PipelineExecutorElement {
+public final class PipelinesElementImpl implements PipelinesElement {
 
     private final PipelineHolderElement pipelines = PipelineHolderElement.BASE.cloned();
     private final ElementRich element;
 
-    public PipelineExecutorElementImpl(@NotNull final ElementRich element) {
+    public PipelinesElementImpl(@NotNull final ElementRich element) {
         this.element = element;
     }
 

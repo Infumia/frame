@@ -8,7 +8,7 @@ import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.service.Implementation;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineExecutorElement {
+public interface PipelinesElement {
     @NotNull
     CompletableFuture<ConsumerService.State> executeRender(
         @NotNull ContextRender context,

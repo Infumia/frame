@@ -4,7 +4,6 @@ import net.infumia.frame.InvTypeRich;
 import net.infumia.frame.InvTypes;
 import net.infumia.frame.type.InvType;
 import net.infumia.frame.viewer.Viewer;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
@@ -12,11 +11,11 @@ import org.jetbrains.annotations.Nullable;
 
 public final class ViewContainerImpl implements ViewContainerRich {
 
-    private final InventoryHolder inventoryHolder;
+    private final InventoryHolderFrame inventoryHolder;
     private final InvTypeRich type;
 
     public ViewContainerImpl(
-        @NotNull final InventoryHolder inventoryHolder,
+        @NotNull final InventoryHolderFrame inventoryHolder,
         @NotNull final InvTypeRich type
     ) {
         this.inventoryHolder = inventoryHolder;
@@ -25,7 +24,7 @@ public final class ViewContainerImpl implements ViewContainerRich {
 
     @NotNull
     @Override
-    public InventoryHolder inventoryHolder() {
+    public InventoryHolderFrame inventoryHolder() {
         return this.inventoryHolder;
     }
 

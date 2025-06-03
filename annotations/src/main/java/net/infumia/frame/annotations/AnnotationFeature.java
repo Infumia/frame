@@ -9,7 +9,7 @@ public final class AnnotationFeature implements Feature {
     @NotNull
     @Override
     public String name() {
-        return "anvil";
+        return "annotations";
     }
 
     @Override

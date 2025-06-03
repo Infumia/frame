@@ -1,23 +1,27 @@
 package net.infumia.frame.context.view;
 
-import net.infumia.frame.viewer.ContextualViewer;
+import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
 public final class ContextCloseImpl extends ContextRenderImpl implements ContextClose {
 
-    private final ContextualViewer viewer;
+    private final Viewer viewer;
     private final boolean forced;
     private boolean cancelled;
 
-    public ContextCloseImpl(@NotNull final ContextualViewer viewer, final boolean forced) {
-        super(viewer.context());
+    public ContextCloseImpl(
+        @NotNull final ContextRender ctx,
+        @NotNull final Viewer viewer,
+        final boolean forced
+    ) {
+        super(ctx);
         this.viewer = viewer;
         this.forced = forced;
     }
 
     @NotNull
     @Override
-    public ContextualViewer viewer() {
+    public Viewer viewer() {
         return this.viewer;
     }
 

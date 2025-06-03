@@ -14,13 +14,12 @@ import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.config.ViewConfig;
-import net.infumia.frame.viewer.ContextualViewer;
 import net.infumia.frame.viewer.Viewer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineExecutorView {
+public interface PipelinesView {
     @NotNull
     CompletableFuture<ConsumerService.State> executeInit(@NotNull ContextInit context);
 
@@ -73,13 +72,15 @@ public interface PipelineExecutorView {
 
     @NotNull
     CompletableFuture<ConsumerService.State> executeClick(
-        @NotNull ContextualViewer clicker,
+        @NotNull ContextRender ctx,
+        @NotNull Viewer clicker,
         @NotNull InventoryClickEvent event
     );
 
     @NotNull
     CompletableFuture<ConsumerService.State> executeClose(
-        @NotNull ContextualViewer viewer,
+        @NotNull ContextRender ctx,
+        @NotNull Viewer clicker,
         boolean forced
     );
 

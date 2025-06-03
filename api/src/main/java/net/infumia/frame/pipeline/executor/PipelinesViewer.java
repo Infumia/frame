@@ -8,7 +8,7 @@ import net.infumia.frame.service.Implementation;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineExecutorViewer {
+public interface PipelinesViewer {
     @NotNull
     CompletableFuture<ConsumerService.State> executeAdded(@NotNull Collection<Viewer> viewers);
 

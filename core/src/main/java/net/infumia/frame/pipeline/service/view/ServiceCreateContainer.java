@@ -11,7 +11,7 @@ import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.context.PipelineContextView;
 import net.infumia.frame.type.InvType;
-import net.infumia.frame.view.InventoryHolderView;
+import net.infumia.frame.view.InventoryHolderFrame;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.ViewContainerImpl;
 import net.infumia.frame.view.config.ViewConfig;
@@ -57,7 +57,7 @@ public final class ServiceCreateContainer
             typeRich.maxSize(),
             instance
         );
-        final InventoryHolderView holder = new InventoryHolderView();
+        final InventoryHolderFrame holder = new InventoryHolderFrame();
         final Inventory inventory = context
             .frame()
             .inventoryFactory()

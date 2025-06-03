@@ -5,7 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
-import net.infumia.frame.viewer.ContextualViewer;
+import net.infumia.frame.viewer.Viewer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -26,22 +26,26 @@ public interface ViewEventHandler {
 
     @NotNull
     CompletableFuture<@NotNull ContextRender> simulateOpenActive(
-        @NotNull ContextRender activeContext,
+        @NotNull ContextRender ctx,
         @NotNull Collection<Player> viewers
     );
 
     @NotNull
     CompletableFuture<ConsumerService.State> simulateClick(
-        @NotNull ContextualViewer viewer,
+        @NotNull ContextRender ctx,
+        @NotNull Viewer viewer,
         @NotNull InventoryClickEvent event
     );
 
     @NotNull
-    CompletableFuture<ConsumerService.State> simulateClose(@NotNull ContextualViewer viewer);
+    CompletableFuture<ConsumerService.State> simulateClose(
+        @NotNull ContextRender ctx,
+        @NotNull Viewer viewer
+    );
 
-    void handleItemPickup(@NotNull ContextualViewer viewer, @NotNull PlayerPickupItemEvent event);
+    void handleItemPickup(@NotNull ContextRender ctx, @NotNull PlayerPickupItemEvent event);
 
-    void handleItemDrop(@NotNull ContextualViewer viewer, @NotNull PlayerDropItemEvent event);
+    void handleItemDrop(@NotNull ContextRender ctx, @NotNull PlayerDropItemEvent event);
 
-    void handleInventoryDrag(@NotNull ContextualViewer viewer, @NotNull InventoryDragEvent event);
+    void handleInventoryDrag(@NotNull ContextRender ctx, @NotNull InventoryDragEvent event);
 }

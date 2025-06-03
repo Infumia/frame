@@ -12,12 +12,12 @@ import net.infumia.frame.state.value.StateValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class PipelineExecutorStateImpl implements PipelineExecutorState {
+public final class PipelinesStateImpl implements PipelinesState {
 
     private final PipelineHolderState pipelines = PipelineHolderState.BASE.cloned();
     private final ContextBase context;
 
-    public PipelineExecutorStateImpl(@NotNull final ContextBase context) {
+    public PipelinesStateImpl(@NotNull final ContextBase context) {
         this.context = context;
     }
 

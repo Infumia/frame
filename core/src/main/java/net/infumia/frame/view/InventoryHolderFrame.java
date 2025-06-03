@@ -6,7 +6,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
-public final class InventoryHolderView implements InventoryHolder {
+public final class InventoryHolderFrame implements InventoryHolder {
 
     private Inventory inventory;
     private ContextRender context;

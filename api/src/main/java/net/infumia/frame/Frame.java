@@ -5,7 +5,8 @@ import java.util.function.Consumer;
 import net.infumia.frame.feature.FeatureInstaller;
 import net.infumia.frame.logger.Logger;
 import net.infumia.frame.pipeline.Pipelined;
-import net.infumia.frame.pipeline.executor.PipelineExecutorFrame;
+import net.infumia.frame.pipeline.executor.PipelinesFrame;
+import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.task.TaskFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
@@ -17,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-public interface Frame extends ViewOpener, FeatureInstaller, Pipelined<PipelineExecutorFrame> {
+public interface Frame extends ViewOpener, FeatureInstaller, Pipelined<PipelinesFrame> {
     @NotNull
     static Frame create(@NotNull final Plugin plugin) {
         return Internal.factory().create(plugin);
@@ -44,7 +45,10 @@ public interface Frame extends ViewOpener, FeatureInstaller, Pipelined<PipelineE
 
     void register();
 
-    void register(@NotNull Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer);
+    @NotNull
+    CompletableFuture<ConsumerService.State> register(
+        @NotNull Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer
+    );
 
     void unregister();
 

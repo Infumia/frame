@@ -11,8 +11,8 @@ import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
-import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
-import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
+import net.infumia.frame.pipeline.executor.PipelinesElement;
+import net.infumia.frame.pipeline.executor.PipelinesElementImpl;
 import net.infumia.frame.service.ConsumerService;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ElementItemImpl extends ElementImpl implements ElementItemRich {
 
-    private final PipelineExecutorElement pipelines = new PipelineExecutorElementImpl(this);
+    private final PipelinesElement pipelines = new PipelinesElementImpl(this);
     private final ElementEventHandler eventHandler = ElementEventHandlerItem.INSTANCE;
     final ItemStack item;
     final int slot;
@@ -112,7 +112,7 @@ public class ElementItemImpl extends ElementImpl implements ElementItemRich {
 
     @NotNull
     @Override
-    public PipelineExecutorElement pipelines() {
+    public PipelinesElement pipelines() {
         return this.pipelines;
     }
 }
