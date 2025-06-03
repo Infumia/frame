@@ -10,7 +10,7 @@ import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineExecutorFrame {
+public interface PipelinesFrame {
     @NotNull
     CompletableFuture<Collection<Object>> executeViewCreated(
         @NotNull Collection<Class<?>> registeredViews

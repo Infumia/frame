@@ -7,8 +7,8 @@ import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextState;
-import net.infumia.frame.pipeline.executor.PipelineExecutorState;
-import net.infumia.frame.pipeline.executor.PipelineExecutorStateImpl;
+import net.infumia.frame.pipeline.executor.PipelinesState;
+import net.infumia.frame.pipeline.executor.PipelinesStateImpl;
 import net.infumia.frame.service.Implementation;
 import net.infumia.frame.state.StateMutableRich;
 import net.infumia.frame.state.StateRich;
@@ -21,11 +21,11 @@ public final class StateValueHostImpl implements StateValueHostRich {
 
     private final Map<StateRich<Object>, StateValue<Object>> values = new HashMap<>();
     private final ContextBase context;
-    private final PipelineExecutorState pipelines;
+    private final PipelinesState pipelines;
 
     public StateValueHostImpl(@NotNull final ContextBase context) {
         this.context = context;
-        this.pipelines = new PipelineExecutorStateImpl(context);
+        this.pipelines = new PipelinesStateImpl(context);
     }
 
     @NotNull

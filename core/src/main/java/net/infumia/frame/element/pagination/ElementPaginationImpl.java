@@ -20,8 +20,8 @@ import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.element.item.ElementItem;
 import net.infumia.frame.element.item.ElementItemBuilderImpl;
 import net.infumia.frame.element.item.ElementItemBuilderRich;
-import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
-import net.infumia.frame.pipeline.executor.PipelineExecutorElementImpl;
+import net.infumia.frame.pipeline.executor.PipelinesElement;
+import net.infumia.frame.pipeline.executor.PipelinesElementImpl;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.state.State;
@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 public final class ElementPaginationImpl<T> extends ElementImpl implements ElementPaginationRich {
 
-    private final PipelineExecutorElement pipelines = new PipelineExecutorElementImpl(this);
+    private final PipelinesElement pipelines = new PipelinesElementImpl(this);
     private final ElementEventHandler eventHandler = ElementEventHandlerPagination.INSTANCE;
     private LayoutSlot currentLayoutSlot;
     private final SourceProvider<T> sourceProvider;
@@ -328,7 +328,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
 
     @NotNull
     @Override
-    public PipelineExecutorElement pipelines() {
+    public PipelinesElement pipelines() {
         return this.pipelines;
     }
 

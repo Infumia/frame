@@ -2,7 +2,7 @@ package net.infumia.frame.context.view;
 
 import net.infumia.frame.service.Cancellable;
 import net.infumia.frame.view.ViewContainer;
-import net.infumia.frame.viewer.ContextualViewer;
+import net.infumia.frame.viewer.Viewer;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -14,7 +14,7 @@ public interface ContextClick extends ContextRender, Cancellable {
     InventoryClickEvent event();
 
     @NotNull
-    ContextualViewer clicker();
+    Viewer clicker();
 
     @NotNull
     ClickType clickType();

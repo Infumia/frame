@@ -18,6 +18,7 @@ public final class InjectorNoArg implements Injector<Object> {
         boolean old = false;
         try {
             constructor = viewClass.getConstructor();
+            constructor.setAccessible(true);
             old = constructor.isAccessible();
             return constructor.newInstance();
         } catch (final Exception ignored) {} finally {

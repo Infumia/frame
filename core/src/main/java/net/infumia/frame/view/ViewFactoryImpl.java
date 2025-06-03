@@ -2,12 +2,7 @@ package net.infumia.frame.view;
 
 import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.Preconditions;
-import net.infumia.frame.injector.AnnotationAccessor;
-import net.infumia.frame.injector.InjectionRequester;
-import net.infumia.frame.injector.InjectionService;
-import net.infumia.frame.injector.InjectionServicePipeline;
-import net.infumia.frame.injector.InjectorNoArg;
-import net.infumia.frame.injector.InjectorRegistry;
+import net.infumia.frame.injector.*;
 import org.jetbrains.annotations.NotNull;
 
 public final class ViewFactoryImpl implements ViewFactory {
@@ -17,7 +12,9 @@ public final class ViewFactoryImpl implements ViewFactory {
     private final InjectionRequester<Object> requester;
 
     public ViewFactoryImpl() {
-        this.injectors = InjectorRegistry.create().register(InjectorNoArg.INSTANCE);
+        this.injectors = InjectorRegistry.create()
+            .register(InjectorNoArg.INSTANCE)
+            .register(InjectorStaticInstance.INSTANCE);
         this.pipeline = InjectionServicePipeline.create(InjectionService.create(this.injectors));
         this.requester = InjectionRequester.create(this.pipeline);
     }

@@ -10,7 +10,7 @@ import net.infumia.frame.service.Implementation;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
 
-public interface PipelineExecutorRender {
+public interface PipelinesRender {
     @NotNull
     CompletableFuture<ConsumerService.State> executeFirstRender();
 

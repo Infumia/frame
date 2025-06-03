@@ -1,7 +1,6 @@
 package net.infumia.frame.config;
 
 import java.util.Map;
-import java.util.Objects;
 import net.infumia.frame.Preconditions;
 import org.bukkit.inventory.ItemStack;
 

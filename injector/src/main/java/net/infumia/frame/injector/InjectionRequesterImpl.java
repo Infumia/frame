@@ -42,17 +42,13 @@ final class InjectionRequesterImpl<C> implements InjectionRequester<C> {
                     return null;
                 }
                 final Class<?> injectedClass = request.injectedClass();
-                if (injectedClass.isInstance(rawResult)) {
-                    return (T) rawResult;
-                } else {
-                    throw new IllegalArgumentException(
-                        String.format(
-                            "Injector returned type %s which is not an instance of %s",
-                            rawResult.getClass().getName(),
-                            injectedClass.getName()
-                        )
-                    );
-                }
+                Preconditions.argument(
+                    injectedClass.isInstance(rawResult),
+                    "Injector returned type %s which is not an instance of %s",
+                    rawResult.getClass().getName(),
+                    injectedClass.getName()
+                );
+                return (T) rawResult;
             });
     }
 }

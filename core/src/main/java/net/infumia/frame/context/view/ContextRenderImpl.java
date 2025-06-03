@@ -17,10 +17,10 @@ import net.infumia.frame.element.item.ElementItemBuilderImpl;
 import net.infumia.frame.element.item.ElementItemBuilderRich;
 import net.infumia.frame.metadata.MetadataAccess;
 import net.infumia.frame.metadata.MetadataKeyHolder;
-import net.infumia.frame.pipeline.executor.PipelineExecutorRender;
-import net.infumia.frame.pipeline.executor.PipelineExecutorRenderImpl;
-import net.infumia.frame.pipeline.executor.PipelineExecutorViewer;
-import net.infumia.frame.pipeline.executor.PipelineExecutorViewerImpl;
+import net.infumia.frame.pipeline.executor.PipelinesRender;
+import net.infumia.frame.pipeline.executor.PipelinesRenderImpl;
+import net.infumia.frame.pipeline.executor.PipelinesViewer;
+import net.infumia.frame.pipeline.executor.PipelinesViewerImpl;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.slot.SlotFinder;
@@ -33,8 +33,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderRich {
 
-    private final PipelineExecutorRender pipelines;
-    private final PipelineExecutorViewer pipelinesViewer;
+    private final PipelinesRender pipelines;
+    private final PipelinesViewer pipelinesViewer;
     private final SlotFinder slotFinder;
     private final List<Element> elements;
     private final ViewContainer container;
@@ -54,8 +54,8 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
         this.layouts = new ArrayList<>(layouts);
         this.slotFinder = new SlotFinder(this);
         this.elements = new ArrayList<>();
-        this.pipelines = new PipelineExecutorRenderImpl(this);
-        this.pipelinesViewer = new PipelineExecutorViewerImpl(this);
+        this.pipelines = new PipelinesRenderImpl(this);
+        this.pipelinesViewer = new PipelinesViewerImpl(this);
     }
 
     public ContextRenderImpl(@NotNull final ContextRender context) {
@@ -156,7 +156,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
 
     @NotNull
     @Override
-    public PipelineExecutorViewer pipelinesViewer() {
+    public PipelinesViewer pipelinesViewer() {
         return this.pipelinesViewer;
     }
 
@@ -211,7 +211,7 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
 
     @NotNull
     @Override
-    public PipelineExecutorRender pipelines() {
+    public PipelinesRender pipelines() {
         return this.pipelines;
     }
 

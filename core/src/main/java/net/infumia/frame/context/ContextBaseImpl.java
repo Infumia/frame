@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import net.infumia.frame.Preconditions;
+import net.infumia.frame.context.view.ContextInit;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.state.value.StateValueHost;
 import net.infumia.frame.state.value.StateValueHostImpl;
@@ -31,7 +32,7 @@ public class ContextBaseImpl extends ContextImpl implements ContextBaseRich {
     private final Viewer singleViewer;
 
     public ContextBaseImpl(
-        @NotNull final Context context,
+        @NotNull final ContextInit context,
         @NotNull final UUID id,
         @NotNull final View view,
         @NotNull final ViewConfig initialConfig,

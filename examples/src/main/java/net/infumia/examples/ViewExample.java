@@ -17,7 +17,11 @@ import org.jetbrains.annotations.NotNull;
 
 public final class ViewExample implements ViewHandler {
 
+    private static final ViewExample INSTANCE = new ViewExample();
+
     private StatePagination pagination;
+
+    private ViewExample() {}
 
     @Override
     public void onInit(@NotNull final ContextInit ctx) {

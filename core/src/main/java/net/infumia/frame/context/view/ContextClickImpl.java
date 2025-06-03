@@ -1,7 +1,7 @@
 package net.infumia.frame.context.view;
 
 import net.infumia.frame.view.ViewContainer;
-import net.infumia.frame.viewer.ContextualViewer;
+import net.infumia.frame.viewer.Viewer;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -11,20 +11,21 @@ import org.jetbrains.annotations.Nullable;
 
 public class ContextClickImpl extends ContextRenderImpl implements ContextClick {
 
-    private final ContextualViewer clicker;
+    private final Viewer clicker;
     private final InventoryClickEvent event;
 
     public ContextClickImpl(
-        @NotNull final ContextualViewer clicker,
+        @NotNull final ContextRender ctx,
+        @NotNull final Viewer clicker,
         @NotNull final InventoryClickEvent event
     ) {
-        super(clicker.context());
+        super(ctx);
         this.clicker = clicker;
         this.event = event;
     }
 
     public ContextClickImpl(@NotNull final ContextClick context) {
-        this(context.clicker(), context.event());
+        this(context, context.clicker(), context.event());
     }
 
     @NotNull
@@ -35,7 +36,7 @@ public class ContextClickImpl extends ContextRenderImpl implements ContextClick 
 
     @NotNull
     @Override
-    public ContextualViewer clicker() {
+    public Viewer clicker() {
         return this.clicker;
     }
 

@@ -14,12 +14,12 @@ import net.infumia.frame.typedkey.TypedKeyStorageImmutableBuilder;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineExecutorFrameImpl implements PipelineExecutorFrame {
+public final class PipelinesFrameImpl implements PipelinesFrame {
 
     private final PipelineHolderFrame pipelines = PipelineHolderFrame.BASE.cloned();
     private final Frame frame;
 
-    public PipelineExecutorFrameImpl(@NotNull final Frame frame) {
+    public PipelinesFrameImpl(@NotNull final Frame frame) {
         this.frame = frame;
     }
 

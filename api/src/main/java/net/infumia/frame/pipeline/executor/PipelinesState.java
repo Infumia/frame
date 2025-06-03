@@ -9,7 +9,7 @@ import net.infumia.frame.state.value.StateValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface PipelineExecutorState {
+public interface PipelinesState {
     @NotNull
     CompletableFuture<ConsumerService.State> executeAccess(
         @NotNull State<?> state,

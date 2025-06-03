@@ -20,18 +20,17 @@ import net.infumia.frame.typedkey.TypedKeyStorageImmutable;
 import net.infumia.frame.view.View;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.view.config.ViewConfig;
-import net.infumia.frame.viewer.ContextualViewer;
 import net.infumia.frame.viewer.Viewer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 
-public final class PipelineExecutorViewImpl implements PipelineExecutorView {
+public final class PipelinesViewImpl implements PipelinesView {
 
     private final PipelineHolderView pipelines = PipelineHolderView.BASE.cloned();
     private final View view;
 
-    public PipelineExecutorViewImpl(@NotNull final View view) {
+    public PipelinesViewImpl(@NotNull final View view) {
         this.view = view;
     }
 
@@ -138,21 +137,27 @@ public final class PipelineExecutorViewImpl implements PipelineExecutorView {
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> executeClick(
-        @NotNull final ContextualViewer clicker,
+        @NotNull final ContextRender ctx,
+        @NotNull final Viewer clicker,
         @NotNull final InventoryClickEvent event
     ) {
         return this.pipelines.click()
-            .completeWith(new PipelineContextViews.Click(new ContextClickImpl(clicker, event)));
+            .completeWith(
+                new PipelineContextViews.Click(new ContextClickImpl(ctx, clicker, event))
+            );
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> executeClose(
-        @NotNull final ContextualViewer viewer,
+        @NotNull final ContextRender ctx,
+        @NotNull final Viewer viewer,
         final boolean forced
     ) {
         return this.pipelines.close()
-            .completeWith(new PipelineContextViews.Close(new ContextCloseImpl(viewer, forced)));
+            .completeWith(
+                new PipelineContextViews.Close(new ContextCloseImpl(ctx, viewer, forced))
+            );
     }
 
     @Override

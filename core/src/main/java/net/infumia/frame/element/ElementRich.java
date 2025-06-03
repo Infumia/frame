@@ -3,11 +3,11 @@ package net.infumia.frame.element;
 import net.infumia.frame.Keyed;
 import net.infumia.frame.context.element.ContextElementRender;
 import net.infumia.frame.pipeline.Pipelined;
-import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
+import net.infumia.frame.pipeline.executor.PipelinesElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface ElementRich extends Element, Pipelined<PipelineExecutorElement>, Keyed<String> {
+public interface ElementRich extends Element, Pipelined<PipelinesElement>, Keyed<String> {
     @Nullable
     Element root();
 

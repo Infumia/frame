@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.context.element.ContextElementRender;
-import net.infumia.frame.pipeline.executor.PipelineExecutorElement;
+import net.infumia.frame.pipeline.executor.PipelinesElement;
 import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.state.State;
 import org.jetbrains.annotations.NotNull;
@@ -151,7 +151,7 @@ public class ElementImpl implements ElementRich {
 
     @NotNull
     @Override
-    public PipelineExecutorElement pipelines() {
+    public PipelinesElement pipelines() {
         throw new UnsupportedOperationException(
             "This element does not have a pipeline implementation!"
         );
