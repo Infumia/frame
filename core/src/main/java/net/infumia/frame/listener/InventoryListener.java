@@ -1,5 +1,6 @@
 package net.infumia.frame.listener;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.infumia.frame.Frame;
 import net.infumia.frame.context.view.ContextRender;
@@ -8,7 +9,9 @@ import net.infumia.frame.metadata.MetadataKeyHolder;
 import net.infumia.frame.view.InventoryHolderFrame;
 import net.infumia.frame.view.ViewEventHandler;
 import net.infumia.frame.viewer.ContextualViewer;
+import net.infumia.frame.viewer.Viewer;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,6 +20,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.metadata.Metadatable;
 import org.bukkit.plugin.Plugin;
@@ -54,17 +58,7 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(final InventoryCloseEvent event) {
-        final InventoryHolder inventoryHolder = event.getInventory().getHolder();
-        if (!(inventoryHolder instanceof InventoryHolderFrame)) {
-            return;
-        }
-        final ContextRender ctx = ((InventoryHolderFrame) inventoryHolder).context();
-        ctx
-            .viewers()
-            .stream()
-            .filter(viewer -> viewer.player().getUniqueId().equals(event.getPlayer().getUniqueId()))
-            .findFirst()
-            .ifPresent(viewer ->
+        this.extractHolder(event.getInventory(), event.getPlayer(), (viewer, ctx) ->
                 this.frame.loggedFuture(
                         ((ViewEventHandler) viewer.view()).simulateClose(ctx, viewer),
                         "Error occurred while viewer '%s' closes an inventory",
@@ -75,19 +69,7 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(final InventoryClickEvent event) {
-        final InventoryHolder inventoryHolder = event.getInventory().getHolder();
-        if (!(inventoryHolder instanceof InventoryHolderFrame)) {
-            return;
-        }
-        final ContextRender ctx = ((InventoryHolderFrame) inventoryHolder).context();
-        ctx
-            .viewers()
-            .stream()
-            .filter(viewer ->
-                viewer.player().getUniqueId().equals(event.getWhoClicked().getUniqueId())
-            )
-            .findFirst()
-            .ifPresent(viewer ->
+        this.extractHolder(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
                 this.frame.loggedFuture(
                         ((ViewEventHandler) viewer.view()).simulateClick(ctx, viewer, event),
                         "Error occurred while viewer '%s' clicks an inventory!",
@@ -98,19 +80,8 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryDrag(final InventoryDragEvent event) {
-        final InventoryHolder inventoryHolder = event.getInventory().getHolder();
-        if (!(inventoryHolder instanceof InventoryHolderFrame)) {
-            return;
-        }
-        final ContextRender ctx = ((InventoryHolderFrame) inventoryHolder).context();
-        ctx
-            .viewers()
-            .stream()
-            .filter(viewer ->
-                viewer.player().getUniqueId().equals(event.getWhoClicked().getUniqueId())
-            )
-            .findFirst()
-            .ifPresent(viewer -> ((ViewEventHandler) viewer.view()).handleInventoryDrag(ctx, event)
+        this.extractHolder(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
+                ((ViewEventHandler) viewer.view()).handleInventoryDrag(ctx, event)
             );
     }
 
@@ -139,5 +110,23 @@ public final class InventoryListener implements Listener {
         if (viewer != null) {
             consumer.accept(viewer);
         }
+    }
+
+    private void extractHolder(
+        @NotNull final Inventory inventory,
+        @NotNull final Entity involved,
+        @NotNull final BiConsumer<Viewer, ContextRender> function
+    ) {
+        final InventoryHolder inventoryHolder = inventory.getHolder();
+        if (!(inventoryHolder instanceof InventoryHolderFrame)) {
+            return;
+        }
+        final ContextRender ctx = ((InventoryHolderFrame) inventoryHolder).context();
+        ctx
+            .viewers()
+            .stream()
+            .filter(viewer -> viewer.player().getUniqueId().equals(involved.getUniqueId()))
+            .findFirst()
+            .ifPresent(viewer -> function.accept(viewer, ctx));
     }
 }
