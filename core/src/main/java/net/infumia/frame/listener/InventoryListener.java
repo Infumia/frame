@@ -87,19 +87,19 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onItemPickup(final PlayerPickupItemEvent event) {
-        this.ifContextualViewer(event.getPlayer(), viewer ->
+        this.extractViewer(event.getPlayer(), viewer ->
                 ((ViewEventHandler) viewer.view()).handleItemPickup(viewer.context(), event)
             );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onItemDrop(final PlayerDropItemEvent event) {
-        this.ifContextualViewer(event.getPlayer(), viewer ->
+        this.extractViewer(event.getPlayer(), viewer ->
                 ((ViewEventHandler) viewer.view()).handleItemDrop(viewer.context(), event)
             );
     }
 
-    private void ifContextualViewer(
+    private void extractViewer(
         @NotNull final Metadatable metadatable,
         @NotNull final Consumer<ContextualViewer> consumer
     ) {
