@@ -58,7 +58,7 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(final InventoryCloseEvent event) {
-        this.extractHolder(event.getInventory(), event.getPlayer(), (viewer, ctx) ->
+        this.extractContext(event.getInventory(), event.getPlayer(), (viewer, ctx) ->
                 this.frame.loggedFuture(
                         ((ViewEventHandler) viewer.view()).simulateClose(ctx, viewer),
                         "Error occurred while viewer '%s' closes an inventory",
@@ -69,7 +69,7 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(final InventoryClickEvent event) {
-        this.extractHolder(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
+        this.extractContext(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
                 this.frame.loggedFuture(
                         ((ViewEventHandler) viewer.view()).simulateClick(ctx, viewer, event),
                         "Error occurred while viewer '%s' clicks an inventory!",
@@ -80,7 +80,7 @@ public final class InventoryListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryDrag(final InventoryDragEvent event) {
-        this.extractHolder(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
+        this.extractContext(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
                 ((ViewEventHandler) viewer.view()).handleInventoryDrag(ctx, event)
             );
     }
@@ -112,7 +112,7 @@ public final class InventoryListener implements Listener {
         }
     }
 
-    private void extractHolder(
+    private void extractContext(
         @NotNull final Inventory inventory,
         @NotNull final Entity involved,
         @NotNull final BiConsumer<Viewer, ContextRender> function
