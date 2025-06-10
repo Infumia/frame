@@ -175,7 +175,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
 
     @Override
     public int previousPageIndex() {
-        return Math.max(0, Math.max(this.pageCount, this.currentPageIndex - 1));
+        return Math.max(0, this.currentPageIndex - 1);
     }
 
     @Override
@@ -248,7 +248,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
 
     @Override
     public boolean canAdvance() {
-        return this.hasPage(this.nextPageIndex());
+        return this.hasPage(this.currentPageIndex + 1);
     }
 
     @Override
@@ -260,7 +260,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
 
     @Override
     public boolean canBack() {
-        return this.hasPage(this.previousPageIndex());
+        return this.hasPage(this.currentPageIndex - 1);
     }
 
     @NotNull
