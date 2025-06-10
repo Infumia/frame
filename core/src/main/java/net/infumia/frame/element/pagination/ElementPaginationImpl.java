@@ -175,7 +175,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
 
     @Override
     public int previousPageIndex() {
-        return Math.max(0, Math.max(this.pageCount, this.currentPageIndex - 1));
+        return Math.max(0, this.currentPageIndex - 1);
     }
 
     @Override
