@@ -193,6 +193,22 @@ public interface Implementation<Context, Result> {
         return Implementation.decorate(Preconditions.argumentNotNull(service, "service"), null);
     }
 
+    static <Context> Implementation<Context, ConsumerService.State> decorateConsumer(
+        final ConsumerService<Context> service,
+        final Collection<Predicate<Context>> filters
+    ) {
+        return new DecorateConsumer<>(service, filters);
+    }
+
+    static <Context> Implementation<Context, ConsumerService.State> decorateConsumer(
+        final ConsumerService<Context> service
+    ) {
+        return Implementation.decorateConsumer(
+            Preconditions.argumentNotNull(service, "service"),
+            null
+        );
+    }
+
     /**
      * Handles the operation by applying it to the given repository.
      *
