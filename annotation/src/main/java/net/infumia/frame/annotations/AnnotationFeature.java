@@ -25,6 +25,10 @@ public final class AnnotationFeature implements Feature {
 
     @Override
     public void onUninstall(@NotNull final Frame frame) {
-        // TODO: Unregister services and clear decorators
+        frame
+            .pipelines()
+            .applyRegisterViews(
+                Implementation.remove(ServiceRegisterViewsInitializeAnnotations.KEY)
+            );
     }
 }
