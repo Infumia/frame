@@ -7,8 +7,8 @@ import net.infumia.frame.service.exception.PipelineException;
 
 final class ServiceWrapper<Context, Result> implements Comparable<ServiceWrapper<Context, Result>> {
 
-    private final TypeToken<? extends Service<Context, Result>> serviceType;
-    private final Collection<Predicate<Context>> filters;
+    final TypeToken<? extends Service<Context, Result>> serviceType;
+    final Collection<Predicate<Context>> filters;
     final Service<Context, Result> implementation;
     final boolean defaultImplementation;
 

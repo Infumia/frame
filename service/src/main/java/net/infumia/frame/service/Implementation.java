@@ -180,6 +180,19 @@ public interface Implementation<Context, Result> {
         );
     }
 
+    static <Context, Result> Implementation<Context, Result> decorate(
+        final ConsumerService<Context> service,
+        final Collection<Predicate<Context>> filters
+    ) {
+        return new Decorate<>(service, filters);
+    }
+
+    static <Context, Result> Implementation<Context, Result> decorate(
+        final ConsumerService<Context> service
+    ) {
+        return Implementation.decorate(Preconditions.argumentNotNull(service, "service"), null);
+    }
+
     /**
      * Handles the operation by applying it to the given repository.
      *
