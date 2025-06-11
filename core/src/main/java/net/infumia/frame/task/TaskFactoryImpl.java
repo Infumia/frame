@@ -3,7 +3,6 @@ package net.infumia.frame.task;
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 import net.infumia.frame.util.Ticks;
 import org.bukkit.Bukkit;
@@ -12,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 // TODO: portlek, Add paper's folia support.
 public final class TaskFactoryImpl implements TaskFactory {
+
+    private static final Closeable EMPTY = () -> {};
 
     private final Plugin plugin;
 
@@ -28,8 +29,7 @@ public final class TaskFactoryImpl implements TaskFactory {
             return task.get();
         }
         final CompletableFuture<T> future = new CompletableFuture<>();
-        Bukkit.getScheduler()
-            .runTask(this.plugin, () ->
+        this.run(() ->
                 task
                     .get()
                     .whenComplete((result, throwable) -> {
@@ -45,8 +45,12 @@ public final class TaskFactoryImpl implements TaskFactory {
 
     @NotNull
     @Override
-    public Executor asExecutor() {
-        return command -> Bukkit.getScheduler().runTask(this.plugin, command);
+    public Closeable run(@NotNull final Runnable task) {
+        if (Bukkit.isPrimaryThread()) {
+            task.run();
+            return TaskFactoryImpl.EMPTY;
+        }
+        return Bukkit.getScheduler().runTask(this.plugin, task)::cancel;
     }
 
     @NotNull

@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import net.infumia.frame.Preconditions;
@@ -40,8 +39,6 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     private final PaginationElementConfigurer<T> elementConfigurer;
     private final State<ElementPagination> associated;
     private final Function<ContextBase, CompletableFuture<List<T>>> sourceFactory;
-    private final Function<List<T>, List<T>> pageCalculation;
-    private final Executor continuationExecutor;
     private List<Element> elements = new ArrayList<>();
     private int currentPageIndex;
     private boolean pageWasChanged;
@@ -74,28 +71,6 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         } else {
             this.sourceFactory = this.sourceProvider;
         }
-
-        if (this.sourceProvider.async()) {
-            this.continuationExecutor = parent.frame().taskFactory().asExecutor();
-        } else {
-            this.continuationExecutor = Runnable::run;
-        }
-
-        this.pageCalculation = result -> {
-            this.loading = false;
-            this.currentSource = result;
-            this.pageCount = this.calculatePagesCount(result);
-            final int lastOrCurrentPage = Math.min(this.currentPageIndex, this.lastPageIndex());
-            if (lastOrCurrentPage != this.currentPageIndex) {
-                this.switchTo(lastOrCurrentPage);
-            }
-            return ElementPaginationImpl.splitSourceForPage(
-                this.currentPageIndex,
-                this.pageSize(),
-                this.pageCount,
-                result
-            );
-        };
     }
 
     @NotNull
@@ -343,11 +318,6 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         @NotNull final List<T> contents
     ) {
         final ViewContainer container = context.container();
-
-        /*if (this.pageSize == -1) {
-            this.updatePageSize(context);
-        }*/
-
         final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
         int index = 0;
         for (int slot = container.firstSlot(); slot < lastSlot; slot++) {
@@ -413,9 +383,21 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         if (this.sourceFactory == null) {
             return CompletableFuture.completedFuture(Collections.emptyList());
         }
-        return this.sourceFactory.apply(context)
-            .thenApply(this.pageCalculation)
-            .thenApplyAsync(Function.identity(), this.continuationExecutor);
+        return this.sourceFactory.apply(context).thenApply(result -> {
+                this.loading = false;
+                this.currentSource = result;
+                this.pageCount = this.calculatePagesCount(result);
+                final int lastOrCurrentPage = Math.min(this.currentPageIndex, this.lastPageIndex());
+                if (lastOrCurrentPage != this.currentPageIndex) {
+                    this.switchTo(lastOrCurrentPage);
+                }
+                return ElementPaginationImpl.splitSourceForPage(
+                    this.currentPageIndex,
+                    this.pageSize(),
+                    this.pageCount,
+                    result
+                );
+            });
     }
 
     private int calculatePagesCount(@NotNull final List<T> source) {
