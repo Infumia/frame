@@ -93,9 +93,9 @@ final class FrameImpl implements FrameRich {
             "This frame is already registered! #register() method cannot be called twice!"
         );
         this.registered.set(true);
-        return this.pipelines.executeViewCreated(this.unregisteredViews)
+        return this.pipelines.executeCreateViews(this.unregisteredViews)
             .thenCompose(instances ->
-                this.pipelines.executeViewRegistered(instances, instanceConfigurer)
+                this.pipelines.executeRegisterViews(instances, instanceConfigurer)
             )
             .thenCompose(views -> {
                 this.registeredViews.clear();
@@ -109,7 +109,7 @@ final class FrameImpl implements FrameRich {
                                 )
                             )
                     );
-                return this.pipelines.executeListenersRegistered();
+                return this.pipelines.executeRegisterListeners();
             })
             .exceptionally(throwable -> {
                 if (throwable instanceof CompletionException) {
@@ -131,7 +131,7 @@ final class FrameImpl implements FrameRich {
         final HashMap<Class<?>, View> views = new HashMap<>(this.registeredViews);
         this.registeredViews.clear();
         this.loggedFuture(
-                this.pipelines.executeViewUnregistered(views.values()),
+                this.pipelines.executeUnregisterViews(views.values()),
                 "Error occurred while unregistering views '%s'!",
                 views.keySet()
             );

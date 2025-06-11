@@ -12,40 +12,40 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PipelinesFrame {
     @NotNull
-    CompletableFuture<Collection<Object>> executeViewCreated(
+    CompletableFuture<Collection<Object>> executeCreateViews(
         @NotNull Collection<Class<?>> rawViews
     );
 
     @NotNull
-    CompletableFuture<Collection<View>> executeViewRegistered(
+    CompletableFuture<Collection<View>> executeRegisterViews(
         @NotNull Collection<Object> views,
         @NotNull Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer
     );
 
     @NotNull
-    CompletableFuture<ConsumerService.State> executeListenersRegistered();
+    CompletableFuture<ConsumerService.State> executeRegisterListeners();
 
     @NotNull
-    CompletableFuture<ConsumerService.State> executeViewUnregistered(
+    CompletableFuture<ConsumerService.State> executeUnregisterViews(
         @NotNull Collection<View> views
     );
 
-    void applyViewCreated(
+    void applyCreateViews(
         @NotNull Implementation<PipelineContextFrame.CreateViews, Collection<Object>> implementation
     );
 
-    void applyViewRegistered(
+    void applyRegisterViews(
         @NotNull Implementation<PipelineContextFrame.RegisterViews, Collection<View>> implementation
     );
 
-    void applyListenersRegistered(
+    void applyRegisterListeners(
         @NotNull Implementation<
             PipelineContextFrame.RegisterListeners,
             ConsumerService.State
         > implementation
     );
 
-    void applyViewUnregistered(
+    void applyUnregisterViews(
         @NotNull Implementation<
             PipelineContextFrame.UnregisterViews,
             ConsumerService.State
