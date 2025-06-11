@@ -10,18 +10,25 @@ import net.infumia.frame.service.Service;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
-public final class ServiceCreateAndProcessView
-    implements Service<PipelineContextFrame.CreateViews, CompletableFuture<Collection<Object>>> {
+public final class ServiceCreateAndProcessViews
+    implements Service<PipelineContextFrame.CreateViews, Collection<Object>> {
+
+    public static final String KEY = "create-and-process-views";
 
     private final AnnotationProcessor annotationProcessor;
 
-    public ServiceCreateAndProcessView(@NotNull final AnnotationProcessor annotationProcessor) {
+    public ServiceCreateAndProcessViews(@NotNull final AnnotationProcessor annotationProcessor) {
         this.annotationProcessor = annotationProcessor;
+    }
+
+    @Override
+    public String key() {
+        return ServiceCreateAndProcessViews.KEY;
     }
 
     @NotNull
     @Override
-    public CompletableFuture<Collection<Object>> apply(
+    public CompletableFuture<Collection<Object>> handle(
         @NotNull final PipelineContextFrame.CreateViews context
     ) {
         final Frame frame = context.frame();

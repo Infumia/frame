@@ -7,6 +7,7 @@ dependencies {
     compileOnly(project(":config"))
     compileOnly(project(":injector"))
     compileOnly(project(":api"))
+    compileOnly(project(":annotations"))
 
     compileOnly(libs.minecraft.one.eight.eight.paper)
     compileOnly(libs.geantyref)

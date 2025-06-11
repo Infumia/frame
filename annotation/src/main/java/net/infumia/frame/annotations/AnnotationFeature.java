@@ -6,7 +6,7 @@ import net.infumia.frame.annotations.decorator.view.ViewSize;
 import net.infumia.frame.annotations.decorator.view.ViewSizeDecorator;
 import net.infumia.frame.annotations.decorator.view.ViewTitle;
 import net.infumia.frame.annotations.decorator.view.ViewTitleDecorator;
-import net.infumia.frame.annotations.service.ServiceCreateAndProcessView;
+import net.infumia.frame.annotations.service.ServiceCreateAndProcessViews;
 import net.infumia.frame.feature.Feature;
 import net.infumia.frame.service.Implementation;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +46,7 @@ public final class AnnotationFeature implements Feature {
         frame
             .pipelines()
             .applyViewCreated(
-                Implementation.register(new ServiceCreateAndProcessView(this.annotationProcessor))
+                Implementation.register(new ServiceCreateAndProcessViews(this.annotationProcessor))
             );
     }
 
