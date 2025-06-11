@@ -10,61 +10,61 @@ import net.infumia.frame.pipeline.PipelineImpl;
 import net.infumia.frame.pipeline.PipelineService;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextFrame;
-import net.infumia.frame.pipeline.service.frame.ServiceListenerRegistered;
-import net.infumia.frame.pipeline.service.frame.ServiceListenerRegisteredLogging;
-import net.infumia.frame.pipeline.service.frame.ServiceViewCreated;
-import net.infumia.frame.pipeline.service.frame.ServiceViewRegistered;
-import net.infumia.frame.pipeline.service.frame.ServiceViewUnregisteredLogging;
+import net.infumia.frame.pipeline.service.frame.ServiceCreateViews;
+import net.infumia.frame.pipeline.service.frame.ServiceRegisterListeners;
+import net.infumia.frame.pipeline.service.frame.ServiceRegisterListenersLogging;
+import net.infumia.frame.pipeline.service.frame.ServiceRegisterViews;
+import net.infumia.frame.pipeline.service.frame.ServiceUnregisterViewsLogging;
 import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
 public final class PipelineHolderFrame implements Cloned<PipelineHolderFrame> {
 
-    private final Pipeline<PipelineContextFrame.ViewCreated, Collection<Object>> viewCreated;
-    private final Pipeline<PipelineContextFrame.ViewRegistered, Collection<View>> viewRegistered;
-    private final PipelineConsumer<PipelineContextFrame.ListenerRegistered> listenersRegistered;
-    private final PipelineConsumer<PipelineContextFrame.ViewUnregistered> viewUnregistered;
+    private final Pipeline<PipelineContextFrame.CreateViews, Collection<Object>> viewCreated;
+    private final Pipeline<PipelineContextFrame.RegisterViews, Collection<View>> viewRegistered;
+    private final PipelineConsumer<PipelineContextFrame.RegisterListeners> listenersRegistered;
+    private final PipelineConsumer<PipelineContextFrame.UnregisterViews> viewUnregistered;
 
     public static final PipelineHolderFrame BASE = new PipelineHolderFrame(
         new PipelineImpl<>(
             new TypeToken<
-                PipelineService<PipelineContextFrame.ViewCreated, Collection<Object>>
+                PipelineService<PipelineContextFrame.CreateViews, Collection<Object>>
             >() {},
-            ServiceViewCreated.INSTANCE
+            ServiceCreateViews.INSTANCE
         ),
         new PipelineImpl<>(
             new TypeToken<
-                PipelineService<PipelineContextFrame.ViewRegistered, Collection<View>>
+                PipelineService<PipelineContextFrame.RegisterViews, Collection<View>>
             >() {},
-            ServiceViewRegistered.INSTANCE
+            ServiceRegisterViews.INSTANCE
         ),
         new PipelineConsumerImpl<>(
-            new TypeToken<PipelineServiceConsumer<PipelineContextFrame.ListenerRegistered>>() {},
-            ServiceListenerRegisteredLogging.INSTANCE
-        ).register(ServiceListenerRegistered.INSTANCE),
+            new TypeToken<PipelineServiceConsumer<PipelineContextFrame.RegisterListeners>>() {},
+            ServiceRegisterListenersLogging.INSTANCE
+        ).register(ServiceRegisterListeners.INSTANCE),
         new PipelineConsumerImpl<>(
-            new TypeToken<PipelineServiceConsumer<PipelineContextFrame.ViewUnregistered>>() {},
-            ServiceViewUnregisteredLogging.INSTANCE
+            new TypeToken<PipelineServiceConsumer<PipelineContextFrame.UnregisterViews>>() {},
+            ServiceUnregisterViewsLogging.INSTANCE
         )
     );
 
     @NotNull
-    public Pipeline<PipelineContextFrame.ViewCreated, Collection<Object>> viewCreated() {
+    public Pipeline<PipelineContextFrame.CreateViews, Collection<Object>> viewCreated() {
         return this.viewCreated;
     }
 
     @NotNull
-    public Pipeline<PipelineContextFrame.ViewRegistered, Collection<View>> viewRegistered() {
+    public Pipeline<PipelineContextFrame.RegisterViews, Collection<View>> viewRegistered() {
         return this.viewRegistered;
     }
 
     @NotNull
-    public PipelineConsumer<PipelineContextFrame.ListenerRegistered> listenersRegistered() {
+    public PipelineConsumer<PipelineContextFrame.RegisterListeners> listenersRegistered() {
         return this.listenersRegistered;
     }
 
     @NotNull
-    public PipelineConsumer<PipelineContextFrame.ViewUnregistered> viewUnregistered() {
+    public PipelineConsumer<PipelineContextFrame.UnregisterViews> viewUnregistered() {
         return this.viewUnregistered;
     }
 
@@ -80,15 +80,13 @@ public final class PipelineHolderFrame implements Cloned<PipelineHolderFrame> {
     }
 
     public PipelineHolderFrame(
-        @NotNull final Pipeline<PipelineContextFrame.ViewCreated, Collection<Object>> viewCreated,
+        @NotNull final Pipeline<PipelineContextFrame.CreateViews, Collection<Object>> viewCreated,
         @NotNull final Pipeline<
-            PipelineContextFrame.ViewRegistered,
+            PipelineContextFrame.RegisterViews,
             Collection<View>
         > viewRegistered,
-        @NotNull final PipelineConsumer<
-            PipelineContextFrame.ListenerRegistered
-        > listenersRegistered,
-        @NotNull final PipelineConsumer<PipelineContextFrame.ViewUnregistered> viewUnregistered
+        @NotNull final PipelineConsumer<PipelineContextFrame.RegisterListeners> listenersRegistered,
+        @NotNull final PipelineConsumer<PipelineContextFrame.UnregisterViews> viewUnregistered
     ) {
         this.viewCreated = viewCreated;
         this.viewRegistered = viewRegistered;

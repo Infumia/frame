@@ -8,23 +8,23 @@ import net.infumia.frame.view.View;
 import org.jetbrains.annotations.NotNull;
 
 public interface PipelineContextFrames {
-    final class ViewCreated implements PipelineContextFrame.ViewCreated {
+    final class CreateViews implements PipelineContextFrame.CreateViews {
 
         private final Frame frame;
-        private final Collection<Class<?>> registeredViews;
+        private final Collection<Class<?>> rawViews;
 
-        public ViewCreated(
+        public CreateViews(
             @NotNull final Frame frame,
-            @NotNull final Collection<Class<?>> registeredViews
+            @NotNull final Collection<Class<?>> rawViews
         ) {
             this.frame = frame;
-            this.registeredViews = registeredViews;
+            this.rawViews = rawViews;
         }
 
         @NotNull
         @Override
-        public Collection<Class<?>> registeredViews() {
-            return this.registeredViews;
+        public Collection<Class<?>> rawViews() {
+            return this.rawViews;
         }
 
         @NotNull
@@ -34,20 +34,20 @@ public interface PipelineContextFrames {
         }
     }
 
-    final class ViewRegistered implements PipelineContextFrame.ViewRegistered {
+    final class RegisterViews implements PipelineContextFrame.RegisterViews {
 
         private final Frame frame;
-        private final Collection<Object> registeredViews;
-        private final Consumer<TypedKeyStorageImmutableBuilder> storageConfigurer;
+        private final Collection<Object> views;
+        private final Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer;
 
-        public ViewRegistered(
+        public RegisterViews(
             @NotNull final Frame frame,
-            @NotNull final Collection<Object> registeredViews,
-            @NotNull final Consumer<TypedKeyStorageImmutableBuilder> storageConfigurer
+            @NotNull final Collection<Object> views,
+            @NotNull final Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer
         ) {
             this.frame = frame;
-            this.registeredViews = registeredViews;
-            this.storageConfigurer = storageConfigurer;
+            this.views = views;
+            this.instanceConfigurer = instanceConfigurer;
         }
 
         @NotNull
@@ -58,22 +58,22 @@ public interface PipelineContextFrames {
 
         @NotNull
         @Override
-        public Collection<Object> registeredViews() {
-            return this.registeredViews;
+        public Collection<Object> views() {
+            return this.views;
         }
 
         @NotNull
         @Override
         public Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer() {
-            return this.storageConfigurer;
+            return this.instanceConfigurer;
         }
     }
 
-    final class ListenerRegistered implements PipelineContextFrame.ListenerRegistered {
+    final class RegisterListeners implements PipelineContextFrame.RegisterListeners {
 
         private final Frame frame;
 
-        public ListenerRegistered(@NotNull final Frame frame) {
+        public RegisterListeners(@NotNull final Frame frame) {
             this.frame = frame;
         }
 
@@ -84,17 +84,14 @@ public interface PipelineContextFrames {
         }
     }
 
-    final class ViewUnregistered implements PipelineContextFrame.ViewUnregistered {
+    final class UnregisterViews implements PipelineContextFrame.UnregisterViews {
 
         private final Frame frame;
-        private final Collection<View> unregisteredViews;
+        private final Collection<View> views;
 
-        public ViewUnregistered(
-            @NotNull final Frame frame,
-            @NotNull final Collection<View> unregisteredViews
-        ) {
+        public UnregisterViews(@NotNull final Frame frame, @NotNull final Collection<View> views) {
             this.frame = frame;
-            this.unregisteredViews = unregisteredViews;
+            this.views = views;
         }
 
         @NotNull
@@ -105,8 +102,8 @@ public interface PipelineContextFrames {
 
         @NotNull
         @Override
-        public Collection<View> unregisteredViews() {
-            return this.unregisteredViews;
+        public Collection<View> views() {
+            return this.views;
         }
     }
 }

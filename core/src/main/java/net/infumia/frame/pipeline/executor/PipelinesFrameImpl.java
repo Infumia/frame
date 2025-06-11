@@ -26,13 +26,13 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
     @NotNull
     @Override
     public CompletableFuture<Collection<Object>> executeViewCreated(
-        @NotNull final Collection<Class<?>> registeredViews
+        @NotNull final Collection<Class<?>> rawViews
     ) {
         return this.pipelines.viewCreated()
             .completeWith(
-                new PipelineContextFrames.ViewCreated(
+                new PipelineContextFrames.CreateViews(
                     this.frame,
-                    Collections.unmodifiableCollection(registeredViews)
+                    Collections.unmodifiableCollection(rawViews)
                 )
             );
     }
@@ -40,14 +40,14 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
     @NotNull
     @Override
     public CompletableFuture<Collection<View>> executeViewRegistered(
-        @NotNull final Collection<Object> registeredViews,
+        @NotNull final Collection<Object> views,
         @NotNull final Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer
     ) {
         return this.pipelines.viewRegistered()
             .completeWith(
-                new PipelineContextFrames.ViewRegistered(
+                new PipelineContextFrames.RegisterViews(
                     this.frame,
-                    Collections.unmodifiableCollection(registeredViews),
+                    Collections.unmodifiableCollection(views),
                     instanceConfigurer
                 )
             );
@@ -57,19 +57,19 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
     @Override
     public CompletableFuture<ConsumerService.State> executeListenersRegistered() {
         return this.pipelines.listenersRegistered()
-            .completeWith(new PipelineContextFrames.ListenerRegistered(this.frame));
+            .completeWith(new PipelineContextFrames.RegisterListeners(this.frame));
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> executeViewUnregistered(
-        @NotNull final Collection<View> unregisteredViews
+        @NotNull final Collection<View> views
     ) {
         return this.pipelines.viewUnregistered()
             .completeWith(
-                new PipelineContextFrames.ViewUnregistered(
+                new PipelineContextFrames.UnregisterViews(
                     this.frame,
-                    Collections.unmodifiableCollection(unregisteredViews)
+                    Collections.unmodifiableCollection(views)
                 )
             );
     }
@@ -77,7 +77,7 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
     @Override
     public void applyViewCreated(
         @NotNull final Implementation<
-            PipelineContextFrame.ViewCreated,
+            PipelineContextFrame.CreateViews,
             Collection<Object>
         > implementation
     ) {
@@ -87,7 +87,7 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
     @Override
     public void applyViewRegistered(
         @NotNull final Implementation<
-            PipelineContextFrame.ViewRegistered,
+            PipelineContextFrame.RegisterViews,
             Collection<View>
         > implementation
     ) {
@@ -97,7 +97,7 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
     @Override
     public void applyListenersRegistered(
         @NotNull final Implementation<
-            PipelineContextFrame.ListenerRegistered,
+            PipelineContextFrame.RegisterListeners,
             ConsumerService.State
         > implementation
     ) {
@@ -107,7 +107,7 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
     @Override
     public void applyViewUnregistered(
         @NotNull final Implementation<
-            PipelineContextFrame.ViewUnregistered,
+            PipelineContextFrame.UnregisterViews,
             ConsumerService.State
         > implementation
     ) {

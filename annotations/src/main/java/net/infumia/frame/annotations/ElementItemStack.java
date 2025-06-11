@@ -1,0 +1,24 @@
+package net.infumia.frame.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import net.infumia.frame.annotations.inferred.InferredItemStackProvider;
+import net.infumia.frame.annotations.inferred.InferredStringProvider;
+import net.infumia.frame.context.ContextBase;
+import org.bukkit.inventory.ItemStack;
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ElementItemStack {
+    Class<
+        ? extends Provider<ContextBase, ItemStack>
+    > provider() default InferredItemStackProvider.class;
+
+    String configKey() default "";
+
+    Class<
+        ? extends Provider<ContextBase, String>
+    > configKeyProvider() default InferredStringProvider.class;
+}

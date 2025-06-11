@@ -11,23 +11,23 @@ public interface PipelineContextFrame {
     @NotNull
     Frame frame();
 
-    interface ViewCreated extends PipelineContextFrame {
+    interface CreateViews extends PipelineContextFrame {
         @NotNull
-        Collection<Class<?>> registeredViews();
+        Collection<Class<?>> rawViews();
     }
 
-    interface ViewRegistered extends PipelineContextFrame {
+    interface RegisterViews extends PipelineContextFrame {
         @NotNull
-        Collection<Object> registeredViews();
+        Collection<Object> views();
 
         @NotNull
         Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer();
     }
 
-    interface ListenerRegistered extends PipelineContextFrame {}
+    interface RegisterListeners extends PipelineContextFrame {}
 
-    interface ViewUnregistered extends PipelineContextFrame {
+    interface UnregisterViews extends PipelineContextFrame {
         @NotNull
-        Collection<View> unregisteredViews();
+        Collection<View> views();
     }
 }
