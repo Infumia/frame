@@ -1,8 +1,7 @@
 package net.infumia.frame.service;
 
 import java.util.Collection;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
+import java.util.function.*;
 import net.infumia.frame.Preconditions;
 
 /**
@@ -175,35 +174,6 @@ public interface Implementation<Context, Result> {
     ) {
         return Implementation.replace(
             Preconditions.argumentNotNull(serviceKey, "serviceKey"),
-            Preconditions.argumentNotNull(service, "service"),
-            null
-        );
-    }
-
-    static <Context, Result> Implementation<Context, Result> decorate(
-        final ConsumerService<Context> service,
-        final Collection<Predicate<Context>> filters
-    ) {
-        return new Decorate<>(service, filters);
-    }
-
-    static <Context, Result> Implementation<Context, Result> decorate(
-        final ConsumerService<Context> service
-    ) {
-        return Implementation.decorate(Preconditions.argumentNotNull(service, "service"), null);
-    }
-
-    static <Context> Implementation<Context, ConsumerService.State> decorateConsumer(
-        final ConsumerService<Context> service,
-        final Collection<Predicate<Context>> filters
-    ) {
-        return new DecorateConsumer<>(service, filters);
-    }
-
-    static <Context> Implementation<Context, ConsumerService.State> decorateConsumer(
-        final ConsumerService<Context> service
-    ) {
-        return Implementation.decorateConsumer(
             Preconditions.argumentNotNull(service, "service"),
             null
         );

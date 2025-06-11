@@ -28,7 +28,7 @@ public final class AnnotationFeature implements Feature {
         frame
             .pipelines()
             .applyRegisterViews(
-                Implementation.remove(ServiceRegisterViewsInitializeAnnotations.KEY)
+                Implementation.undecorate(ServiceRegisterViewsInitializeAnnotations.class)
             );
     }
 }
