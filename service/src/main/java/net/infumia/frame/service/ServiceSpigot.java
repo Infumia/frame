@@ -59,6 +59,7 @@ final class ServiceSpigot<Context, Result> {
         ServiceWrapper<Context, Result> wrapper;
 
         while ((wrapper = queue.pollLast()) != null) {
+            isConsumerService.set(wrapper.implementation instanceof ConsumerService);
             job = this.processService(isConsumerService, wrapper, job);
         }
         return job;
@@ -70,7 +71,6 @@ final class ServiceSpigot<Context, Result> {
         final CompletableFuture<Result> job
     ) {
         final Service<Context, Result> service = wrapper.implementation;
-        isConsumerService.set(service instanceof ConsumerService);
         if (!wrapper.passes(this.context)) {
             return job;
         }
