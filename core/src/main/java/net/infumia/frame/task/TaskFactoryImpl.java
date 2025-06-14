@@ -55,6 +55,26 @@ public final class TaskFactoryImpl implements TaskFactory {
 
     @NotNull
     @Override
+    public CompletableFuture<?> runAsFuture(@NotNull final Runnable task) {
+        if (Bukkit.isPrimaryThread()) {
+            task.run();
+            return CompletableFuture.completedFuture(null);
+        }
+        final CompletableFuture<Object> future = new CompletableFuture<>();
+        Bukkit.getScheduler()
+            .runTask(this.plugin, () -> {
+                try {
+                    task.run();
+                    future.complete(null);
+                } catch (final Throwable throwable) {
+                    future.completeExceptionally(throwable);
+                }
+            });
+        return future;
+    }
+
+    @NotNull
+    @Override
     public Closeable run(
         @NotNull final Runnable task,
         @NotNull final Duration delay,

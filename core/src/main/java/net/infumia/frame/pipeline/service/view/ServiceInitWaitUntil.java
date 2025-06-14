@@ -20,22 +20,12 @@ public final class ServiceInitWaitUntil
     }
 
     @Override
-    public void accept(
-        @NotNull final CompletableFuture<State> future,
-        @NotNull final PipelineContextView.Init ctx
-    ) {
+    public CompletableFuture<State> handle(@NotNull final PipelineContextView.Init ctx) {
         final CompletableFuture<?> waitUntil = ctx.view().context().waitUntil();
         if (waitUntil == null) {
-            future.complete(State.CONTINUE);
-        } else {
-            waitUntil.whenComplete((__, throwable) -> {
-                if (throwable == null) {
-                    future.complete(State.CONTINUE);
-                } else {
-                    future.completeExceptionally(throwable);
-                }
-            });
+            return CompletableFuture.completedFuture(State.CONTINUE);
         }
+        return waitUntil.thenApply(__ -> State.CONTINUE);
     }
 
     private ServiceInitWaitUntil() {}

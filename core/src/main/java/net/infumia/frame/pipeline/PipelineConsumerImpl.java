@@ -2,10 +2,7 @@ package net.infumia.frame.pipeline;
 
 import io.leangen.geantyref.TypeToken;
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.service.ConsumerService;
-import net.infumia.frame.service.Implementation;
-import net.infumia.frame.service.ServicePipelineBuilder;
-import net.infumia.frame.service.ServiceRepository;
+import net.infumia.frame.service.*;
 import org.jetbrains.annotations.NotNull;
 
 public final class PipelineConsumerImpl<Context> implements PipelineConsumer<Context> {

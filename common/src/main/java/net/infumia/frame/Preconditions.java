@@ -37,7 +37,7 @@ public final class Preconditions {
      * @return The object.
      * @throws IllegalArgumentException If the object is null.
      */
-    @Contract("null, _, _ -> fail")
+    @Contract("null, _, _ -> fail; !null, _, _ -> param1")
     public static <T> T argumentNotNull(
         @Nullable final T object,
         @NotNull final String message,

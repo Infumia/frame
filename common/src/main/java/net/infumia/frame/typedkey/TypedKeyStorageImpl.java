@@ -61,6 +61,11 @@ final class TypedKeyStorageImpl extends TypedKeyStorageImmutableImpl implements 
     }
 
     @Override
+    public void clear() {
+        this.map.clear();
+    }
+
+    @Override
     public String toString() {
         return "TypedKeyStorageImpl{" + "map=" + this.map + '}';
     }

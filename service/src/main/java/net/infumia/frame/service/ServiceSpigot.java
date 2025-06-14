@@ -1,45 +1,53 @@
 package net.infumia.frame.service;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import net.infumia.frame.Preconditions;
+import net.infumia.frame.typedkey.TypedKeyStorage;
+import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 
+@SuppressWarnings("unchecked")
 final class ServiceSpigot<Context, Result> {
 
     private final ServicePipeline pipeline;
     private final ServiceRepository<Context, Result> repository;
-    private final Context context;
+    private final TypedKeyStorageFactory storageFactory;
 
     ServiceSpigot(
         final ServicePipeline pipeline,
         final ServiceRepository<Context, Result> repository,
-        final Context context
+        final TypedKeyStorageFactory storageFactory
     ) {
         this.pipeline = pipeline;
         this.repository = repository;
-        this.context = context;
+        this.storageFactory = storageFactory;
     }
 
-    CompletableFuture<Result> complete() {
-        return this.completeInternally(Runnable::run);
+    CompletableFuture<Result> complete(final Context context) {
+        return this.completeInternally(context, Runnable::run);
     }
 
-    CompletableFuture<Result> completeAsync() {
-        return this.completeInternally(this.pipeline.executor);
+    CompletableFuture<Result> completeAsync(final Context context) {
+        return this.completeInternally(context, this.pipeline.executor);
     }
 
-    private CompletableFuture<Result> completeInternally(final Executor executor) {
+    private CompletableFuture<Result> completeInternally(
+        final Context context,
+        final Executor executor
+    ) {
         final CompletableFuture<Result> future = new CompletableFuture<>();
         final ScheduledFuture<?> delayer = this.scheduleTimeout(future);
-        final AtomicBoolean isConsumerService = new AtomicBoolean(false);
+        final AtomicReference<Result> hasResult = new AtomicReference<>();
+        final TypedKeyStorage storage = this.storageFactory.create(new HashMap<>());
 
         executor.execute(() ->
-            this.processServices(isConsumerService).whenComplete((result, throwable) -> {
+            this.processServices(context, storage, hasResult).whenComplete((result, throwable) -> {
                     if (delayer.cancel(true)) {
                         if (throwable == null) {
                             future.complete(result);
@@ -50,57 +58,73 @@ final class ServiceSpigot<Context, Result> {
                 })
         );
 
-        return future.thenApply(result -> this.checkFinalResult(isConsumerService, result));
+        return future
+            .thenApply(result -> this.checkFinalResult(hasResult))
+            .whenComplete((__, ___) -> storage.clear());
     }
 
-    private CompletableFuture<Result> processServices(final AtomicBoolean isConsumerService) {
-        CompletableFuture<Result> job = CompletableFuture.completedFuture(null);
-        final LinkedList<ServiceWrapper<Context, Result>> queue = this.repository.queue();
-        ServiceWrapper<Context, Result> wrapper;
-
-        while ((wrapper = queue.pollLast()) != null) {
-            isConsumerService.set(wrapper.implementation instanceof ConsumerService);
-            job = this.processService(isConsumerService, wrapper, job);
-        }
-        return job;
-    }
-
-    private CompletableFuture<Result> processService(
-        final AtomicBoolean isConsumerService,
-        final ServiceWrapper<Context, Result> wrapper,
-        final CompletableFuture<Result> job
+    private CompletableFuture<Result> processServices(
+        final Context context,
+        final TypedKeyStorage storage,
+        final AtomicReference<Result> firstResult
     ) {
-        final Service<Context, Result> service = wrapper.implementation;
-        if (!wrapper.passes(this.context)) {
-            return job;
+        final LinkedList<ServiceWrapper<Context, Result>> queue = this.repository.queue();
+        CompletableFuture<Result> job = CompletableFuture.completedFuture(null);
+
+        ServiceWrapper<Context, Result> wrapper;
+        while ((wrapper = queue.pollLast()) != null) {
+            final ServiceWrapper<Context, Result> finalWrapper = wrapper;
+            job = job.thenCompose(previousResult -> {
+                if (this.shouldStop(context, previousResult)) {
+                    return CompletableFuture.completedFuture(previousResult);
+                }
+
+                if (!finalWrapper.passes(context)) {
+                    return CompletableFuture.completedFuture(previousResult);
+                }
+
+                final Service<Context, Result> service = finalWrapper.implementation;
+                final boolean isConsumer = service instanceof ConsumerService;
+
+                return service
+                    .handle(context, storage)
+                    .thenApply(currentResult -> {
+                        if (
+                            !isConsumer &&
+                            firstResult.get() == null &&
+                            currentResult != null &&
+                            currentResult != ConsumerService.State.CONTINUE
+                        ) {
+                            firstResult.compareAndSet(null, currentResult);
+                            return (Result) ConsumerService.State.CONTINUE;
+                        }
+                        if (isConsumer) {
+                            return currentResult;
+                        }
+                        return (Result) ConsumerService.State.CONTINUE;
+                    });
+            });
         }
-        return job.thenCompose(result ->
-            this.shouldContinue(isConsumerService, result)
-                ? service.handle(this.context)
-                : CompletableFuture.completedFuture(result)
-        );
+        return job.thenApply(lastResult -> firstResult.get());
     }
 
-    private boolean shouldContinue(final AtomicBoolean isConsumerService, final Result result) {
-        if (this.isCancelled()) {
-            return false;
-        }
-        if (result == null) {
+    private boolean shouldStop(final Context context, final Result result) {
+        if (this.isCancelled(context) || result == ConsumerService.State.FINISHED) {
             return true;
         }
-        return isConsumerService.get() && result != ConsumerService.State.FINISHED;
+        return result != null && result != ConsumerService.State.CONTINUE;
     }
 
-    @SuppressWarnings("unchecked")
-    private Result checkFinalResult(final AtomicBoolean isConsumerService, final Result result) {
-        if (isConsumerService.get()) {
+    private Result checkFinalResult(final AtomicReference<Result> hasResult) {
+        final Result result = hasResult.get();
+        if (result == null) {
             return (Result) ConsumerService.State.FINISHED;
         }
         return Preconditions.argumentNotNull(result, "No service consumed the context.");
     }
 
-    private boolean isCancelled() {
-        return this.context instanceof Cancellable && ((Cancellable) this.context).cancelled();
+    private boolean isCancelled(final Context context) {
+        return context instanceof Cancellable && ((Cancellable) context).cancelled();
     }
 
     private ScheduledFuture<?> scheduleTimeout(final CompletableFuture<?> future) {

@@ -55,4 +55,6 @@ public interface TypedKeyStorage extends TypedKeyStorageImmutable {
      * @return true if the value was removed, false otherwise
      */
     <T> boolean remove(@NotNull TypedKey<T> key);
+
+    void clear();
 }

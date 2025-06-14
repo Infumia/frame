@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
+import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.view.ViewContainer;
 import net.infumia.frame.viewer.Viewer;
 import org.jetbrains.annotations.NotNull;
@@ -24,22 +25,21 @@ public final class ServiceOpenContainer
     }
 
     @Override
-    public void accept(
-        final CompletableFuture<State> future,
+    public CompletableFuture<ConsumerService.State> handle(
         final PipelineContextRender.OpenContainer ctx
     ) {
         final ContextRender context = ctx.context();
         final ViewContainer container = context.container();
         final Collection<Viewer> viewers = ctx.viewers();
-        context
+        return context
             .frame()
             .taskFactory()
-            .run(() -> {
+            .runAsFuture(() -> {
                 for (final Viewer viewer : viewers) {
                     container.open(viewer);
                 }
-                future.complete(State.CONTINUE);
-            });
+            })
+            .thenApply(__ -> ConsumerService.State.CONTINUE);
     }
 
     private ServiceOpenContainer() {}
