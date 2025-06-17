@@ -43,23 +43,25 @@ final class ServiceSpigot<Context, Result> {
     ) {
         final CompletableFuture<Result> future = new CompletableFuture<>();
         final ScheduledFuture<?> delayer = this.scheduleTimeout(future);
-        final AtomicReference<Result> hasResult = new AtomicReference<>();
+        final AtomicReference<Result> firstResult = new AtomicReference<>();
         final TypedKeyStorage storage = this.storageFactory.create(new HashMap<>());
 
         executor.execute(() ->
-            this.processServices(context, storage, hasResult).whenComplete((result, throwable) -> {
-                    if (delayer.cancel(true)) {
-                        if (throwable == null) {
-                            future.complete(result);
-                        } else {
-                            future.completeExceptionally(throwable);
+            this.processServices(context, storage, firstResult).whenComplete(
+                    (result, throwable) -> {
+                        if (delayer.cancel(true)) {
+                            if (throwable == null) {
+                                future.complete(result);
+                            } else {
+                                future.completeExceptionally(throwable);
+                            }
                         }
                     }
-                })
+                )
         );
 
         return future
-            .thenApply(result -> this.checkFinalResult(hasResult))
+            .thenApply(result -> this.checkFinalResult(firstResult))
             .whenComplete((__, ___) -> storage.clear());
     }
 
@@ -71,37 +73,25 @@ final class ServiceSpigot<Context, Result> {
         final LinkedList<ServiceWrapper<Context, Result>> queue = this.repository.queue();
         CompletableFuture<Result> job = CompletableFuture.completedFuture(null);
 
-        ServiceWrapper<Context, Result> wrapper;
-        while ((wrapper = queue.pollLast()) != null) {
-            final ServiceWrapper<Context, Result> finalWrapper = wrapper;
+        ServiceWrapper<Context, Result> currentWrapper;
+        while ((currentWrapper = queue.pollLast()) != null) {
+            final ServiceWrapper<Context, Result> wrapper = currentWrapper;
             job = job.thenCompose(previousResult -> {
                 if (this.shouldStop(context, previousResult)) {
                     return CompletableFuture.completedFuture(previousResult);
                 }
 
-                if (!finalWrapper.passes(context)) {
+                if (!wrapper.passes(context)) {
                     return CompletableFuture.completedFuture(previousResult);
                 }
 
-                final Service<Context, Result> service = finalWrapper.implementation;
-                final boolean isConsumer = service instanceof ConsumerService;
-
-                return service
+                return wrapper.implementation
                     .handle(context, storage)
-                    .thenApply(currentResult -> {
-                        if (
-                            !isConsumer &&
-                            firstResult.get() == null &&
-                            currentResult != null &&
-                            currentResult != ConsumerService.State.CONTINUE
-                        ) {
-                            firstResult.compareAndSet(null, currentResult);
-                            return (Result) ConsumerService.State.CONTINUE;
+                    .thenApply(result -> {
+                        if (wrapper.isResultService() && firstResult.get() == null) {
+                            firstResult.set(result);
                         }
-                        if (isConsumer) {
-                            return currentResult;
-                        }
-                        return (Result) ConsumerService.State.CONTINUE;
+                        return result;
                     });
             });
         }
@@ -112,11 +102,14 @@ final class ServiceSpigot<Context, Result> {
         if (this.isCancelled(context) || result == ConsumerService.State.FINISHED) {
             return true;
         }
-        return result != null && result != ConsumerService.State.CONTINUE;
+        if (result == null) {
+            return false;
+        }
+        return result != ConsumerService.State.CONTINUE;
     }
 
-    private Result checkFinalResult(final AtomicReference<Result> hasResult) {
-        final Result result = hasResult.get();
+    private Result checkFinalResult(final AtomicReference<Result> firstResult) {
+        final Result result = firstResult.get();
         if (result == null) {
             return (Result) ConsumerService.State.FINISHED;
         }

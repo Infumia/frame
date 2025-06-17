@@ -7,14 +7,14 @@ import net.infumia.frame.service.exception.PipelineException;
 
 final class ServiceWrapper<Context, Result> implements Comparable<ServiceWrapper<Context, Result>> {
 
-    final TypeToken<? extends Service<Context, Result>> serviceType;
-    final Collection<Predicate<Context>> filters;
-    final Service<Context, Result> implementation;
+    private final TypeToken<? extends Service<Context, Result>> serviceType;
+    private final Collection<Predicate<Context>> filters;
+    final Service<Context, ?> implementation;
     final boolean defaultImplementation;
 
     ServiceWrapper(
         final TypeToken<? extends Service<Context, Result>> serviceType,
-        final Service<Context, Result> implementation,
+        final Service<Context, ?> implementation,
         final boolean defaultImplementation,
         final Collection<Predicate<Context>> filters
     ) {
@@ -22,6 +22,28 @@ final class ServiceWrapper<Context, Result> implements Comparable<ServiceWrapper
         this.implementation = implementation;
         this.defaultImplementation = defaultImplementation;
         this.filters = filters;
+    }
+
+    @Override
+    public int compareTo(final ServiceWrapper<Context, Result> o) {
+        return Boolean.compare(o.defaultImplementation, this.defaultImplementation);
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "ServiceWrapper{type=%s,implementation=%s}",
+            this.serviceType.getType().getTypeName(),
+            this.implementation
+        );
+    }
+
+    boolean isConsumerService() {
+        return this.implementation instanceof ConsumerService;
+    }
+
+    boolean isResultService() {
+        return !this.isConsumerService();
     }
 
     boolean passes(final Context context) {
@@ -45,19 +67,5 @@ final class ServiceWrapper<Context, Result> implements Comparable<ServiceWrapper
             }
         }
         return true;
-    }
-
-    @Override
-    public int compareTo(final ServiceWrapper<Context, Result> o) {
-        return Boolean.compare(o.defaultImplementation, this.defaultImplementation);
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-            "ServiceWrapper{type=%s,implementation=%s}",
-            this.serviceType.getType().getTypeName(),
-            this.implementation
-        );
     }
 }

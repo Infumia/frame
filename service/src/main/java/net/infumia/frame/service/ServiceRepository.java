@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import net.infumia.frame.Cloned;
 import net.infumia.frame.Preconditions;
+import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 
 /**
  * A repository for managing and executing services of a specific type.
@@ -18,33 +19,39 @@ import net.infumia.frame.Preconditions;
 public final class ServiceRepository<Context, Result>
     implements Cloned<ServiceRepository<Context, Result>> {
 
-    private final ServicePipeline pipeline;
+    private final ServiceSpigot<Context, Result> spigot;
     final TypeToken<? extends Service<Context, Result>> serviceType;
     final List<ServiceWrapper<Context, Result>> implementations;
 
     private ServiceRepository(
-        final ServicePipeline pipeline,
+        final ServiceSpigot<Context, Result> spigot,
         final TypeToken<? extends Service<Context, Result>> serviceType,
         final List<ServiceWrapper<Context, Result>> implementations
     ) {
-        this.pipeline = Preconditions.argumentNotNull(pipeline, "pipeline");
+        Preconditions.argumentNotNull(spigot, "spigot");
+
         this.serviceType = Preconditions.argumentNotNull(serviceType, "serviceType");
         this.implementations = Preconditions.argumentNotNull(implementations, "implementations");
+        this.spigot = spigot;
     }
 
     /**
      * Constructs a new {@link ServiceRepository} with a default implementation.
      *
      * @param pipeline the service pipeline.
+     * @param storageFactory the storage factory.
      * @param serviceType the type token of the service.
      * @param defaultImplementation the default service implementation.
      */
     public ServiceRepository(
         final ServicePipeline pipeline,
+        final TypedKeyStorageFactory storageFactory,
         final TypeToken<? extends Service<Context, Result>> serviceType,
         final Service<Context, Result> defaultImplementation
     ) {
-        this.pipeline = Preconditions.argumentNotNull(pipeline, "pipeline");
+        Preconditions.argumentNotNull(pipeline, "pipeline");
+        Preconditions.argumentNotNull(storageFactory, "storageFactory");
+
         this.serviceType = Preconditions.argumentNotNull(serviceType, "serviceType");
         final Service<Context, Result> defImpl = Preconditions.argumentNotNull(
             defaultImplementation,
@@ -53,12 +60,13 @@ public final class ServiceRepository<Context, Result>
 
         this.implementations = new LinkedList<>();
         this.implementations.add(new ServiceWrapper<>(serviceType, defImpl, true, null));
+        this.spigot = new ServiceSpigot<>(pipeline, this, storageFactory);
     }
 
     @Override
     public ServiceRepository<Context, Result> cloned() {
         return new ServiceRepository<>(
-            this.pipeline,
+            this.spigot,
             this.serviceType,
             new LinkedList<>(this.implementations)
         );
@@ -72,9 +80,7 @@ public final class ServiceRepository<Context, Result>
     public void apply(final Implementation<Context, Result> operation) {
         Preconditions.argumentNotNull(operation, "operation");
 
-        synchronized (this.implementations) {
-            operation.handle(this);
-        }
+        operation.handle(this);
     }
 
     /**
@@ -86,7 +92,7 @@ public final class ServiceRepository<Context, Result>
     public CompletableFuture<Result> completeDirect(final Context context) {
         Preconditions.argumentNotNull(context, "context");
 
-        return new ServiceSpigot<>(this.pipeline, this, context).complete();
+        return this.spigot.complete(context);
     }
 
     /**
@@ -98,14 +104,12 @@ public final class ServiceRepository<Context, Result>
     public CompletableFuture<Result> completeAsync(final Context context) {
         Preconditions.argumentNotNull(context, "context");
 
-        return new ServiceSpigot<>(this.pipeline, this, context).completeAsync();
+        return this.spigot.completeAsync(context);
     }
 
     LinkedList<ServiceWrapper<Context, Result>> queue() {
-        synchronized (this.implementations) {
-            return this.implementations.stream()
-                .sorted()
-                .collect(Collectors.toCollection(LinkedList::new));
-        }
+        return this.implementations.stream()
+            .sorted()
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 }

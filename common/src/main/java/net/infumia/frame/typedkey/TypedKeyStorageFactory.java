@@ -17,6 +17,11 @@ public interface TypedKeyStorageFactory {
         return new TypedKeyStorageFactoryImpl();
     }
 
+    @NotNull
+    static TypedKeyStorageFactory simple() {
+        return TypedKeyStorageFactoryImpl.INSTANCE;
+    }
+
     /**
      * Creates a new typed key storage.
      *

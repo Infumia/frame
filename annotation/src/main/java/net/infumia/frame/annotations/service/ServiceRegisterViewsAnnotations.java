@@ -1,16 +1,20 @@
 package net.infumia.frame.annotations.service;
 
-import java.util.Collection;
-import java.util.function.BiConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextFrame;
-import net.infumia.frame.view.View;
+import net.infumia.frame.service.ConsumerService;
+import net.infumia.frame.typedkey.TypedKeyStorage;
 
 public final class ServiceRegisterViewsAnnotations
-    implements BiConsumer<PipelineContextFrame.RegisterViews, Collection<View>> {
+    implements ConsumerService<PipelineContextFrame.RegisterViews> {
+
+    public static final String KEY = "annotations";
 
     @Override
-    public void accept(
-        final PipelineContextFrame.RegisterViews registerViews,
-        final Collection<View> views
-    ) {}
+    public String key() {
+        return ServiceRegisterViewsAnnotations.KEY;
+    }
+
+    @Override
+    public void accept(final PipelineContextFrame.RegisterViews ctx, final TypedKeyStorage storage) {
+    }
 }

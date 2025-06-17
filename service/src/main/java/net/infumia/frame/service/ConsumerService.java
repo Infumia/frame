@@ -1,7 +1,6 @@
 package net.infumia.frame.service;
 
 import java.util.concurrent.CompletableFuture;
-import net.infumia.frame.Preconditions;
 import net.infumia.frame.typedkey.TypedKeyStorage;
 
 /**
@@ -12,8 +11,6 @@ import net.infumia.frame.typedkey.TypedKeyStorage;
 public interface ConsumerService<Context> extends Service<Context, ConsumerService.State> {
     @Override
     default CompletableFuture<State> handle(final Context ctx, final TypedKeyStorage storage) {
-        Preconditions.argumentNotNull(storage, "storage");
-
         final CompletableFuture<State> future = new CompletableFuture<>();
         try {
             this.accept(future, ctx, storage);
@@ -28,14 +25,17 @@ public interface ConsumerService<Context> extends Service<Context, ConsumerServi
         final Context ctx,
         final TypedKeyStorage storage
     ) {
-        Preconditions.argumentNotNull(future, "future");
-        Preconditions.argumentNotNull(storage, "storage");
-
         this.accept(ctx, storage);
         future.complete(State.CONTINUE);
     }
 
-    default void accept(final Context ctx, final TypedKeyStorage storage) {}
+    default void accept(final Context ctx, final TypedKeyStorage storage) {
+        this.accept(ctx);
+    }
+
+    default void accept(final Context ctx) {
+        throw new UnsupportedOperationException("Implement #accept(Context)");
+    }
 
     /**
      * Represents the state of a {@link ConsumerService}.

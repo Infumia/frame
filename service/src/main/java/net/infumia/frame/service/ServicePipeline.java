@@ -4,6 +4,7 @@ import io.leangen.geantyref.TypeToken;
 import java.time.Duration;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
+import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 
 /**
  * A pipeline for managing and executing services.
@@ -14,15 +15,18 @@ public final class ServicePipeline {
     final Executor executor;
     final Duration timeout;
     final ScheduledExecutorService delayer;
+    final TypedKeyStorageFactory storageFactory;
 
     ServicePipeline(
         final Executor executor,
         final Duration timeout,
-        final ScheduledExecutorService delayer
+        final ScheduledExecutorService delayer,
+        final TypedKeyStorageFactory storageFactory
     ) {
         this.executor = executor;
         this.timeout = timeout;
         this.delayer = delayer;
+        this.storageFactory = storageFactory;
     }
 
     /**
@@ -38,6 +42,6 @@ public final class ServicePipeline {
         final TypeToken<? extends Service<Context, Result>> type,
         final Service<Context, Result> defaultImplementation
     ) {
-        return new ServiceRepository<>(this, type, defaultImplementation);
+        return new ServiceRepository<>(this, this.storageFactory, type, defaultImplementation);
     }
 }

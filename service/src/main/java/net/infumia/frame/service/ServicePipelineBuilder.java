@@ -5,6 +5,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import net.infumia.frame.Preconditions;
+import net.infumia.frame.typedkey.TypedKeyStorageFactory;
 
 /**
  * A builder for creating {@link ServicePipeline} instances.
@@ -14,6 +15,7 @@ public final class ServicePipelineBuilder {
     private Executor executor = Executors.newSingleThreadExecutor();
     private Duration timeout = Duration.ofSeconds(10L);
     private ScheduledExecutorService delayer = Executors.newScheduledThreadPool(1);
+    private TypedKeyStorageFactory storageFactory = TypedKeyStorageFactory.simple();
 
     /**
      * Creates a new {@link ServicePipelineBuilder} instance.
@@ -57,13 +59,18 @@ public final class ServicePipelineBuilder {
         return this;
     }
 
+    public ServicePipelineBuilder storageFactory(final TypedKeyStorageFactory storageFactory) {
+        this.storageFactory = Preconditions.argumentNotNull(storageFactory, "storageFactory");
+        return this;
+    }
+
     /**
      * Builds a new {@link ServicePipeline} instance with the configured parameters.
      *
      * @return a new {@link ServicePipeline}.
      */
     public ServicePipeline build() {
-        return new ServicePipeline(this.executor, this.timeout, this.delayer);
+        return new ServicePipeline(this.executor, this.timeout, this.delayer, this.storageFactory);
     }
 
     private ServicePipelineBuilder() {}

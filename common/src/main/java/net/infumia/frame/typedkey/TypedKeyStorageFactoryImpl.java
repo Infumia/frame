@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 final class TypedKeyStorageFactoryImpl implements TypedKeyStorageFactory {
 
+    public static final TypedKeyStorageFactory INSTANCE = new TypedKeyStorageFactoryImpl();
+
     TypedKeyStorageFactoryImpl() {}
 
     @NotNull

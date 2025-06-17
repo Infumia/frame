@@ -23,13 +23,11 @@ final class InjectionServiceImpl<C> implements InjectionService<C> {
 
     @NotNull
     @Override
-    public CompletableFuture<Object> handle(final InjectionRequest<C> request) {
-        Preconditions.argumentNotNull(request, "request");
-
+    public CompletableFuture<Object> handle(final InjectionRequest<C> ctx) {
         return CompletableFuture.completedFuture(
-            this.registry.injectors(request.injectedType())
+            this.registry.injectors(ctx.injectedType())
                 .stream()
-                .map(injector -> injector.inject(request))
+                .map(injector -> injector.inject(ctx))
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null)

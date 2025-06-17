@@ -52,7 +52,7 @@ final class FrameImpl implements FrameRich {
     private final InventoryListener listener;
     private final MetadataAccessFactory metadataAccessFactory;
     private final ViewerFactory viewerFactory;
-    private TypedKeyStorageFactory storageFactory = TypedKeyStorageFactory.create();
+    private TypedKeyStorageFactory storageFactory = TypedKeyStorageFactory.simple();
     private InventoryFactory inventoryFactory = InventoryFactoryBukkit.bukkitOrPaper();
 
     FrameImpl(
