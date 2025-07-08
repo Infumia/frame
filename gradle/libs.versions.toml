@@ -10,4 +10,4 @@ adventure-api = { module = "net.kyori:adventure-api", version = "4.23.0" }
 minecraft-one-eight-eight-paper = { module = "com.destroystokyo.paper:paper-api", version = "1.16.5-R0.1-SNAPSHOT" }
 
 nexus-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.33.0" }
-spotless-plugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.0.4" }
+spotless-plugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.1.0" }
