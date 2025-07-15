@@ -61,8 +61,7 @@ public final class TaskFactoryImpl implements TaskFactory {
             return CompletableFuture.completedFuture(null);
         }
         final CompletableFuture<Object> future = new CompletableFuture<>();
-        Bukkit.getScheduler()
-            .runTask(this.plugin, () -> {
+        Bukkit.getScheduler().runTask(this.plugin, () -> {
                 try {
                     task.run();
                     future.complete(null);
@@ -80,7 +79,11 @@ public final class TaskFactoryImpl implements TaskFactory {
         @NotNull final Duration delay,
         @NotNull final Duration period
     ) {
-        return Bukkit.getScheduler()
-            .runTaskTimer(this.plugin, task, Ticks.toTicks(delay), Ticks.toTicks(period))::cancel;
+        return Bukkit.getScheduler().runTaskTimer(
+            this.plugin,
+            task,
+            Ticks.toTicks(delay),
+            Ticks.toTicks(period)
+        )::cancel;
     }
 }

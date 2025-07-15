@@ -110,16 +110,17 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
             .openActive(viewer.player(), previousContext)
             .thenCompose(__ ->
                 ((ContextRenderRich) previousContext).simulateResume(
-                        this,
-                        Collections.singleton(viewer)
-                    )
+                    this,
+                    Collections.singleton(viewer)
+                )
             );
     }
 
     @Override
     public boolean canBack() {
-        final Deque<ContextRender> previousViews =
-            this.viewerOrThrow("canBack").metadata().get(MetadataKeyHolder.PREVIOUS_VIEWS);
+        final Deque<ContextRender> previousViews = this.viewerOrThrow("canBack")
+            .metadata()
+            .get(MetadataKeyHolder.PREVIOUS_VIEWS);
         return previousViews != null && !previousViews.isEmpty();
     }
 
@@ -185,8 +186,9 @@ public class ContextRenderImpl extends ContextBaseImpl implements ContextRenderR
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> simulateFirstRender() {
-        return this.pipelines.executeFirstRender()
-            .thenCompose(__ -> this.simulateNavigate(this.viewers()));
+        return this.pipelines.executeFirstRender().thenCompose(__ ->
+            this.simulateNavigate(this.viewers())
+        );
     }
 
     @NotNull

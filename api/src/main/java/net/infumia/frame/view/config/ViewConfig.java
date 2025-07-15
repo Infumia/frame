@@ -18,7 +18,7 @@ public interface ViewConfig {
     int size();
 
     @NotNull
-    String@Nullable[] layout();
+    String@Nullable [] layout();
 
     @NotNull
     InvType type();

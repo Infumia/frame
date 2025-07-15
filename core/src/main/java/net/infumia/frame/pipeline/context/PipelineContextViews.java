@@ -270,7 +270,10 @@ public interface PipelineContextViews {
             this.layouts.add(
                     new LayoutSlotImpl(
                         character,
-                        indexes.stream().mapToInt(value -> value).toArray()
+                        indexes
+                            .stream()
+                            .mapToInt(value -> value)
+                            .toArray()
                     )
                 );
         }

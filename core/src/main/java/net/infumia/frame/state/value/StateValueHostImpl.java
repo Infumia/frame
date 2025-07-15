@@ -51,12 +51,11 @@ public final class StateValueHostImpl implements StateValueHostRich {
                 .debug("State '%s' not found in '%s'!", state, this.values);
             return null;
         }
-        this.context.frame()
-            .loggedFuture(
-                this.pipelines.executeAccess(state, value),
-                "An error occurred while accessing state '%s'!",
-                state
-            );
+        this.context.frame().loggedFuture(
+            this.pipelines.executeAccess(state, value),
+            "An error occurred while accessing state '%s'!",
+            state
+        );
         return (StateValue<T>) value;
     }
 
@@ -72,12 +71,11 @@ public final class StateValueHostImpl implements StateValueHostRich {
         }
         final T oldValue = stateValue.value();
         stateValue.value(value);
-        this.context.frame()
-            .loggedFuture(
-                this.pipelines.executeUpdate(state, oldValue, stateValue),
-                "An error occurred while updating state '%s'!",
-                state
-            );
+        this.context.frame().loggedFuture(
+            this.pipelines.executeUpdate(state, oldValue, stateValue),
+            "An error occurred while updating state '%s'!",
+            state
+        );
         return stateValue;
     }
 
@@ -88,12 +86,11 @@ public final class StateValueHostImpl implements StateValueHostRich {
         if (stateValue == null) {
             return null;
         }
-        this.context.frame()
-            .loggedFuture(
-                this.pipelines.executeUpdate(state, stateValue.value(), stateValue),
-                "An error occurred while updating state '%s'!",
-                state
-            );
+        this.context.frame().loggedFuture(
+            this.pipelines.executeUpdate(state, stateValue.value(), stateValue),
+            "An error occurred while updating state '%s'!",
+            state
+        );
         return stateValue;
     }
 
@@ -103,8 +100,8 @@ public final class StateValueHostImpl implements StateValueHostRich {
         @NotNull final StateRich<T> state
     ) {
         return this.accessStateValueWait(state).thenApply(value ->
-                this.accessStateValueOrInitializeInternally(state, value)
-            );
+            this.accessStateValueOrInitializeInternally(state, value)
+        );
     }
 
     @NotNull
@@ -136,8 +133,8 @@ public final class StateValueHostImpl implements StateValueHostRich {
                 final T oldValue = stateValue.value();
                 stateValue.value(value);
                 return this.pipelines.executeUpdate(state, oldValue, stateValue).thenApply(__ ->
-                        stateValue
-                    );
+                    stateValue
+                );
             });
     }
 
@@ -151,10 +148,10 @@ public final class StateValueHostImpl implements StateValueHostRich {
                     return CompletableFuture.completedFuture(null);
                 }
                 return this.pipelines.executeUpdate(
-                        state,
-                        stateValue.value(),
-                        stateValue
-                    ).thenApply(__ -> stateValue);
+                    state,
+                    stateValue.value(),
+                    stateValue
+                ).thenApply(__ -> stateValue);
             });
     }
 

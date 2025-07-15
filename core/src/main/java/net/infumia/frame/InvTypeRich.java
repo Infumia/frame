@@ -15,7 +15,7 @@ public final class InvTypeRich {
     private final int rows;
     private final int columns;
     private final boolean extendable;
-    private final int@NotNull[] resultSlots;
+    private final int@NotNull [] resultSlots;
     private final boolean aligned;
 
     InvTypeRich(
@@ -24,7 +24,7 @@ public final class InvTypeRich {
         final int rows,
         final int columns,
         final boolean extendable,
-        final int@NotNull[] resultSlots,
+        final int@NotNull [] resultSlots,
         final boolean aligned
     ) {
         this.type = type;
@@ -82,7 +82,7 @@ public final class InvTypeRich {
         return this.extendable;
     }
 
-    public int@NotNull[] resultSlots() {
+    public int@NotNull [] resultSlots() {
         return this.resultSlots;
     }
 

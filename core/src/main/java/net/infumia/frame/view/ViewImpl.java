@@ -161,8 +161,8 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ContextOpen context
     ) {
         return this.pipelines.executeProcessConfigModifiers(context).thenCompose(__ ->
-                this.executeCreateContainer(context, context.buildFinalConfig())
-            );
+            this.executeCreateContainer(context, context.buildFinalConfig())
+        );
     }
 
     @NotNull
@@ -171,8 +171,8 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ViewConfig config
     ) {
         return this.pipelines.executeCreateContainer(context, config).thenCompose(container ->
-                this.executeModifyContainer(context, config, container)
-            );
+            this.executeModifyContainer(context, config, container)
+        );
     }
 
     @NotNull
@@ -182,8 +182,8 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ViewContainer container
     ) {
         return this.pipelines.executeModifyContainer(context, config, container).thenCompose(
-                modified -> this.executeLayoutResolution(context, config, modified)
-            );
+            modified -> this.executeLayoutResolution(context, config, modified)
+        );
     }
 
     @NotNull
@@ -193,8 +193,8 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ViewContainer container
     ) {
         return this.pipelines.executeLayoutResolution(context, config, container).thenCompose(
-                slots -> this.executeCreateRender(context, config, container, slots)
-            );
+            slots -> this.executeCreateRender(context, config, container, slots)
+        );
     }
 
     @NotNull
@@ -205,7 +205,7 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final Collection<LayoutSlot> layouts
     ) {
         return this.pipelines.executeCreateRender(context, config, container, layouts).thenCompose(
-                render -> ((ContextRenderRich) render).simulateFirstRender().thenApply(__ -> render)
-            );
+            render -> ((ContextRenderRich) render).simulateFirstRender().thenApply(__ -> render)
+        );
     }
 }

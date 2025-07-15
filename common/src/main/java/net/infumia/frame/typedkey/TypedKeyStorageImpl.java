@@ -51,8 +51,8 @@ final class TypedKeyStorageImpl extends TypedKeyStorageImmutableImpl implements 
         @NotNull final Function<T, T> oldValueToNewValue
     ) {
         return (T) this.map.computeIfPresent(key, (__, oldValue) ->
-                oldValueToNewValue.apply((T) oldValue)
-            );
+            oldValueToNewValue.apply((T) oldValue)
+        );
     }
 
     @Override

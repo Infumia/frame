@@ -24,7 +24,7 @@ public final class ExamplePlugin extends JavaPlugin implements CommandExecutor {
         @NotNull final CommandSender sender,
         @NotNull final Command command,
         @NotNull final String label,
-        final String@NotNull[] args
+        final String@NotNull [] args
     ) {
         CompletableFuture.runAsync(() -> this.frame.open(((Player) sender), ViewExample.class));
         return true;

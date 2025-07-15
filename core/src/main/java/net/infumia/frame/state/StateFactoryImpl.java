@@ -36,72 +36,72 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StateInitial<T> createInitialState(@NotNull final TypedKey<T> stateKey) {
         return this.registered(
-                new StateInitialImpl<>(
-                    StateFactoryImpl.nextStateId(),
-                    (host, __) -> new StateValueInitial<>(host, stateKey.key()),
-                    stateKey.key()
-                )
-            );
+            new StateInitialImpl<>(
+                StateFactoryImpl.nextStateId(),
+                (host, __) -> new StateValueInitial<>(host, stateKey.key()),
+                stateKey.key()
+            )
+        );
     }
 
     @NotNull
     @Override
     public <T> State<T> createState(@NotNull final T initialValue) {
         return this.registered(
-                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueImmutable<>(initialValue)
-                )
-            );
+            new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
+                new StateValueImmutable<>(initialValue)
+            )
+        );
     }
 
     @NotNull
     @Override
     public <T> StateMutable<T> createMutableState(@Nullable final T initialValue) {
         return this.registered(
-                new StateMutableImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueMutable<>(initialValue)
-                )
-            );
+            new StateMutableImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
+                new StateValueMutable<>(initialValue)
+            )
+        );
     }
 
     @NotNull
     @Override
     public <T> State<T> createComputedState(@NotNull final Function<ContextBase, T> computation) {
         return this.registered(
-                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueComputed<>(() -> computation.apply(host))
-                )
-            );
+            new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
+                new StateValueComputed<>(() -> computation.apply(host))
+            )
+        );
     }
 
     @NotNull
     @Override
     public <T> State<T> createComputedState(@NotNull final Supplier<T> computation) {
         return this.registered(
-                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueComputed<>(computation)
-                )
-            );
+            new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
+                new StateValueComputed<>(computation)
+            )
+        );
     }
 
     @NotNull
     @Override
     public <T> State<T> createLazyState(@NotNull final Function<ContextBase, T> computation) {
         return this.registered(
-                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueComputed<>(Lazy.of(() -> computation.apply(host)))
-                )
-            );
+            new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
+                new StateValueComputed<>(Lazy.of(() -> computation.apply(host)))
+            )
+        );
     }
 
     @NotNull
     @Override
     public <T> State<T> createLazyState(@NotNull final Supplier<T> computation) {
         return this.registered(
-                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueComputed<>(Lazy.of(computation))
-                )
-            );
+            new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
+                new StateValueComputed<>(Lazy.of(computation))
+            )
+        );
     }
 
     @NotNull
@@ -325,8 +325,8 @@ public class StateFactoryImpl implements StateFactory {
         return this.registered(
                 new StatePaginationImpl(StateFactoryImpl.nextStateId(), (host, state) -> {
                     final ElementPaginationBuilderRich<T> b = (ElementPaginationBuilderRich<
-                            T
-                        >) builder;
+                        T
+                    >) builder;
                     b.associated(state);
                     return new StateValueImmutable<>((ElementPagination) b.build(host));
                 })

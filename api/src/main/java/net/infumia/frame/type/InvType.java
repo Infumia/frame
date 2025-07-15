@@ -19,5 +19,5 @@ public enum InvType {
     MERCHANT;
 
     @NotNull
-    public static final InvType@NotNull[] VALUES = InvType.values();
+    public static final InvType@NotNull [] VALUES = InvType.values();
 }

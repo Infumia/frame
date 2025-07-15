@@ -122,10 +122,10 @@ final class ServiceSpigot<Context, Result> {
 
     private ScheduledFuture<?> scheduleTimeout(final CompletableFuture<?> future) {
         return this.pipeline.delayer.schedule(
-                () -> this.tryTimeout(future),
-                this.pipeline.timeout.toMillis(),
-                TimeUnit.MILLISECONDS
-            );
+            () -> this.tryTimeout(future),
+            this.pipeline.timeout.toMillis(),
+            TimeUnit.MILLISECONDS
+        );
     }
 
     private void tryTimeout(final CompletableFuture<?> future) {

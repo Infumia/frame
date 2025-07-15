@@ -59,54 +59,53 @@ public final class InventoryListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClose(final InventoryCloseEvent event) {
         this.extractContext(event.getInventory(), event.getPlayer(), (viewer, ctx) ->
-                this.frame.loggedFuture(
-                        ((ViewEventHandler) viewer.view()).simulateClose(ctx, viewer),
-                        "Error occurred while viewer '%s' closes an inventory",
-                        viewer
-                    )
-            );
+            this.frame.loggedFuture(
+                ((ViewEventHandler) viewer.view()).simulateClose(ctx, viewer),
+                "Error occurred while viewer '%s' closes an inventory",
+                viewer
+            )
+        );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(final InventoryClickEvent event) {
         this.extractContext(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
-                this.frame.loggedFuture(
-                        ((ViewEventHandler) viewer.view()).simulateClick(ctx, viewer, event),
-                        "Error occurred while viewer '%s' clicks an inventory!",
-                        viewer
-                    )
-            );
+            this.frame.loggedFuture(
+                ((ViewEventHandler) viewer.view()).simulateClick(ctx, viewer, event),
+                "Error occurred while viewer '%s' clicks an inventory!",
+                viewer
+            )
+        );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryDrag(final InventoryDragEvent event) {
         this.extractContext(event.getInventory(), event.getWhoClicked(), (viewer, ctx) ->
-                ((ViewEventHandler) viewer.view()).handleInventoryDrag(ctx, event)
-            );
+            ((ViewEventHandler) viewer.view()).handleInventoryDrag(ctx, event)
+        );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onItemPickup(final PlayerPickupItemEvent event) {
         this.extractViewer(event.getPlayer(), viewer ->
-                ((ViewEventHandler) viewer.view()).handleItemPickup(viewer.context(), event)
-            );
+            ((ViewEventHandler) viewer.view()).handleItemPickup(viewer.context(), event)
+        );
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onItemDrop(final PlayerDropItemEvent event) {
         this.extractViewer(event.getPlayer(), viewer ->
-                ((ViewEventHandler) viewer.view()).handleItemDrop(viewer.context(), event)
-            );
+            ((ViewEventHandler) viewer.view()).handleItemDrop(viewer.context(), event)
+        );
     }
 
     private void extractViewer(
         @NotNull final Metadatable metadatable,
         @NotNull final Consumer<ContextualViewer> consumer
     ) {
-        final ContextualViewer viewer =
-            this.metadataAccessFactory.getOrCreate(metadatable).get(
-                    MetadataKeyHolder.CONTEXTUAL_VIEWER
-                );
+        final ContextualViewer viewer = this.metadataAccessFactory.getOrCreate(metadatable).get(
+            MetadataKeyHolder.CONTEXTUAL_VIEWER
+        );
         if (viewer != null) {
             consumer.accept(viewer);
         }

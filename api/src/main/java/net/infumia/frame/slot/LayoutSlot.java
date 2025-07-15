@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 public interface LayoutSlot {
     char character();
 
-    int@NotNull[] slots();
+    int@NotNull [] slots();
 
     @Nullable
     IntFunction<ElementItemBuilder> builderFactory();

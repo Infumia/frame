@@ -26,8 +26,9 @@ public final class PipelinesRenderImpl implements PipelinesRender {
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> executeFirstRender() {
-        return this.pipelines.firstRender()
-            .completeWith(new PipelineContextRenders.FirstRender(this.context));
+        return this.pipelines.firstRender().completeWith(
+            new PipelineContextRenders.FirstRender(this.context)
+        );
     }
 
     @NotNull
@@ -35,8 +36,9 @@ public final class PipelinesRenderImpl implements PipelinesRender {
     public CompletableFuture<ConsumerService.State> executeStartTransition(
         @NotNull final Collection<Viewer> viewers
     ) {
-        return this.pipelines.startTransition()
-            .completeWith(new PipelineContextViews.StartTransition(this.context, viewers));
+        return this.pipelines.startTransition().completeWith(
+            new PipelineContextViews.StartTransition(this.context, viewers)
+        );
     }
 
     @NotNull
@@ -44,15 +46,17 @@ public final class PipelinesRenderImpl implements PipelinesRender {
     public CompletableFuture<ConsumerService.State> executeOpenContainer(
         @NotNull final Collection<Viewer> viewers
     ) {
-        return this.pipelines.openContainer()
-            .completeWith(new PipelineContextRenders.OpenContainer(this.context, viewers));
+        return this.pipelines.openContainer().completeWith(
+            new PipelineContextRenders.OpenContainer(this.context, viewers)
+        );
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> executeStartUpdate() {
-        return this.pipelines.startUpdate()
-            .completeWith(new PipelineContextRenders.StartUpdate(this.context));
+        return this.pipelines.startUpdate().completeWith(
+            new PipelineContextRenders.StartUpdate(this.context)
+        );
     }
 
     @NotNull
@@ -61,26 +65,25 @@ public final class PipelinesRenderImpl implements PipelinesRender {
         @NotNull final ContextRender from,
         @NotNull final Collection<Viewer> viewers
     ) {
-        return this.pipelines.resume()
-            .completeWith(
-                new PipelineContextRenders.Resume(
-                    new ContextResumeImpl(this.context, from, viewers)
-                )
-            );
+        return this.pipelines.resume().completeWith(
+            new PipelineContextRenders.Resume(new ContextResumeImpl(this.context, from, viewers))
+        );
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> executeStopUpdate() {
-        return this.pipelines.stopUpdate()
-            .completeWith(new PipelineContextRenders.StopUpdate(this.context));
+        return this.pipelines.stopUpdate().completeWith(
+            new PipelineContextRenders.StopUpdate(this.context)
+        );
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> executeUpdate() {
-        return this.pipelines.update()
-            .completeWith(new PipelineContextRenders.Update(this.context));
+        return this.pipelines.update().completeWith(
+            new PipelineContextRenders.Update(this.context)
+        );
     }
 
     @Override

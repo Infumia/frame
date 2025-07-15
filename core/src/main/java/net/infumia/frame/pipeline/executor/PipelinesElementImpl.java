@@ -30,12 +30,11 @@ public final class PipelinesElementImpl implements PipelinesElement {
         @NotNull final ContextRender context,
         final boolean forced
     ) {
-        return this.pipelines.render()
-            .completeWith(
-                new PipelineContextElements.Render(
-                    new ContextElementRenderImpl(context, this.element, forced)
-                )
-            );
+        return this.pipelines.render().completeWith(
+            new PipelineContextElements.Render(
+                new ContextElementRenderImpl(context, this.element, forced)
+            )
+        );
     }
 
     @NotNull
@@ -44,12 +43,11 @@ public final class PipelinesElementImpl implements PipelinesElement {
         @NotNull final ContextRender context,
         final boolean forced
     ) {
-        return this.pipelines.update()
-            .completeWith(
-                new PipelineContextElements.Update(
-                    new ContextElementUpdateImpl(context, this.element, forced)
-                )
-            );
+        return this.pipelines.update().completeWith(
+            new PipelineContextElements.Update(
+                new ContextElementUpdateImpl(context, this.element, forced)
+            )
+        );
     }
 
     @NotNull
@@ -57,12 +55,9 @@ public final class PipelinesElementImpl implements PipelinesElement {
     public CompletableFuture<ConsumerService.State> executeClick(
         @NotNull final ContextClick context
     ) {
-        return this.pipelines.click()
-            .completeWith(
-                new PipelineContextElements.Click(
-                    new ContextElementClickImpl(context, this.element)
-                )
-            );
+        return this.pipelines.click().completeWith(
+            new PipelineContextElements.Click(new ContextElementClickImpl(context, this.element))
+        );
     }
 
     @NotNull
@@ -70,12 +65,9 @@ public final class PipelinesElementImpl implements PipelinesElement {
     public CompletableFuture<ConsumerService.State> executeClear(
         @NotNull final ContextRender context
     ) {
-        return this.pipelines.clear()
-            .completeWith(
-                new PipelineContextElements.Clear(
-                    new ContextElementClearImpl(context, this.element)
-                )
-            );
+        return this.pipelines.clear().completeWith(
+            new PipelineContextElements.Clear(new ContextElementClearImpl(context, this.element))
+        );
     }
 
     @Override

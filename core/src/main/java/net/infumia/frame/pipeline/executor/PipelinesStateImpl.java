@@ -27,8 +27,9 @@ public final class PipelinesStateImpl implements PipelinesState {
         @NotNull final State<?> state,
         @NotNull final StateValue<?> value
     ) {
-        return this.pipelines.access()
-            .completeWith(new PipelineContextStates.Access(this.context.frame(), state, value));
+        return this.pipelines.access().completeWith(
+            new PipelineContextStates.Access(this.context.frame(), state, value)
+        );
     }
 
     @NotNull
@@ -38,10 +39,9 @@ public final class PipelinesStateImpl implements PipelinesState {
         @Nullable final Object oldValue,
         @NotNull final StateValue<?> value
     ) {
-        return this.pipelines.update()
-            .completeWith(
-                new PipelineContextStates.Update(this.context.frame(), state, oldValue, value)
-            );
+        return this.pipelines.update().completeWith(
+            new PipelineContextStates.Update(this.context.frame(), state, oldValue, value)
+        );
     }
 
     @Override

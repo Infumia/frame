@@ -11,7 +11,7 @@ public interface ViewConfigBuilder extends ViewConfig {
     ViewConfigBuilder title(@NotNull Object title);
 
     @NotNull
-    ViewConfigBuilder layout(@NotNull String@Nullable[] layout);
+    ViewConfigBuilder layout(@NotNull String@Nullable [] layout);
 
     @NotNull
     ViewConfigBuilder size(int size);

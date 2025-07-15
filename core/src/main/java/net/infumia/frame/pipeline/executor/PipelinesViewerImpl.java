@@ -25,8 +25,9 @@ public final class PipelinesViewerImpl implements PipelinesViewer {
     public CompletableFuture<ConsumerService.State> executeAdded(
         @NotNull final Collection<Viewer> viewers
     ) {
-        return this.pipelines.added()
-            .completeWith(new PipelineContextViewers.Added(this.context, viewers));
+        return this.pipelines.added().completeWith(
+            new PipelineContextViewers.Added(this.context, viewers)
+        );
     }
 
     @NotNull
@@ -34,8 +35,9 @@ public final class PipelinesViewerImpl implements PipelinesViewer {
     public CompletableFuture<ConsumerService.State> executeRemoved(
         @NotNull final Collection<Viewer> viewers
     ) {
-        return this.pipelines.removed()
-            .completeWith(new PipelineContextViewers.Removed(this.context, viewers));
+        return this.pipelines.removed().completeWith(
+            new PipelineContextViewers.Removed(this.context, viewers)
+        );
     }
 
     @Override

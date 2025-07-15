@@ -17,9 +17,14 @@ public final class AnnotationFeature implements Feature {
 
     @Override
     public void onInstall(@NotNull final Frame frame) {
-        frame.pipelines().applyRegisterViews(
-            Implementation.registerAfter(ServiceRegisterViews.KEY, new ServiceRegisterViewsAnnotations())
-        );
+        frame
+            .pipelines()
+            .applyRegisterViews(
+                Implementation.registerAfter(
+                    ServiceRegisterViews.KEY,
+                    new ServiceRegisterViewsAnnotations()
+                )
+            );
     }
 
     @Override

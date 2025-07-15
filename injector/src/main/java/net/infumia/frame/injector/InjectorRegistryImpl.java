@@ -52,9 +52,9 @@ final class InjectorRegistryImpl<C> implements InjectorRegistry<C> {
         Preconditions.argumentNotNull(injector, "injector");
 
         return this.register(
-                cl -> GenericTypeReflector.isSuperType(cl.getType(), type.getType()),
-                injector
-            );
+            cl -> GenericTypeReflector.isSuperType(cl.getType(), type.getType()),
+            injector
+        );
     }
 
     @Override

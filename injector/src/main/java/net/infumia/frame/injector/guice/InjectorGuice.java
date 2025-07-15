@@ -25,8 +25,8 @@ public final class InjectorGuice<C> implements Injector<C> {
 
         try {
             return this.injector.getInstance(
-                    this.keyCreator.create(ctx.injectedClass(), ctx.annotationAccessor())
-                );
+                this.keyCreator.create(ctx.injectedClass(), ctx.annotationAccessor())
+            );
         } catch (final ConfigurationException ignored) {
             return null;
         }

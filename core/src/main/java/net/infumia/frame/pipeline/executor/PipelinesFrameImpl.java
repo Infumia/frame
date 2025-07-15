@@ -28,13 +28,12 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
     public CompletableFuture<Collection<Object>> executeCreateViews(
         @NotNull final Collection<Class<?>> rawViews
     ) {
-        return this.pipelines.createViews()
-            .completeWith(
-                new PipelineContextFrames.CreateViews(
-                    this.frame,
-                    Collections.unmodifiableCollection(rawViews)
-                )
-            );
+        return this.pipelines.createViews().completeWith(
+            new PipelineContextFrames.CreateViews(
+                this.frame,
+                Collections.unmodifiableCollection(rawViews)
+            )
+        );
     }
 
     @NotNull
@@ -43,21 +42,21 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
         @NotNull final Collection<Object> views,
         @NotNull final Consumer<TypedKeyStorageImmutableBuilder> instanceConfigurer
     ) {
-        return this.pipelines.registerViews()
-            .completeWith(
-                new PipelineContextFrames.RegisterViews(
-                    this.frame,
-                    Collections.unmodifiableCollection(views),
-                    instanceConfigurer
-                )
-            );
+        return this.pipelines.registerViews().completeWith(
+            new PipelineContextFrames.RegisterViews(
+                this.frame,
+                Collections.unmodifiableCollection(views),
+                instanceConfigurer
+            )
+        );
     }
 
     @NotNull
     @Override
     public CompletableFuture<ConsumerService.State> executeRegisterListeners() {
-        return this.pipelines.registerListeners()
-            .completeWith(new PipelineContextFrames.RegisterListeners(this.frame));
+        return this.pipelines.registerListeners().completeWith(
+            new PipelineContextFrames.RegisterListeners(this.frame)
+        );
     }
 
     @NotNull
@@ -65,13 +64,12 @@ public final class PipelinesFrameImpl implements PipelinesFrame {
     public CompletableFuture<ConsumerService.State> executeUnregisterViews(
         @NotNull final Collection<View> views
     ) {
-        return this.pipelines.unregisterViews()
-            .completeWith(
-                new PipelineContextFrames.UnregisterViews(
-                    this.frame,
-                    Collections.unmodifiableCollection(views)
-                )
-            );
+        return this.pipelines.unregisterViews().completeWith(
+            new PipelineContextFrames.UnregisterViews(
+                this.frame,
+                Collections.unmodifiableCollection(views)
+            )
+        );
     }
 
     @Override

@@ -82,9 +82,9 @@ public final class MetadataAccessImpl implements MetadataAccess {
     ) {
         this.registered.add(key);
         this.metadatable.setMetadata(
-                key.key(),
-                new LazyMetadataValue(this.plugin, cacheStrategy, value::call)
-            );
+            key.key(),
+            new LazyMetadataValue(this.plugin, cacheStrategy, value::call)
+        );
     }
 
     @Override

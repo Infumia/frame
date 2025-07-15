@@ -206,12 +206,11 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         if (this.onPageSwitch != null) {
             this.onPageSwitch.accept(host, this);
         }
-        this.parent.frame()
-            .loggedFuture(
-                this.update(),
-                "An error occurred while updating the pagination '%s'.",
-                this
-            );
+        this.parent.frame().loggedFuture(
+            this.update(),
+            "An error occurred while updating the pagination '%s'.",
+            this
+        );
     }
 
     @Override
@@ -257,8 +256,9 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         if (this.currentLayoutSlot != null) {
             return Arrays.stream(this.currentLayoutSlot.slots()).anyMatch(slot -> slot == position);
         }
-        return this.elements.stream()
-            .anyMatch(element -> ((ElementRich) element).containedWithin(position));
+        return this.elements.stream().anyMatch(element ->
+            ((ElementRich) element).containedWithin(position)
+        );
     }
 
     @Override

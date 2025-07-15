@@ -27,7 +27,7 @@ public final class ServiceProcessConfigModifierAddSizeModifier
             .context()
             .modifyConfig()
             .addModifier((builder, context) -> {
-                final String@Nullable[] layout = builder.layout();
+                final String@Nullable [] layout = builder.layout();
                 if (layout == null) {
                     return;
                 }

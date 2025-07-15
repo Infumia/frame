@@ -44,8 +44,8 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
                 return this.renderChild(context, pagination)
                     .thenCompose(s ->
                         ((StateRich<ElementPagination>) pagination.associated()).manualUpdateWait(
-                                context
-                            )
+                            context
+                        )
                     )
                     .thenApply(v -> null);
             });

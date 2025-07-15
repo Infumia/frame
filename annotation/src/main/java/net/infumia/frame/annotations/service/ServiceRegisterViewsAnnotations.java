@@ -15,6 +15,8 @@ public final class ServiceRegisterViewsAnnotations
     }
 
     @Override
-    public void accept(final PipelineContextFrame.RegisterViews ctx, final TypedKeyStorage storage) {
-    }
+    public void accept(
+        final PipelineContextFrame.RegisterViews ctx,
+        final TypedKeyStorage storage
+    ) {}
 }

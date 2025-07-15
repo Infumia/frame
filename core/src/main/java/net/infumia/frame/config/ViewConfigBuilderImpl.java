@@ -66,7 +66,7 @@ final class ViewConfigBuilderImpl implements ViewConfigBuilderRich {
 
     @NotNull
     @Override
-    public String@Nullable[] layout() {
+    public String@Nullable [] layout() {
         return this.layout;
     }
 
@@ -118,7 +118,7 @@ final class ViewConfigBuilderImpl implements ViewConfigBuilderRich {
 
     @NotNull
     @Override
-    public ViewConfigBuilder layout(@NotNull final String@Nullable[] layout) {
+    public ViewConfigBuilder layout(@NotNull final String@Nullable [] layout) {
         this.layout = layout;
         return this;
     }
@@ -186,12 +186,12 @@ final class ViewConfigBuilderImpl implements ViewConfigBuilderRich {
     @Override
     public <T> ViewConfigBuilderRich addOption(@NotNull final ViewConfigOption<T> option) {
         return this.addOption(
-                option,
-                Preconditions.argumentNotNull(
-                    option.defaultValue(),
-                    "Option '%s' does not have a default value! Please use #addOption(ViewConfigOption<T>, T) method instead!"
-                )
-            );
+            option,
+            Preconditions.argumentNotNull(
+                option.defaultValue(),
+                "Option '%s' does not have a default value! Please use #addOption(ViewConfigOption<T>, T) method instead!"
+            )
+        );
     }
 
     @NotNull

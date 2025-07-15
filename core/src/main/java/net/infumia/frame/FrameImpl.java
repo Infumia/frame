@@ -100,15 +100,15 @@ final class FrameImpl implements FrameRich {
             .thenCompose(views -> {
                 this.registeredViews.clear();
                 this.registeredViews.putAll(
-                        views
-                            .stream()
-                            .collect(
-                                Collectors.toMap(
-                                    view -> view.instance().getClass(),
-                                    Function.identity()
-                                )
+                    views
+                        .stream()
+                        .collect(
+                            Collectors.toMap(
+                                view -> view.instance().getClass(),
+                                Function.identity()
                             )
-                    );
+                        )
+                );
                 return this.pipelines.executeRegisterListeners();
             })
             .exceptionally(throwable -> {
@@ -131,10 +131,10 @@ final class FrameImpl implements FrameRich {
         final HashMap<Class<?>, View> views = new HashMap<>(this.registeredViews);
         this.registeredViews.clear();
         this.loggedFuture(
-                this.pipelines.executeUnregisterViews(views.values()),
-                "Error occurred while unregistering views '%s'!",
-                views.keySet()
-            );
+            this.pipelines.executeUnregisterViews(views.values()),
+            "Error occurred while unregistering views '%s'!",
+            views.keySet()
+        );
     }
 
     @NotNull
@@ -255,16 +255,17 @@ final class FrameImpl implements FrameRich {
         if (!(view instanceof ViewEventHandler)) {
             return CompletableFuture.completedFuture(null);
         }
-        final TypedKeyStorageImmutableBuilder builder =
-            this.storageFactory.createImmutableBuilder(new HashMap<>());
+        final TypedKeyStorageImmutableBuilder builder = this.storageFactory.createImmutableBuilder(
+            new HashMap<>()
+        );
         initialDataConfigurer.accept(builder);
         return this.loggedFuture(
-                this.taskFactory.handleFuture(() ->
-                        ((ViewEventHandler) view).simulateOpen(players, builder.build())
-                    ),
-                "Error occurred while opening view '%s'!",
-                viewClass
-            );
+            this.taskFactory.handleFuture(() ->
+                ((ViewEventHandler) view).simulateOpen(players, builder.build())
+            ),
+            "Error occurred while opening view '%s'!",
+            viewClass
+        );
     }
 
     @NotNull
@@ -288,12 +289,12 @@ final class FrameImpl implements FrameRich {
             "The active context's view must be an instance of ViewEventHandler!"
         );
         return this.loggedFuture(
-                this.taskFactory.handleFuture(() ->
-                        ((ViewEventHandler) view).simulateOpenActive(activeContext, players)
-                    ),
-                "Error occurred while opening an active view '%s'!",
-                view.instance()
-            );
+            this.taskFactory.handleFuture(() ->
+                ((ViewEventHandler) view).simulateOpenActive(activeContext, players)
+            ),
+            "Error occurred while opening an active view '%s'!",
+            view.instance()
+        );
     }
 
     @NotNull

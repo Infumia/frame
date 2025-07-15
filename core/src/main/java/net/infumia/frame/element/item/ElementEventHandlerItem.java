@@ -84,8 +84,10 @@ final class ElementEventHandlerItem implements ElementEventHandler {
         @NotNull final ElementRich compareTo,
         @NotNull final ContextElementRender context
     ) {
-        final Optional<ElementRich> overlappingOptional =
-            this.findOverlappingElement(compareTo, context);
+        final Optional<ElementRich> overlappingOptional = this.findOverlappingElement(
+            compareTo,
+            context
+        );
         if (!overlappingOptional.isPresent()) {
             return compareTo.pipelines().executeClear(context);
         }

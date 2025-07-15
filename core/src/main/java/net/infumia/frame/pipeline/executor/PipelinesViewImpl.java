@@ -47,8 +47,9 @@ public final class PipelinesViewImpl implements PipelinesView {
     public CompletableFuture<Collection<Viewer>> executeCreateViewers(
         @NotNull final Collection<Player> viewers
     ) {
-        return this.pipelines.createViewers()
-            .completeWith(new PipelineContextViews.CreateViewers(this.view, viewers));
+        return this.pipelines.createViewers().completeWith(
+            new PipelineContextViews.CreateViewers(this.view, viewers)
+        );
     }
 
     @NotNull
@@ -57,8 +58,9 @@ public final class PipelinesViewImpl implements PipelinesView {
         @NotNull final Collection<Viewer> viewers,
         @NotNull final TypedKeyStorageImmutable initialData
     ) {
-        return this.pipelines.createContext()
-            .completeWith(new PipelineContextViews.CreateContext(this.view, viewers, initialData));
+        return this.pipelines.createContext().completeWith(
+            new PipelineContextViews.CreateContext(this.view, viewers, initialData)
+        );
     }
 
     @NotNull
@@ -77,8 +79,9 @@ public final class PipelinesViewImpl implements PipelinesView {
     public CompletableFuture<ConsumerService.State> executeProcessConfigModifiers(
         @NotNull final ContextOpen context
     ) {
-        return this.pipelines.processConfigModifiers()
-            .completeWith(new PipelineContextViews.ProcessConfigModifier(context));
+        return this.pipelines.processConfigModifiers().completeWith(
+            new PipelineContextViews.ProcessConfigModifier(context)
+        );
     }
 
     @NotNull
@@ -87,8 +90,9 @@ public final class PipelinesViewImpl implements PipelinesView {
         @NotNull final ContextBase context,
         @NotNull final ViewConfig config
     ) {
-        return this.pipelines.createContainer()
-            .completeWith(new PipelineContextViews.CreateContainer(context, config));
+        return this.pipelines.createContainer().completeWith(
+            new PipelineContextViews.CreateContainer(context, config)
+        );
     }
 
     @NotNull
@@ -103,7 +107,9 @@ public final class PipelinesViewImpl implements PipelinesView {
             config,
             container
         );
-        return this.pipelines.modifyContainer().completeWith(ctx).thenApply(__ -> ctx.container());
+        return this.pipelines.modifyContainer()
+            .completeWith(ctx)
+            .thenApply(__ -> ctx.container());
     }
 
     @NotNull
@@ -128,10 +134,9 @@ public final class PipelinesViewImpl implements PipelinesView {
         @NotNull final ViewContainer container,
         @NotNull final Collection<LayoutSlot> layouts
     ) {
-        return this.pipelines.createRender()
-            .completeWith(
-                new PipelineContextViews.CreateRender(context, config, container, layouts)
-            );
+        return this.pipelines.createRender().completeWith(
+            new PipelineContextViews.CreateRender(context, config, container, layouts)
+        );
     }
 
     @NotNull
@@ -141,10 +146,9 @@ public final class PipelinesViewImpl implements PipelinesView {
         @NotNull final Viewer clicker,
         @NotNull final InventoryClickEvent event
     ) {
-        return this.pipelines.click()
-            .completeWith(
-                new PipelineContextViews.Click(new ContextClickImpl(ctx, clicker, event))
-            );
+        return this.pipelines.click().completeWith(
+            new PipelineContextViews.Click(new ContextClickImpl(ctx, clicker, event))
+        );
     }
 
     @NotNull
@@ -154,10 +158,9 @@ public final class PipelinesViewImpl implements PipelinesView {
         @NotNull final Viewer viewer,
         final boolean forced
     ) {
-        return this.pipelines.close()
-            .completeWith(
-                new PipelineContextViews.Close(new ContextCloseImpl(ctx, viewer, forced))
-            );
+        return this.pipelines.close().completeWith(
+            new PipelineContextViews.Close(new ContextCloseImpl(ctx, viewer, forced))
+        );
     }
 
     @Override

@@ -19,9 +19,9 @@ fun Project.applySpotless() {
 
         val prettierConfig =
             mapOf(
-                "prettier" to "3.5.3",
-                "prettier-plugin-java" to "2.6.7",
-                "prettier-plugin-toml" to "2.0.4",
+                "prettier" to "3.6.2",
+                "prettier-plugin-java" to "2.7.2",
+                "prettier-plugin-toml" to "2.0.6",
             )
 
         yaml {

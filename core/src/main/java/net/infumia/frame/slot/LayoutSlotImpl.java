@@ -9,12 +9,12 @@ import org.jetbrains.annotations.Nullable;
 public final class LayoutSlotImpl implements LayoutSlot {
 
     private final char character;
-    private final int@NotNull[] slots;
+    private final int@NotNull [] slots;
     private final IntFunction<ElementItemBuilder> builderFactory;
 
     private LayoutSlotImpl(
         final char character,
-        final int@NotNull[] slots,
+        final int@NotNull [] slots,
         @Nullable final IntFunction<ElementItemBuilder> builderFactory
     ) {
         this.character = character;
@@ -22,7 +22,7 @@ public final class LayoutSlotImpl implements LayoutSlot {
         this.builderFactory = builderFactory;
     }
 
-    public LayoutSlotImpl(final char character, final int@NotNull[] slots) {
+    public LayoutSlotImpl(final char character, final int@NotNull [] slots) {
         this(character, slots, null);
     }
 
@@ -32,7 +32,7 @@ public final class LayoutSlotImpl implements LayoutSlot {
     }
 
     @Override
-    public int@NotNull[] slots() {
+    public int@NotNull [] slots() {
         return this.slots;
     }
 

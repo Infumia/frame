@@ -30,8 +30,8 @@ public final class MetadataAccessFactoryImpl implements MetadataAccessFactory {
     @Override
     public MetadataAccess getOrCreate(@NotNull final Metadatable metadatable) {
         return this.cache.computeIfAbsent(this.cacheKeyExtractor.apply(metadatable), __ ->
-                new MetadataAccessImpl(this.plugin, metadatable)
-            );
+            new MetadataAccessImpl(this.plugin, metadatable)
+        );
     }
 
     @Override

@@ -51,7 +51,7 @@ final class ViewConfigImpl implements ViewConfigRich {
 
     @NotNull
     @Override
-    public String@Nullable[] layout() {
+    public String@Nullable [] layout() {
         return this.layout;
     }
 

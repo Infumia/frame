@@ -58,10 +58,9 @@ public abstract class AnnotatedMethodHandler<C> {
     protected CompletableFuture<Collection<ParameterValue>> createParameterValues(
         @NotNull final C context
     ) {
-        final CompletableFuture<@Nullable ParameterValue>[] futures =
-            this.parameters.stream()
-                .map(parameter -> this.createParameterValue(context, parameter))
-                .toArray(CompletableFuture[]::new);
+        final CompletableFuture<@Nullable ParameterValue>[] futures = this.parameters.stream()
+            .map(parameter -> this.createParameterValue(context, parameter))
+            .toArray(CompletableFuture[]::new);
 
         return CompletableFuture.allOf(futures).thenApply(__ ->
             Arrays.stream(futures)
@@ -111,9 +110,9 @@ public abstract class AnnotatedMethodHandler<C> {
         @NotNull final C context
     ) {
         return this.injector.request(
-                (TypeToken<Object>) TypeToken.get(parameter.getParameterizedType()),
-                context,
-                AnnotationAccessor.of(AnnotationAccessor.of(parameter), this.annotationAccessor)
-            );
+            (TypeToken<Object>) TypeToken.get(parameter.getParameterizedType()),
+            context,
+            AnnotationAccessor.of(AnnotationAccessor.of(parameter), this.annotationAccessor)
+        );
     }
 }

@@ -105,7 +105,9 @@ public class ContextClickImpl extends ContextRenderImpl implements ContextClick 
 
     @Override
     public boolean isLayoutSlot() {
-        return this.layouts().stream().anyMatch(slot -> slot.contains(this.clickedSlot()));
+        return this.layouts()
+            .stream()
+            .anyMatch(slot -> slot.contains(this.clickedSlot()));
     }
 
     @Override

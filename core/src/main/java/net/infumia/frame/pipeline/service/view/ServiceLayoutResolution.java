@@ -27,7 +27,7 @@ public final class ServiceLayoutResolution
 
     @Override
     public void accept(@NotNull final PipelineContextView.LayoutResolution ctx) {
-        final String@Nullable[] layout = ctx.config().layout();
+        final String@Nullable [] layout = ctx.config().layout();
         if (layout == null) {
             return;
         }
