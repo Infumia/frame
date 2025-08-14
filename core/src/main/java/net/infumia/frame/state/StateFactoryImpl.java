@@ -48,7 +48,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> State<T> createState(@NotNull final T initialValue) {
         return this.registered(
-                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
+                new StateImpl<>(StateFactoryImpl.nextStateId(), (__, ___) ->
                     new StateValueImmutable<>(initialValue)
                 )
             );
@@ -58,7 +58,7 @@ public class StateFactoryImpl implements StateFactory {
     @Override
     public <T> StateMutable<T> createMutableState(@Nullable final T initialValue) {
         return this.registered(
-                new StateMutableImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
+                new StateMutableImpl<>(StateFactoryImpl.nextStateId(), (__, ___) ->
                     new StateValueMutable<>(initialValue)
                 )
             );
@@ -77,11 +77,7 @@ public class StateFactoryImpl implements StateFactory {
     @NotNull
     @Override
     public <T> State<T> createComputedState(@NotNull final Supplier<T> computation) {
-        return this.registered(
-                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueComputed<>(computation)
-                )
-            );
+        return this.createComputedState(__ -> computation.get());
     }
 
     @NotNull
@@ -97,11 +93,7 @@ public class StateFactoryImpl implements StateFactory {
     @NotNull
     @Override
     public <T> State<T> createLazyState(@NotNull final Supplier<T> computation) {
-        return this.registered(
-                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueComputed<>(Lazy.of(computation))
-                )
-            );
+        return this.createLazyState(__ -> computation.get());
     }
 
     @NotNull

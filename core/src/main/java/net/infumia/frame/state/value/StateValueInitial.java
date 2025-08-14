@@ -43,11 +43,7 @@ public final class StateValueInitial<T> implements StateValue<T> {
     private StateValue<T> createBackingValue(@NotNull final String key) {
         return new StateValueComputed<>(
             Lazy.of(() -> {
-                final TypedKeyStorageImmutable initialData = Preconditions.stateNotNull(
-                    this.context.initialData(),
-                    "Initial data not found even tough there is a initial state '%s' registered!",
-                    key
-                );
+                final TypedKeyStorageImmutable initialData = this.context.initialData();
                 final Object value = Preconditions.stateNotNull(
                     initialData.get(key),
                     "No initial data found for state '%s'",
