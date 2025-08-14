@@ -163,6 +163,11 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     }
 
     @Override
+    public char layout() {
+        return this.layout;
+    }
+
+    @Override
     public int currentPageIndex() {
         return this.currentPageIndex;
     }
