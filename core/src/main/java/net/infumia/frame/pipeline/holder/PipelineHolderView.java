@@ -31,7 +31,6 @@ import net.infumia.frame.pipeline.service.view.ServiceInitWaitUntil;
 import net.infumia.frame.pipeline.service.view.ServiceLayoutResolution;
 import net.infumia.frame.pipeline.service.view.ServiceLayoutResolutionLogging;
 import net.infumia.frame.pipeline.service.view.ServiceModifyContainerLogging;
-import net.infumia.frame.pipeline.service.view.ServiceOpenInitializePagination;
 import net.infumia.frame.pipeline.service.view.ServiceOpenInitializeState;
 import net.infumia.frame.pipeline.service.view.ServiceOpenLogging;
 import net.infumia.frame.pipeline.service.view.ServiceOpenOnOpen;
@@ -82,7 +81,6 @@ public final class PipelineHolderView implements Cloned<PipelineHolderView> {
             ServiceOpenLogging.INSTANCE
         )
             .register(ServiceOpenWaitUntil.INSTANCE)
-            .register(ServiceOpenInitializePagination.INSTANCE)
             .register(ServiceOpenOnOpen.INSTANCE)
             .register(ServiceOpenInitializeState.INSTANCE)
             .register(ServiceOpenPreviousView.INSTANCE),
