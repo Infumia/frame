@@ -227,13 +227,15 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         }
         this.currentPageIndex = Math.max(0, pageIndex);
         this.pageWasChanged = true;
-        final ContextRender host = (ContextRender) this.parent;
-        if (this.onPageSwitch != null) {
-            this.onPageSwitch.accept(host, this);
-        }
         this.parent.frame()
             .loggedFuture(
-                this.update(),
+                this.update()
+                    .thenRun(() -> {
+                        final ContextRender host = (ContextRender) this.parent;
+                        if (this.onPageSwitch != null) {
+                            this.onPageSwitch.accept(host, this);
+                        }
+                    }),
                 "An error occurred while updating the pagination '%s'.",
                 this
             );
