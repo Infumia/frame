@@ -7,6 +7,7 @@ import net.infumia.frame.context.view.ContextRenderRich;
 import net.infumia.frame.element.pagination.ElementPagination;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextRender;
+import net.infumia.frame.service.ConsumerService;
 import net.infumia.frame.state.pagination.StatePagination;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +27,9 @@ public final class ServiceFirstRenderPagination
 
     @NotNull
     @Override
-    public CompletableFuture<State> handle(@NotNull final PipelineContextRender.FirstRender ctx) {
+    public CompletableFuture<ConsumerService.State> handle(
+        @NotNull final PipelineContextRender.FirstRender ctx
+    ) {
         final ContextRenderRich context = (ContextRenderRich) ctx.context();
         final Collection<CompletableFuture<ElementPagination>> futures = new ArrayList<>();
         for (final net.infumia.frame.state.State<?> state : context.stateRegistry()) {
@@ -36,7 +39,7 @@ public final class ServiceFirstRenderPagination
         }
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
             .thenRun(() -> futures.stream().map(CompletableFuture::join).forEach(ctx::addElement))
-            .thenApply(__ -> State.CONTINUE);
+            .thenApply(__ -> ConsumerService.State.CONTINUE);
     }
 
     private ServiceFirstRenderPagination() {}

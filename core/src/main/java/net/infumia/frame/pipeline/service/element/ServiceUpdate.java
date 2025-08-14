@@ -5,6 +5,7 @@ import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementEventHandlerHolder;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextElement;
+import net.infumia.frame.service.ConsumerService;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceUpdate implements PipelineServiceConsumer<PipelineContextElement.Update> {
@@ -22,14 +23,16 @@ public final class ServiceUpdate implements PipelineServiceConsumer<PipelineCont
 
     @NotNull
     @Override
-    public CompletableFuture<State> handle(@NotNull final PipelineContextElement.Update ctx) {
+    public CompletableFuture<ConsumerService.State> handle(
+        @NotNull final PipelineContextElement.Update ctx
+    ) {
         final Element element = ctx.context().element();
         if (element instanceof ElementEventHandlerHolder) {
             return ((ElementEventHandlerHolder) element).eventHandler()
                 .handleUpdate(ctx)
-                .thenApply(__ -> State.CONTINUE);
+                .thenApply(__ -> ConsumerService.State.CONTINUE);
         }
-        return CompletableFuture.completedFuture(State.CONTINUE);
+        return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
     }
 
     private ServiceUpdate() {}

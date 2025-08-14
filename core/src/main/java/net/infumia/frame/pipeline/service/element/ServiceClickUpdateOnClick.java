@@ -5,6 +5,7 @@ import net.infumia.frame.context.element.ContextElementClick;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextElement;
+import net.infumia.frame.service.ConsumerService;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceClickUpdateOnClick
@@ -23,13 +24,15 @@ public final class ServiceClickUpdateOnClick
 
     @NotNull
     @Override
-    public CompletableFuture<State> handle(@NotNull final PipelineContextElement.Click ctx) {
+    public CompletableFuture<ConsumerService.State> handle(
+        @NotNull final PipelineContextElement.Click ctx
+    ) {
         final ContextElementClick context = ctx.context();
         final Element element = context.element();
         if (element.updateOnClick()) {
             return element.update();
         }
-        return CompletableFuture.completedFuture(State.CONTINUE);
+        return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
     }
 
     private ServiceClickUpdateOnClick() {}

@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextViewer;
+import net.infumia.frame.service.ConsumerService;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceRemovedStopUpdateTask
@@ -22,12 +23,14 @@ public final class ServiceRemovedStopUpdateTask
 
     @NotNull
     @Override
-    public CompletableFuture<State> handle(@NotNull final PipelineContextViewer.Removed ctx) {
+    public CompletableFuture<ConsumerService.State> handle(
+        @NotNull final PipelineContextViewer.Removed ctx
+    ) {
         final ContextRender context = ctx.context();
         if (context.viewers().isEmpty()) {
             return context.pipelines().executeStopUpdate();
         }
-        return CompletableFuture.completedFuture(State.CONTINUE);
+        return CompletableFuture.completedFuture(ConsumerService.State.CONTINUE);
     }
 
     private ServiceRemovedStopUpdateTask() {}
