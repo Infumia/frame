@@ -36,6 +36,11 @@ public final class LayoutSlotImpl implements LayoutSlot {
         return this.slots;
     }
 
+    @Override
+    public boolean isDefinedByUser() {
+        return this.builderFactory != null;
+    }
+
     @Nullable
     @Override
     public IntFunction<ElementItemBuilder> builderFactory() {

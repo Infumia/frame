@@ -1,14 +1,11 @@
 package net.infumia.frame.element.pagination;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
@@ -17,6 +14,7 @@ import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
 import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.element.item.ElementItem;
+import net.infumia.frame.element.item.ElementItemBuilder;
 import net.infumia.frame.element.item.ElementItemBuilderImpl;
 import net.infumia.frame.element.item.ElementItemBuilderRich;
 import net.infumia.frame.pipeline.executor.PipelinesElement;
@@ -370,6 +368,15 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         int index = 0;
         for (final int slot : layoutSlot.slots()) {
             if (index >= elementCount) {
+                final IntFunction<ElementItemBuilder> builder = layoutSlot.builderFactory();
+                if (builder != null) {
+                    final ElementItemBuilderRich elementBuilder =
+                        (ElementItemBuilderRich) builder.apply(index);
+                    elementBuilder.slot(slot);
+                    this.elements.add(elementBuilder.build(context));
+                    index++;
+                    continue;
+                }
                 break;
             }
             final T value = contents.get(index);
@@ -440,7 +447,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
             .layouts()
             .stream()
             .filter(slot -> slot.character() == this.layout)
-            .findFirst()
+            .max(Comparator.comparing(LayoutSlot::isDefinedByUser))
             .orElseThrow(() ->
                 new IllegalArgumentException(
                     String.format("Layout slot target not found: %c", this.layout)
