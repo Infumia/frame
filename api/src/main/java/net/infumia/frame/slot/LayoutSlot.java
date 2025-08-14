@@ -10,6 +10,8 @@ public interface LayoutSlot {
 
     int@NotNull[] slots();
 
+    boolean isDefinedByUser();
+
     @Nullable
     IntFunction<ElementItemBuilder> builderFactory();
 

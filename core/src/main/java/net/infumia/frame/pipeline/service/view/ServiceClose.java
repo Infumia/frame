@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import net.infumia.frame.context.view.ContextClose;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextView;
+import net.infumia.frame.service.ConsumerService;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceClose implements PipelineServiceConsumer<PipelineContextView.Close> {
@@ -22,7 +23,9 @@ public final class ServiceClose implements PipelineServiceConsumer<PipelineConte
 
     @NotNull
     @Override
-    public CompletableFuture<State> handle(@NotNull final PipelineContextView.Close ctx) {
+    public CompletableFuture<ConsumerService.State> handle(
+        @NotNull final PipelineContextView.Close ctx
+    ) {
         final ContextClose context = ctx.context();
         return context.pipelinesViewer().executeRemoved(Collections.singleton(context.viewer()));
     }

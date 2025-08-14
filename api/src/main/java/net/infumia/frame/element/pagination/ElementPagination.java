@@ -4,6 +4,8 @@ import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementContainer;
 
 public interface ElementPagination extends Element, ElementContainer {
+    char layout();
+
     int currentPageIndex();
 
     int nextPageIndex();

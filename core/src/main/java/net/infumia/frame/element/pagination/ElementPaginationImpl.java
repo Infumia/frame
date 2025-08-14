@@ -1,15 +1,11 @@
 package net.infumia.frame.element.pagination;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
@@ -18,6 +14,7 @@ import net.infumia.frame.element.ElementEventHandler;
 import net.infumia.frame.element.ElementImpl;
 import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.element.item.ElementItem;
+import net.infumia.frame.element.item.ElementItemBuilder;
 import net.infumia.frame.element.item.ElementItemBuilderImpl;
 import net.infumia.frame.element.item.ElementItemBuilderRich;
 import net.infumia.frame.pipeline.executor.PipelinesElement;
@@ -161,6 +158,11 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     @Override
     public void clearElements() {
         this.elements = new ArrayList<>();
+    }
+
+    @Override
+    public char layout() {
+        return this.layout;
     }
 
     @Override
@@ -345,11 +347,6 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         @NotNull final List<T> contents
     ) {
         final ViewContainer container = context.container();
-
-        /*if (this.pageSize == -1) {
-            this.updatePageSize(context);
-        }*/
-
         final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
         int index = 0;
         for (int slot = container.firstSlot(); slot < lastSlot; slot++) {
@@ -371,6 +368,15 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         int index = 0;
         for (final int slot : layoutSlot.slots()) {
             if (index >= elementCount) {
+                final IntFunction<ElementItemBuilder> builder = layoutSlot.builderFactory();
+                if (builder != null) {
+                    final ElementItemBuilderRich elementBuilder =
+                        (ElementItemBuilderRich) builder.apply(index);
+                    elementBuilder.slot(slot);
+                    this.elements.add(elementBuilder.build(context));
+                    index++;
+                    continue;
+                }
                 break;
             }
             final T value = contents.get(index);
@@ -441,7 +447,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
             .layouts()
             .stream()
             .filter(slot -> slot.character() == this.layout)
-            .findFirst()
+            .max(Comparator.comparing(LayoutSlot::isDefinedByUser))
             .orElseThrow(() ->
                 new IllegalArgumentException(
                     String.format("Layout slot target not found: %c", this.layout)
@@ -460,9 +466,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         if (src.isEmpty()) {
             return Collections.emptyList();
         }
-        if (src.size() <= pageSize) {
-            return new ArrayList<>(src);
-        }
+
         if (index < 0 || (pagesCount > 0 && index >= pagesCount)) {
             throw new IndexOutOfBoundsException(
                 String.format(
@@ -473,17 +477,8 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
             );
         }
 
-        final List<T> contents = new LinkedList<>();
-        final int base = index * pageSize;
-        int until = base + pageSize;
-        if (until > src.size()) {
-            until = src.size();
-        }
-
-        for (int i = base; i < until; i++) {
-            contents.add(src.get(i));
-        }
-
-        return contents;
+        final int fromIndex = index * pageSize;
+        final int toIndex = Math.min(fromIndex + pageSize, src.size());
+        return src.subList(fromIndex, toIndex);
     }
 }

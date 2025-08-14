@@ -19,16 +19,16 @@ public interface ConsumerService<Context>
     default void accept(final Context ctx) {}
 
     @Override
-    default void accept(final CompletableFuture<State> future, final Context ctx) {
+    default void accept(final CompletableFuture<ConsumerService.State> future, final Context ctx) {
         Preconditions.argumentNotNull(future, "future");
 
         this.accept(ctx);
-        future.complete(State.CONTINUE);
+        future.complete(ConsumerService.State.CONTINUE);
     }
 
     @Override
-    default CompletableFuture<State> handle(final Context ctx) {
-        final CompletableFuture<State> future = new CompletableFuture<>();
+    default CompletableFuture<ConsumerService.State> handle(final Context ctx) {
+        final CompletableFuture<ConsumerService.State> future = new CompletableFuture<>();
         try {
             this.accept(future, ctx);
         } catch (final Throwable throwable) {

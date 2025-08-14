@@ -6,6 +6,7 @@ import net.infumia.frame.element.ElementRich;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.Pipelined;
 import net.infumia.frame.pipeline.context.PipelineContextView;
+import net.infumia.frame.service.ConsumerService;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServiceClickElement
@@ -24,7 +25,9 @@ public final class ServiceClickElement
 
     @NotNull
     @Override
-    public CompletableFuture<State> handle(@NotNull final PipelineContextView.Click ctx) {
+    public CompletableFuture<ConsumerService.State> handle(
+        @NotNull final PipelineContextView.Click ctx
+    ) {
         final ContextClick context = ctx.context();
         final int clickedSlot = context.clickedSlotRaw();
         return context
@@ -36,7 +39,7 @@ public final class ServiceClickElement
             .findFirst()
             .map(Pipelined::pipelines)
             .map(pipelines -> pipelines.executeClick(context))
-            .orElseGet(() -> CompletableFuture.completedFuture(State.CONTINUE));
+            .orElseGet(() -> CompletableFuture.completedFuture(ConsumerService.State.CONTINUE));
     }
 
     private ServiceClickElement() {}

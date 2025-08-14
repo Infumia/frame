@@ -48,7 +48,7 @@ public final class ViewExample implements ViewHandler {
     public void onOpen(@NotNull final ContextOpen ctx) {
         final ViewConfigBuilder config = ctx.modifyConfig();
         config
-            .layout(new String[] { "xxxxxxxxx", "xxxxaxxxx", "xxxbxcxxx" })
+            .layout(new String[] { "xxxxxxxxx", "xxxaaaxxx", "xxxbxcxxx" })
             .title(this.generateTitle(ctx));
     }
 
@@ -56,6 +56,7 @@ public final class ViewExample implements ViewHandler {
     public void onFirstRender(@NotNull final ContextRender ctx) {
         final ElementPagination pagination = this.pagination.getOrThrow(ctx);
         ctx.layoutSlot('x', new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
+        ctx.layoutSlot('a', new ItemStack(Material.BARRIER));
         ctx
             .layoutSlot('b', new ItemStack(Material.ARROW))
             .onClick(click -> pagination.back())
