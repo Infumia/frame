@@ -48,7 +48,7 @@ public final class ViewExample implements ViewHandler {
     public void onOpen(@NotNull final ContextOpen ctx) {
         final ViewConfigBuilder config = ctx.modifyConfig();
         config
-            .layout(new String[] { "xxxxxxxxx", "xxxxaxxxx", "xxxbxcxxx" })
+            .layout(new String[] { "xxxxxxxxx", "xxxaaaxxx", "xxxbxcxxx" })
             .title(this.generateTitle(ctx));
     }
 
