@@ -33,6 +33,6 @@ tasks {
     runServer {
         minecraftVersion("1.21.8")
         jvmArgs("-Dcom.mojang.eula.agree=true")
-        downloadPlugins { github("jpenilla", "TabTPS", "v1.3.27", "tabtps-spigot-1.3.27.jar") }
+        downloadPlugins { github("jpenilla", "TabTPS", "v1.3.28", "tabtps-spigot-1.3.28.jar") }
     }
 }
