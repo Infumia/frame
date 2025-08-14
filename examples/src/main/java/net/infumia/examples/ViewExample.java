@@ -1,5 +1,6 @@
 package net.infumia.examples;
 
+import java.util.List;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextInit;
 import net.infumia.frame.context.view.ContextOpen;
@@ -15,8 +16,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public final class ViewExample implements ViewHandler {
 
@@ -49,7 +48,7 @@ public final class ViewExample implements ViewHandler {
     public void onOpen(@NotNull final ContextOpen ctx) {
         final ViewConfigBuilder config = ctx.modifyConfig();
         config
-            .layout(new String[]{"xxxxxxxxx", "xxxxaxxxx", "xxxbxcxxx"})
+            .layout(new String[] { "xxxxxxxxx", "xxxxaxxxx", "xxxbxcxxx" })
             .title(this.generateTitle(ctx));
     }
 
@@ -73,7 +72,11 @@ public final class ViewExample implements ViewHandler {
     private String generateTitle(final ContextBase ctx) {
         final Viewer viewer = ctx.viewer();
         final ElementPagination pagination = this.pagination.getOrThrow(ctx);
-        return String.format(ViewExample.TITLE,
-            viewer.player().getName(), pagination.currentPageIndex() + 1, pagination.pageCount());
+        return String.format(
+            ViewExample.TITLE,
+            viewer.player().getName(),
+            pagination.currentPageIndex() + 1,
+            pagination.pageCount()
+        );
     }
 }
