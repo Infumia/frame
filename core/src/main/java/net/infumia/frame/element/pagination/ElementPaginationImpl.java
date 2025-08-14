@@ -345,11 +345,6 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         @NotNull final List<T> contents
     ) {
         final ViewContainer container = context.container();
-
-        /*if (this.pageSize == -1) {
-            this.updatePageSize(context);
-        }*/
-
         final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
         int index = 0;
         for (int slot = container.firstSlot(); slot < lastSlot; slot++) {
@@ -460,9 +455,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         if (src.isEmpty()) {
             return Collections.emptyList();
         }
-        if (src.size() <= pageSize) {
-            return new ArrayList<>(src);
-        }
+
         if (index < 0 || (pagesCount > 0 && index >= pagesCount)) {
             throw new IndexOutOfBoundsException(
                 String.format(
@@ -473,17 +466,8 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
             );
         }
 
-        final List<T> contents = new LinkedList<>();
-        final int base = index * pageSize;
-        int until = base + pageSize;
-        if (until > src.size()) {
-            until = src.size();
-        }
-
-        for (int i = base; i < until; i++) {
-            contents.add(src.get(i));
-        }
-
-        return contents;
+        final int fromIndex = index * pageSize;
+        final int toIndex = Math.min(fromIndex + pageSize, src.size());
+        return src.subList(fromIndex, toIndex);
     }
 }
