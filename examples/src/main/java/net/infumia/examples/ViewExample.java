@@ -1,6 +1,6 @@
 package net.infumia.examples;
 
-import java.util.List;
+import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextInit;
 import net.infumia.frame.context.view.ContextOpen;
 import net.infumia.frame.context.view.ContextRender;
@@ -8,15 +8,21 @@ import net.infumia.frame.element.pagination.ElementPagination;
 import net.infumia.frame.state.pagination.StatePagination;
 import net.infumia.frame.type.InvType;
 import net.infumia.frame.view.ViewHandler;
+import net.infumia.frame.view.config.ViewConfigBuilder;
 import net.infumia.frame.viewer.Viewer;
+import net.infumia.titleupdater.TitleUpdater;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public final class ViewExample implements ViewHandler {
 
     private static final ViewExample INSTANCE = new ViewExample();
+
+    private static final String TITLE = "Player: %s | %s/%s";
 
     private StatePagination pagination;
 
@@ -33,16 +39,18 @@ public final class ViewExample implements ViewHandler {
                 builder.item(item);
             })
             .layout('a')
+            .onPageSwitch((context, ___) ->
+                TitleUpdater.update(context.viewer().player(), this.generateTitle(context))
+            )
             .buildPagination();
     }
 
     @Override
     public void onOpen(@NotNull final ContextOpen ctx) {
-        final Viewer viewer = ctx.viewer();
-        ctx
-            .modifyConfig()
-            .layout(new String[] { "xxxxxxxxx", "xxxxaxxxx", "xxxbxcxxx" })
-            .title("Player: " + viewer.player().getName());
+        final ViewConfigBuilder config = ctx.modifyConfig();
+        config
+            .layout(new String[]{"xxxxxxxxx", "xxxxaxxxx", "xxxbxcxxx"})
+            .title(this.generateTitle(ctx));
     }
 
     @Override
@@ -59,5 +67,13 @@ public final class ViewExample implements ViewHandler {
             .onClick(click -> pagination.advance())
             .updateOnStateChange(this.pagination)
             .displayIf(pagination::canAdvance);
+    }
+
+    @NotNull
+    private String generateTitle(final ContextBase ctx) {
+        final Viewer viewer = ctx.viewer();
+        final ElementPagination pagination = this.pagination.getOrThrow(ctx);
+        return String.format(ViewExample.TITLE,
+            viewer.player().getName(), pagination.currentPageIndex() + 1, pagination.pageCount());
     }
 }
