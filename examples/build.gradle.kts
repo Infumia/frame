@@ -25,7 +25,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
 
     implementation("net.infumia:frame:1.0.0-SNAPSHOT")
-    implementation("net.infumia:title-updater:0.1.3")
+    implementation("net.infumia:title-updater:0.1.4")
     implementation("io.leangen.geantyref:geantyref:2.0.1")
 }
 
