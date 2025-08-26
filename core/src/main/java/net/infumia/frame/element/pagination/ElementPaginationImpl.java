@@ -419,7 +419,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         final int slot,
         final int index
     ) {
-        final T value = contents.get(slot);
+        final T value = contents.get(index);
         final ElementItemBuilderRich builder = new ElementItemBuilderImpl();
         builder.root(this);
         builder.slot(slot);
