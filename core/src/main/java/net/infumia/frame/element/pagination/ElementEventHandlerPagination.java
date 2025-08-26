@@ -40,7 +40,6 @@ final class ElementEventHandlerPagination implements ElementEventHandler {
             .loadCurrentPage(context, forced)
             .thenCompose(__ -> {
                 pagination.visible(true);
-                pagination.initialized(true);
                 return this.renderChild(context, pagination)
                     .thenCompose(s ->
                         ((StateRich<ElementPagination>) pagination.associated()).manualUpdateWait(

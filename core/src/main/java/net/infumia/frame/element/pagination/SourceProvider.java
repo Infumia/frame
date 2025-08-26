@@ -18,16 +18,16 @@ public interface SourceProvider<T> extends Function<ContextBase, CompletableFutu
 
     final class Immutable<T> implements SourceProvider<T> {
 
-        private final List<T> values;
+        private final List<T> value;
 
-        public Immutable(@NotNull final List<T> values) {
-            this.values = values;
+        public Immutable(@NotNull final List<T> value) {
+            this.value = value;
         }
 
         @NotNull
         @Override
         public CompletableFuture<List<T>> apply(@NotNull final ContextBase context) {
-            return CompletableFuture.completedFuture(this.values);
+            throw new IllegalStateException("Use #value method instead!");
         }
 
         @Override
@@ -48,6 +48,11 @@ public interface SourceProvider<T> extends Function<ContextBase, CompletableFutu
         @Override
         public boolean async() {
             return false;
+        }
+
+        @NotNull
+        public List<T> value() {
+            return this.value;
         }
     }
 

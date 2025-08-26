@@ -21,9 +21,7 @@ public interface ElementPaginationRich
 
     boolean initialized();
 
-    void initialized(boolean initialized);
-
-    void updatePageSize(@NotNull ContextRender context);
+    void updatePageSize(@NotNull ContextBase context);
 
     @NotNull
     CompletableFuture<?> loadCurrentPage(@NotNull ContextRender context, boolean forced);

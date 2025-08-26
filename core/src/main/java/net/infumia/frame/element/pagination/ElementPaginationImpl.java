@@ -24,6 +24,7 @@ import net.infumia.frame.slot.LayoutSlot;
 import net.infumia.frame.state.State;
 import net.infumia.frame.state.pagination.PaginationElementConfigurer;
 import net.infumia.frame.view.ViewContainer;
+import net.infumia.frame.view.config.ViewConfig;
 import org.jetbrains.annotations.NotNull;
 
 public final class ElementPaginationImpl<T> extends ElementImpl implements ElementPaginationRich {
@@ -68,7 +69,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         this.onPageSwitch = builder.onPageSwitch;
 
         if (this.sourceProvider instanceof SourceProvider.Immutable) {
-            this.currentSource = this.sourceProvider.apply(this.parent).join();
+            this.currentSource = ((SourceProvider.Immutable<T>) this.sourceProvider).value();
             this.sourceFactory = null;
         } else {
             this.sourceFactory = this.sourceProvider;
@@ -88,6 +89,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
             if (lastOrCurrentPage != this.currentPageIndex) {
                 this.switchTo(lastOrCurrentPage);
             }
+            this.initialized = true;
             return ElementPaginationImpl.splitSourceForPage(
                 this.currentPageIndex,
                 this.pageSize(),
@@ -119,17 +121,25 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     }
 
     @Override
-    public void initialized(final boolean initialized) {
-        this.initialized = initialized;
-    }
-
-    @Override
-    public void updatePageSize(@NotNull final ContextRender context) {
-        final String[] layout = context.config().layout();
-        if (layout == null) {
-            this.pageSize = context.container().size();
+    public void updatePageSize(@NotNull final ContextBase context) {
+        final ViewConfig config;
+        if (context instanceof ContextRender) {
+            config = ((ContextRender) context).config();
         } else {
-            this.pageSize = this.layoutSlotFor(context).slots().length;
+            config = context.initialConfig();
+        }
+        if (config.layout() == null) {
+            this.pageSize = config.size();
+        } else {
+            Preconditions.state(
+                context instanceof ContextRender,
+                "Page size cannot be updated due to initializing '%s' pagination eagerly without " +
+                "configuring the layout within onInit.\n" +
+                "Either set a immutable layout within onInit using the initial config or" +
+                "set the inventory size within onInit using initial config.",
+                this.layout
+            );
+            this.pageSize = this.layoutSlotFor(((ContextRender) context)).slots().length;
         }
     }
 
@@ -165,6 +175,9 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     @NotNull
     @Override
     public CompletableFuture<?> initiate(@NotNull final ContextBase context) {
+        if (!this.initialized) {
+            this.updatePageSize(context);
+        }
         return this.loadSourceForTheCurrentPage(context, true);
     }
 
@@ -420,6 +433,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
                 this.pageCount = this.calculatePagesCount(currentSource);
             }
 
+            this.initialized = true;
             return CompletableFuture.completedFuture(
                 ElementPaginationImpl.splitSourceForPage(
                     this.currentPageIndex,
@@ -431,9 +445,10 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         }
 
         this.loading = true;
-        if (this.sourceFactory == null) {
-            return CompletableFuture.completedFuture(Collections.emptyList());
-        }
+        Preconditions.stateNotNull(
+            this.sourceFactory,
+            "Source factory cannot be null in this stage"
+        );
         return this.sourceFactory.apply(context)
             .thenApply(this.pageCalculation)
             .thenApplyAsync(Function.identity(), this.continuationExecutor);
