@@ -385,7 +385,12 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         final int lastSlot = Math.min(container.lastSlot() + 1, contents.size());
         int index = 0;
         for (int slot = container.firstSlot(); slot < lastSlot; slot++) {
-            this.configureElement(context, contents, slot, index++);
+            final T value = contents.get(slot);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl();
+            builder.root(this);
+            builder.slot(slot);
+            this.elementConfigurer.configure(context, builder, index++, slot, value);
+            this.elements.add(builder.build(context));
         }
     }
 
@@ -409,22 +414,13 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
                 }
                 break;
             }
-            this.configureElement(context, contents, index, index++);
+            final T value = contents.get(index);
+            final ElementItemBuilderRich builder = new ElementItemBuilderImpl();
+            builder.root(this);
+            builder.slot(slot);
+            this.elementConfigurer.configure(context, builder, index++, slot, value);
+            this.elements.add(builder.build(context));
         }
-    }
-
-    private void configureElement(
-        @NotNull final ContextRender context,
-        @NotNull final List<T> contents,
-        final int slot,
-        final int index
-    ) {
-        final T value = contents.get(slot);
-        final ElementItemBuilderRich builder = new ElementItemBuilderImpl();
-        builder.root(this);
-        builder.slot(slot);
-        this.elementConfigurer.configure(context, builder, index, slot, value);
-        this.elements.add(builder.build(context));
     }
 
     @NotNull
