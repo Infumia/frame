@@ -171,18 +171,7 @@ public final class ViewImpl implements View, ViewEventHandler {
         @NotNull final ViewConfig config
     ) {
         return this.pipelines.executeCreateContainer(context, config).thenCompose(container ->
-                this.executeModifyContainer(context, config, container)
-            );
-    }
-
-    @NotNull
-    private CompletableFuture<ContextRender> executeModifyContainer(
-        @NotNull final ContextBase context,
-        @NotNull final ViewConfig config,
-        @NotNull final ViewContainer container
-    ) {
-        return this.pipelines.executeModifyContainer(context, config, container).thenCompose(
-                modified -> this.executeLayoutResolution(context, config, modified)
+                this.executeLayoutResolution(context, config, container)
             );
     }
 

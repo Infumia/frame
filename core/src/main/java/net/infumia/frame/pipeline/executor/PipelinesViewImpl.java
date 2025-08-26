@@ -93,21 +93,6 @@ public final class PipelinesViewImpl implements PipelinesView {
 
     @NotNull
     @Override
-    public CompletableFuture<ViewContainer> executeModifyContainer(
-        @NotNull final ContextBase context,
-        @NotNull final ViewConfig config,
-        @NotNull final ViewContainer container
-    ) {
-        final PipelineContextViews.ModifyContainer ctx = new PipelineContextViews.ModifyContainer(
-            context,
-            config,
-            container
-        );
-        return this.pipelines.modifyContainer().completeWith(ctx).thenApply(__ -> ctx.container());
-    }
-
-    @NotNull
-    @Override
     public CompletableFuture<Collection<LayoutSlot>> executeLayoutResolution(
         @NotNull final ContextBase context,
         @NotNull final ViewConfig config,
@@ -215,16 +200,6 @@ public final class PipelinesViewImpl implements PipelinesView {
         > implementation
     ) {
         this.pipelines.createContainer().apply(implementation);
-    }
-
-    @Override
-    public void applyModifyContainer(
-        @NotNull final Implementation<
-            PipelineContextView.ModifyContainer,
-            ConsumerService.State
-        > implementation
-    ) {
-        this.pipelines.modifyContainer().apply(implementation);
     }
 
     @Override

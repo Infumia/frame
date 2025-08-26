@@ -26,9 +26,8 @@ public final class PipelineHolderView implements Cloned<PipelineHolderView> {
     private final PipelineConsumer<
         PipelineContextView.ProcessConfigModifier
     > processConfigModifiers;
-    private final Pipeline<PipelineContextView.CreateContainer, ViewContainer> createContainer;
-    private final PipelineConsumer<PipelineContextView.ModifyContainer> modifyContainer;
     private final PipelineConsumer<PipelineContextView.LayoutResolution> layoutResolution;
+    private final Pipeline<PipelineContextView.CreateContainer, ViewContainer> createContainer;
     private final Pipeline<PipelineContextView.CreateRender, ContextRender> createRender;
     private final PipelineConsumer<PipelineContextView.Click> click;
     private final PipelineConsumer<PipelineContextView.Close> close;
@@ -64,18 +63,14 @@ public final class PipelineHolderView implements Cloned<PipelineHolderView> {
         )
             .register(ServiceProcessConfigModifier.INSTANCE)
             .register(ServiceProcessConfigModifierModifySize.INSTANCE),
-        new PipelineImpl<>(
-            new TypeToken<PipelineService<PipelineContextView.CreateContainer, ViewContainer>>() {},
-            ServiceCreateContainer.INSTANCE
-        ),
-        new PipelineConsumerImpl<>(
-            new TypeToken<PipelineServiceConsumer<PipelineContextView.ModifyContainer>>() {},
-            ServiceModifyContainerLogging.INSTANCE
-        ),
         new PipelineConsumerImpl<>(
             new TypeToken<PipelineServiceConsumer<PipelineContextView.LayoutResolution>>() {},
             ServiceLayoutResolutionLogging.INSTANCE
         ).register(ServiceLayoutResolution.INSTANCE),
+        new PipelineImpl<>(
+            new TypeToken<PipelineService<PipelineContextView.CreateContainer, ViewContainer>>() {},
+            ServiceCreateContainer.INSTANCE
+        ),
         new PipelineImpl<>(
             new TypeToken<PipelineService<PipelineContextView.CreateRender, ContextRender>>() {},
             ServiceCreateRender.INSTANCE
@@ -123,18 +118,13 @@ public final class PipelineHolderView implements Cloned<PipelineHolderView> {
     }
 
     @NotNull
-    public Pipeline<PipelineContextView.CreateContainer, ViewContainer> createContainer() {
-        return this.createContainer;
-    }
-
-    @NotNull
-    public PipelineConsumer<PipelineContextView.ModifyContainer> modifyContainer() {
-        return this.modifyContainer;
-    }
-
-    @NotNull
     public PipelineConsumer<PipelineContextView.LayoutResolution> layoutResolution() {
         return this.layoutResolution;
+    }
+
+    @NotNull
+    public Pipeline<PipelineContextView.CreateContainer, ViewContainer> createContainer() {
+        return this.createContainer;
     }
 
     @NotNull
@@ -161,9 +151,8 @@ public final class PipelineHolderView implements Cloned<PipelineHolderView> {
             this.createContext.cloned(),
             this.open.cloned(),
             this.processConfigModifiers.cloned(),
-            this.createContainer.cloned(),
-            this.modifyContainer.cloned(),
             this.layoutResolution.cloned(),
+            this.createContainer.cloned(),
             this.createRender.cloned(),
             this.click.cloned(),
             this.close.cloned()
@@ -181,9 +170,8 @@ public final class PipelineHolderView implements Cloned<PipelineHolderView> {
         @NotNull final PipelineConsumer<
             PipelineContextView.ProcessConfigModifier
         > processConfigModifiers,
-        @NotNull final Pipeline<PipelineContextView.CreateContainer, ViewContainer> createContainer,
-        @NotNull final PipelineConsumer<PipelineContextView.ModifyContainer> modifyContainer,
         @NotNull final PipelineConsumer<PipelineContextView.LayoutResolution> layoutResolution,
+        @NotNull final Pipeline<PipelineContextView.CreateContainer, ViewContainer> createContainer,
         @NotNull final Pipeline<PipelineContextView.CreateRender, ContextRender> createRender,
         @NotNull final PipelineConsumer<PipelineContextView.Click> click,
         @NotNull final PipelineConsumer<PipelineContextView.Close> close
@@ -193,9 +181,8 @@ public final class PipelineHolderView implements Cloned<PipelineHolderView> {
         this.createContext = createContext;
         this.open = open;
         this.processConfigModifiers = processConfigModifiers;
-        this.createContainer = createContainer;
-        this.modifyContainer = modifyContainer;
         this.layoutResolution = layoutResolution;
+        this.createContainer = createContainer;
         this.createRender = createRender;
         this.click = click;
         this.close = close;

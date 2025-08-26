@@ -49,13 +49,6 @@ public interface PipelinesView {
     );
 
     @NotNull
-    CompletableFuture<ViewContainer> executeModifyContainer(
-        @NotNull ContextBase context,
-        @NotNull ViewConfig config,
-        @NotNull ViewContainer container
-    );
-
-    @NotNull
     CompletableFuture<Collection<LayoutSlot>> executeLayoutResolution(
         @NotNull ContextBase context,
         @NotNull ViewConfig config,
@@ -112,13 +105,6 @@ public interface PipelinesView {
 
     void applyCreateContainer(
         @NotNull Implementation<PipelineContextView.CreateContainer, ViewContainer> implementation
-    );
-
-    void applyModifyContainer(
-        @NotNull Implementation<
-            PipelineContextView.ModifyContainer,
-            ConsumerService.State
-        > implementation
     );
 
     void applyLayoutResolution(
