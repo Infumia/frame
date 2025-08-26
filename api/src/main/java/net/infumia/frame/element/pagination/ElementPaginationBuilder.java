@@ -29,5 +29,11 @@ public interface ElementPaginationBuilder<Type>
     );
 
     @NotNull
+    ElementPaginationBuilder<Type> initiateEagerly(boolean initiateEagerly);
+
+    @NotNull
+    ElementPaginationBuilder<Type> initiateEagerly();
+
+    @NotNull
     StatePagination buildPagination();
 }

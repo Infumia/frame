@@ -35,6 +35,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     private final char layout;
     private final BiConsumer<ContextBase, ElementPagination> onPageSwitch;
     private final PaginationElementConfigurer<T> elementConfigurer;
+    private final boolean initiateEagerly;
     private final State<ElementPagination> associated;
     private final Function<ContextBase, CompletableFuture<List<T>>> sourceFactory;
     private final Function<List<T>, List<T>> pageCalculation;
@@ -61,6 +62,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
             builder.elementConfigurer,
             "Element configurer cannot be null for ElementPagination!"
         );
+        this.initiateEagerly = builder.initiateEagerly;
         this.sourceProvider = builder.sourceProvider;
         this.layout = builder.layout;
         this.onPageSwitch = builder.onPageSwitch;

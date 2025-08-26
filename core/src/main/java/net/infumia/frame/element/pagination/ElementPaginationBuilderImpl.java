@@ -26,6 +26,7 @@ public final class ElementPaginationBuilderImpl<T>
     char layout = '0';
     BiConsumer<ContextBase, ElementPagination> onPageSwitch;
     PaginationElementConfigurer<T> elementConfigurer;
+    boolean initiateEagerly = false;
     State<ElementPagination> associated;
 
     public ElementPaginationBuilderImpl(
@@ -72,6 +73,19 @@ public final class ElementPaginationBuilderImpl<T>
     ) {
         this.elementConfigurer = configurer;
         return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementPaginationBuilder<T> initiateEagerly(final boolean initiateEagerly) {
+        this.initiateEagerly = initiateEagerly;
+        return this;
+    }
+
+    @NotNull
+    @Override
+    public ElementPaginationBuilder<T> initiateEagerly() {
+        return this.initiateEagerly(true);
     }
 
     @NotNull
