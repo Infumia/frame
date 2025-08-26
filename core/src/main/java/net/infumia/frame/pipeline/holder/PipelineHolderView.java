@@ -63,7 +63,7 @@ public final class PipelineHolderView implements Cloned<PipelineHolderView> {
             ServiceProcessConfigModifierLogging.INSTANCE
         )
             .register(ServiceProcessConfigModifier.INSTANCE)
-            .register(ServiceProcessConfigModifierAddSizeModifier.INSTANCE),
+            .register(ServiceProcessConfigModifierModifySize.INSTANCE),
         new PipelineImpl<>(
             new TypeToken<PipelineService<PipelineContextView.CreateContainer, ViewContainer>>() {},
             ServiceCreateContainer.INSTANCE
