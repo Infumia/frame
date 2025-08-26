@@ -409,7 +409,7 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
                 }
                 break;
             }
-            this.configureElement(context, contents, index, index++);
+            this.configureElement(context, contents, slot, index++);
         }
     }
 
