@@ -129,13 +129,22 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
             config = context.initialConfig();
         }
         if (config.layout() == null) {
-            this.pageSize = config.size();
+            final int inventorySize = config.size();
+            Preconditions.state(
+                inventorySize != -1,
+                "Page size cannot be updated due to initializing '%s' pagination eagerly without " +
+                "configuring the layout within onInit.\n" +
+                "Either set an immutable layout within onInit using the initial config or" +
+                "set the inventory size within onInit using initial config.",
+                this.layout
+            );
+            this.pageSize = inventorySize;
         } else {
             Preconditions.state(
                 context instanceof ContextRender,
                 "Page size cannot be updated due to initializing '%s' pagination eagerly without " +
                 "configuring the layout within onInit.\n" +
-                "Either set a immutable layout within onInit using the initial config or" +
+                "Either set an immutable layout within onInit using the initial config or" +
                 "set the inventory size within onInit using initial config.",
                 this.layout
             );
