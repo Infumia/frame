@@ -104,7 +104,7 @@ public final class InvTypeRich {
         }
         final int fullSize = this.fullSize(size);
         Preconditions.argument(
-            fullSize <= this.maxSize,
+            this.maxSize >= fullSize,
             "Size cannot exceed container max size of %d (given: %d (%s rows))",
             this.maxSize,
             fullSize,
@@ -129,7 +129,7 @@ public final class InvTypeRich {
         if (size <= this.rows) {
             return size * this.columns;
         }
-        if (size == Integer.MAX_VALUE) {
+        if (size > this.maxSize) {
             return this.maxSize;
         }
         Preconditions.argument(
