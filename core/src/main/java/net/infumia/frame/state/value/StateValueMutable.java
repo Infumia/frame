@@ -20,9 +20,4 @@ public final class StateValueMutable<T> implements StateValue<T> {
     public void value(@Nullable final T value) {
         this.value = value;
     }
-
-    @Override
-    public boolean mutable() {
-        return true;
-    }
 }

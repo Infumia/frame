@@ -33,4 +33,6 @@ public interface ElementPagination extends Element, ElementContainer {
     void back();
 
     boolean canBack();
+
+    boolean isInitiateEagerly();
 }

@@ -51,9 +51,7 @@ public class StateImpl<T> implements StateRich<T> {
     @Nullable
     @Override
     public T get(@NotNull final StateValueHostHolder host) {
-        return ((StateValueHostRich) host.stateValueHost()).accessStateValueOrInitialize(
-                this
-            ).value();
+        return ((StateValueHostRich) host.stateValueHost()).accessStateValue(this).value();
     }
 
     @NotNull
@@ -78,9 +76,9 @@ public class StateImpl<T> implements StateRich<T> {
     @NotNull
     @Override
     public CompletableFuture<@Nullable T> getWait(@NotNull final StateValueHostHolder host) {
-        return ((StateValueHostRich) host.stateValueHost()).accessStateValueOrInitializeWait(
-                this
-            ).thenApply(StateValue::value);
+        return ((StateValueHostRich) host.stateValueHost()).accessStateValueWait(this).thenApply(
+                StateValue::value
+            );
     }
 
     @NotNull

@@ -7,6 +7,4 @@ public interface StateValue<T> {
     T value();
 
     void value(@Nullable T value);
-
-    boolean mutable();
 }

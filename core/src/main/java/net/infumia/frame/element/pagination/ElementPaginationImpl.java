@@ -162,6 +162,12 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         this.elements = new ArrayList<>();
     }
 
+    @NotNull
+    @Override
+    public CompletableFuture<?> initiate(@NotNull final ContextBase context) {
+        return this.loadSourceForTheCurrentPage(context, true);
+    }
+
     @Override
     public char layout() {
         return this.layout;
@@ -267,6 +273,11 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
     @Override
     public boolean canBack() {
         return this.hasPage(this.currentPageIndex - 1);
+    }
+
+    @Override
+    public boolean isInitiateEagerly() {
+        return this.initiateEagerly;
     }
 
     @NotNull
@@ -395,17 +406,17 @@ public final class ElementPaginationImpl<T> extends ElementImpl implements Eleme
         @NotNull final ContextBase context,
         final boolean forced
     ) {
-        final boolean isLazy = this.sourceProvider.lazy();
-        final boolean lazyInitialized = isLazy && this.initialized;
-        final boolean canReuse = this.sourceProvider.provided() || lazyInitialized;
+        final boolean lazy = this.sourceProvider.lazy();
+        final boolean initialized = lazy && this.initialized;
+        final boolean reuse = this.sourceProvider.provided() || initialized;
         final boolean notComputing = !this.sourceProvider.computed();
-        if (canReuse && notComputing && !forced) {
+        if (reuse && notComputing && !forced) {
             final List<T> currentSource = Preconditions.stateNotNull(
                 this.currentSource,
                 "Current source cannot be null in this stage"
             );
 
-            if (!isLazy) {
+            if (!lazy) {
                 this.pageCount = this.calculatePagesCount(currentSource);
             }
 

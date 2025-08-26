@@ -7,12 +7,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import net.infumia.frame.Lazy;
 import net.infumia.frame.context.ContextBase;
-import net.infumia.frame.element.pagination.ElementPagination;
-import net.infumia.frame.element.pagination.ElementPaginationBuilder;
-import net.infumia.frame.element.pagination.ElementPaginationBuilderImpl;
-import net.infumia.frame.element.pagination.ElementPaginationBuilderRich;
-import net.infumia.frame.element.pagination.SourceProvider;
-import net.infumia.frame.state.pagination.PaginationElementConfigurer;
+import net.infumia.frame.element.pagination.*;
 import net.infumia.frame.state.pagination.StatePagination;
 import net.infumia.frame.state.value.StateValueComputed;
 import net.infumia.frame.state.value.StateValueImmutable;
@@ -38,7 +33,8 @@ public class StateFactoryImpl implements StateFactory {
         return this.registered(
                 new StateInitialImpl<>(
                     StateFactoryImpl.nextStateId(),
-                    (host, __) -> new StateValueInitial<>(host, stateKey.key()),
+                    (host, __) ->
+                        CompletableFuture.completedFuture(new StateValueInitial<>(host, stateKey)),
                     stateKey.key()
                 )
             );
@@ -49,7 +45,7 @@ public class StateFactoryImpl implements StateFactory {
     public <T> State<T> createState(@NotNull final T initialValue) {
         return this.registered(
                 new StateImpl<>(StateFactoryImpl.nextStateId(), (__, ___) ->
-                    new StateValueImmutable<>(initialValue)
+                    CompletableFuture.completedFuture(new StateValueImmutable<>(initialValue))
                 )
             );
     }
@@ -59,7 +55,7 @@ public class StateFactoryImpl implements StateFactory {
     public <T> StateMutable<T> createMutableState(@Nullable final T initialValue) {
         return this.registered(
                 new StateMutableImpl<>(StateFactoryImpl.nextStateId(), (__, ___) ->
-                    new StateValueMutable<>(initialValue)
+                    CompletableFuture.completedFuture(new StateValueMutable<>(initialValue))
                 )
             );
     }
@@ -69,7 +65,9 @@ public class StateFactoryImpl implements StateFactory {
     public <T> State<T> createComputedState(@NotNull final Function<ContextBase, T> computation) {
         return this.registered(
                 new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueComputed<>(() -> computation.apply(host))
+                    CompletableFuture.completedFuture(
+                        new StateValueComputed<>(() -> computation.apply(host))
+                    )
                 )
             );
     }
@@ -85,7 +83,9 @@ public class StateFactoryImpl implements StateFactory {
     public <T> State<T> createLazyState(@NotNull final Function<ContextBase, T> computation) {
         return this.registered(
                 new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) ->
-                    new StateValueComputed<>(Lazy.of(() -> computation.apply(host)))
+                    CompletableFuture.completedFuture(
+                        new StateValueComputed<>(Lazy.of(() -> computation.apply(host)))
+                    )
                 )
             );
     }
@@ -98,99 +98,19 @@ public class StateFactoryImpl implements StateFactory {
 
     @NotNull
     @Override
-    public <T> StatePagination createPaginationState(
-        @NotNull final List<T> source,
-        @NotNull final PaginationElementConfigurer<T> configurer
-    ) {
-        return this.buildPaginationState(source).elementConfigurer(configurer).buildPagination();
+    public <T> State<T> createEagerlyLazyState(@NotNull Function<ContextBase, T> computation) {
+        return this.registered(
+                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) -> {
+                    final T value = computation.apply(host);
+                    return CompletableFuture.completedFuture(new StateValueComputed<>(() -> value));
+                })
+            );
     }
 
     @NotNull
     @Override
-    public <T> StatePagination createComputedPaginationState(
-        @NotNull final Supplier<List<T>> source,
-        @NotNull final PaginationElementConfigurer<T> configurer
-    ) {
-        return this.buildComputedPaginationState(source)
-            .elementConfigurer(configurer)
-            .buildPagination();
-    }
-
-    @NotNull
-    @Override
-    public <T> StatePagination createComputedPaginationState(
-        @NotNull final Function<ContextBase, List<T>> source,
-        @NotNull final PaginationElementConfigurer<T> configurer
-    ) {
-        return this.buildComputedPaginationState(source)
-            .elementConfigurer(configurer)
-            .buildPagination();
-    }
-
-    @NotNull
-    @Override
-    public <T> StatePagination createComputedAsyncPaginationState(
-        @NotNull final Supplier<CompletableFuture<List<T>>> source,
-        @NotNull final PaginationElementConfigurer<T> configurer
-    ) {
-        return this.buildComputedAsyncPaginationState(source)
-            .elementConfigurer(configurer)
-            .buildPagination();
-    }
-
-    @NotNull
-    @Override
-    public <T> StatePagination createComputedAsyncPaginationState(
-        @NotNull final Function<ContextBase, CompletableFuture<List<T>>> source,
-        @NotNull final PaginationElementConfigurer<T> configurer
-    ) {
-        return this.buildComputedAsyncPaginationState(source)
-            .elementConfigurer(configurer)
-            .buildPagination();
-    }
-
-    @NotNull
-    @Override
-    public <T> StatePagination createLazyPaginationState(
-        @NotNull final Supplier<List<T>> source,
-        @NotNull final PaginationElementConfigurer<T> configurer
-    ) {
-        return this.buildLazyPaginationState(source)
-            .elementConfigurer(configurer)
-            .buildPagination();
-    }
-
-    @NotNull
-    @Override
-    public <T> StatePagination createLazyPaginationState(
-        @NotNull final Function<ContextBase, List<T>> source,
-        @NotNull final PaginationElementConfigurer<T> configurer
-    ) {
-        return this.buildLazyPaginationState(source)
-            .elementConfigurer(configurer)
-            .buildPagination();
-    }
-
-    @NotNull
-    @Override
-    public <T> StatePagination createLazyAsyncPaginationState(
-        @NotNull final Supplier<CompletableFuture<List<T>>> source,
-        @NotNull final PaginationElementConfigurer<T> configurer
-    ) {
-        return this.buildLazyAsyncPaginationState(source)
-            .elementConfigurer(configurer)
-            .buildPagination();
-    }
-
-    @NotNull
-    @Override
-    public <T> StatePagination createLazyAsyncPaginationState(
-        @NotNull final Function<ContextBase, CompletableFuture<List<T>>> source,
-        @NotNull final PaginationElementConfigurer<T> configurer
-    ) {
-        return this.buildLazyAsyncPaginationState(source)
-            .elementConfigurer(configurer)
-            .buildPagination();
+    public <T> State<T> createEagerlyLazyState(@NotNull Supplier<T> computation) {
+        return this.createEagerlyLazyState(__ -> computation.get());
     }
 
     @NotNull
@@ -320,7 +240,16 @@ public class StateFactoryImpl implements StateFactory {
                             T
                         >) builder;
                     b.associated(state);
-                    return new StateValueImmutable<>((ElementPagination) b.build(host));
+                    final ElementPaginationRich pagination = (ElementPaginationRich) b.build(host);
+                    if (pagination.isInitiateEagerly()) {
+                        return pagination
+                            .initiate(host)
+                            .thenApply(__ -> new StateValueImmutable<>(pagination));
+                    } else {
+                        return CompletableFuture.completedFuture(
+                            new StateValueImmutable<>(pagination)
+                        );
+                    }
                 })
             );
     }

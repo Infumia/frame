@@ -14,37 +14,25 @@ public interface StateValueHostRich extends StateValueHost {
     Map<StateRich<Object>, StateValue<Object>> stateValues();
 
     @NotNull
-    <T> StateValue<T> accessStateValueOrInitialize(@NotNull StateRich<T> state);
-
-    @Nullable
     <T> StateValue<T> accessStateValue(@NotNull StateRich<T> state);
 
-    @Nullable
+    @NotNull
     <T> StateValue<T> updateStateValue(@NotNull StateMutableRich<T> state, @Nullable T value);
 
-    @Nullable
+    @NotNull
     <T> StateValue<T> updateStateValue(@NotNull StateRich<T> state);
 
     @NotNull
-    <T> CompletableFuture<StateValue<T>> accessStateValueOrInitializeWait(
-        @NotNull StateRich<T> state
-    );
+    <T> CompletableFuture<@NotNull StateValue<T>> accessStateValueWait(@NotNull StateRich<T> state);
 
     @NotNull
-    <T> CompletableFuture<@Nullable StateValue<T>> accessStateValueWait(
-        @NotNull StateRich<T> state
-    );
-
-    @NotNull
-    <T> CompletableFuture<@Nullable StateValue<T>> updateStateValueWait(
+    <T> CompletableFuture<@NotNull StateValue<T>> updateStateValueWait(
         @NotNull StateMutableRich<T> state,
         @Nullable T value
     );
 
     @NotNull
-    <T> CompletableFuture<@Nullable StateValue<T>> updateStateValueWait(
-        @NotNull StateRich<T> state
-    );
+    <T> CompletableFuture<@NotNull StateValue<T>> updateStateValueWait(@NotNull StateRich<T> state);
 
     <T> void watchStateAccess(@NotNull StateRich<T> state, @NotNull StateWatcherAccess<T> watcher);
 

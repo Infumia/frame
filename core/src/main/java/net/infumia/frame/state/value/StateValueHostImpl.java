@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import net.infumia.frame.Preconditions;
 import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.pipeline.PipelineServiceConsumer;
 import net.infumia.frame.pipeline.context.PipelineContextState;
@@ -36,21 +37,14 @@ public final class StateValueHostImpl implements StateValueHostRich {
 
     @NotNull
     @Override
-    public <T> StateValue<T> accessStateValueOrInitialize(@NotNull final StateRich<T> state) {
-        return this.accessStateValueOrInitializeInternally(state, this.accessStateValue(state));
-    }
-
-    @Nullable
-    @Override
     @SuppressWarnings("unchecked")
     public <T> StateValue<T> accessStateValue(@NotNull final StateRich<T> state) {
-        final StateValue<Object> value = this.values.get(state);
-        if (value == null) {
-            this.context.frame()
-                .logger()
-                .debug("State '%s' not found in '%s'!", state, this.values);
-            return null;
-        }
+        final StateValue<Object> value = Preconditions.stateNotNull(
+            this.values.get(state),
+            "State value for '%s' not found in '%s'!",
+            state,
+            this.values
+        );
         this.context.frame()
             .loggedFuture(
                 this.pipelines.executeAccess(state, value),
@@ -60,16 +54,13 @@ public final class StateValueHostImpl implements StateValueHostRich {
         return (StateValue<T>) value;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public <T> StateValue<T> updateStateValue(
         @NotNull final StateMutableRich<T> state,
         @Nullable final T value
     ) {
         final StateValue<T> stateValue = this.accessStateValue(state);
-        if (stateValue == null) {
-            return null;
-        }
         final T oldValue = stateValue.value();
         stateValue.value(value);
         this.context.frame()
@@ -81,13 +72,10 @@ public final class StateValueHostImpl implements StateValueHostRich {
         return stateValue;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public <T> StateValue<T> updateStateValue(@NotNull final StateRich<T> state) {
         final StateValue<T> stateValue = this.accessStateValue(state);
-        if (stateValue == null) {
-            return null;
-        }
         this.context.frame()
             .loggedFuture(
                 this.pipelines.executeUpdate(state, stateValue.value(), stateValue),
@@ -99,27 +87,16 @@ public final class StateValueHostImpl implements StateValueHostRich {
 
     @NotNull
     @Override
-    public <T> CompletableFuture<StateValue<T>> accessStateValueOrInitializeWait(
-        @NotNull final StateRich<T> state
-    ) {
-        return this.accessStateValueWait(state).thenApply(value ->
-                this.accessStateValueOrInitializeInternally(state, value)
-            );
-    }
-
-    @NotNull
-    @Override
     @SuppressWarnings("unchecked")
-    public <T> CompletableFuture<@Nullable StateValue<T>> accessStateValueWait(
+    public <T> CompletableFuture<@NotNull StateValue<T>> accessStateValueWait(
         @NotNull final StateRich<T> state
     ) {
-        final StateValue<Object> value = this.values.get(state);
-        if (value == null) {
-            this.context.frame()
-                .logger()
-                .debug("State '%s' not found in '%s'!", state, this.values);
-            return CompletableFuture.completedFuture(null);
-        }
+        final StateValue<Object> value = Preconditions.stateNotNull(
+            this.values.get(state),
+            "State value for '%s' not found in '%s'!",
+            state,
+            this.values
+        );
         return this.pipelines.executeAccess(state, value).thenApply(__ -> (StateValue<T>) value);
     }
 
@@ -130,9 +107,6 @@ public final class StateValueHostImpl implements StateValueHostRich {
         @Nullable final T value
     ) {
         return this.accessStateValueWait(state).thenCompose(stateValue -> {
-                if (stateValue == null) {
-                    return CompletableFuture.completedFuture(null);
-                }
                 final T oldValue = stateValue.value();
                 stateValue.value(value);
                 return this.pipelines.executeUpdate(state, oldValue, stateValue).thenApply(__ ->
@@ -224,18 +198,5 @@ public final class StateValueHostImpl implements StateValueHostRich {
     ) {
         this.values.put((StateRich<Object>) state, (StateValue<Object>) value);
         this.context.frame().logger().debug("State '%s' initialized with value '%s'", state, value);
-    }
-
-    @NotNull
-    private <T> StateValue<T> accessStateValueOrInitializeInternally(
-        @NotNull final StateRich<T> state,
-        @Nullable final StateValue<T> value
-    ) {
-        if (value != null) {
-            return value;
-        }
-        final StateValue<T> stateValue = state.valueFactory().apply(this.context, state);
-        this.initializeState(state, stateValue);
-        return stateValue;
     }
 }

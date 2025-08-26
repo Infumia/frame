@@ -22,9 +22,4 @@ public final class StateValueComputed<T> implements StateValue<T> {
     public void value(@Nullable final T value) {
         throw new UnsupportedOperationException("Immutable state!");
     }
-
-    @Override
-    public boolean mutable() {
-        return false;
-    }
 }

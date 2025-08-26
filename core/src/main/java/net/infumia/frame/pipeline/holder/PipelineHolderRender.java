@@ -10,7 +10,6 @@ import net.infumia.frame.pipeline.context.PipelineContextView;
 import net.infumia.frame.pipeline.service.render.ServiceFirstRender;
 import net.infumia.frame.pipeline.service.render.ServiceFirstRenderAvailableSlotResolution;
 import net.infumia.frame.pipeline.service.render.ServiceFirstRenderConsumeNonRenderedElement;
-import net.infumia.frame.pipeline.service.render.ServiceFirstRenderInitializeState;
 import net.infumia.frame.pipeline.service.render.ServiceFirstRenderLayout;
 import net.infumia.frame.pipeline.service.render.ServiceFirstRenderLogging;
 import net.infumia.frame.pipeline.service.render.ServiceFirstRenderOnFirstRender;
@@ -53,8 +52,7 @@ public final class PipelineHolderRender implements Cloned<PipelineHolderRender> 
             .register(ServiceFirstRenderAvailableSlotResolution.INSTANCE)
             .register(ServiceFirstRenderLayout.INSTANCE)
             .register(ServiceFirstRenderOnFirstRender.INSTANCE)
-            .register(ServiceFirstRenderPagination.INSTANCE)
-            .register(ServiceFirstRenderInitializeState.INSTANCE),
+            .register(ServiceFirstRenderPagination.INSTANCE),
         new PipelineConsumerImpl<>(
             new TypeToken<PipelineServiceConsumer<PipelineContextView.StartTransition>>() {},
             ServiceStartTransitionLogging.INSTANCE

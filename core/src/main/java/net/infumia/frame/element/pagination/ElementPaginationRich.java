@@ -2,6 +2,7 @@ package net.infumia.frame.element.pagination;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
+import net.infumia.frame.context.ContextBase;
 import net.infumia.frame.context.view.ContextRender;
 import net.infumia.frame.element.Element;
 import net.infumia.frame.element.ElementEventHandlerHolder;
@@ -31,4 +32,7 @@ public interface ElementPaginationRich
     Collection<Element> modifiableElements();
 
     void clearElements();
+
+    @NotNull
+    CompletableFuture<?> initiate(@NotNull ContextBase context);
 }
