@@ -41,6 +41,7 @@ public final class ViewExample implements ViewHandler {
             .onPageSwitch((context, ___) ->
                 TitleUpdater.update(context.viewer().player(), this.generateTitle(context))
             )
+            .initiateEagerly()
             .buildPagination();
     }
 
