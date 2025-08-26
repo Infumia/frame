@@ -33,12 +33,6 @@ public interface StateFactory {
     <T> State<T> createLazyState(@NotNull Supplier<T> computation);
 
     @NotNull
-    <T> State<T> createEagerlyLazyState(@NotNull Function<ContextBase, T> computation);
-
-    @NotNull
-    <T> State<T> createEagerlyLazyState(@NotNull Supplier<T> computation);
-
-    @NotNull
     <T> ElementPaginationBuilder<T> buildPaginationState(@NotNull List<T> source);
 
     @NotNull

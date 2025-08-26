@@ -98,23 +98,6 @@ public class StateFactoryImpl implements StateFactory {
 
     @NotNull
     @Override
-    public <T> State<T> createEagerlyLazyState(@NotNull Function<ContextBase, T> computation) {
-        return this.registered(
-                new StateImpl<>(StateFactoryImpl.nextStateId(), (host, __) -> {
-                    final T value = computation.apply(host);
-                    return CompletableFuture.completedFuture(new StateValueComputed<>(() -> value));
-                })
-            );
-    }
-
-    @NotNull
-    @Override
-    public <T> State<T> createEagerlyLazyState(@NotNull Supplier<T> computation) {
-        return this.createEagerlyLazyState(__ -> computation.get());
-    }
-
-    @NotNull
-    @Override
     public <T> ElementPaginationBuilder<T> buildPaginationState(@NotNull final List<T> source) {
         return new ElementPaginationBuilderImpl<>(
             new SourceProvider.Immutable<>(source),
