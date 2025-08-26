@@ -29,7 +29,11 @@ public final class ViewExample implements ViewHandler {
 
     @Override
     public void onInit(@NotNull final ContextInit ctx) {
-        ctx.configBuilder().type(InvType.CHEST).cancelOnClick();
+        ctx
+            .configBuilder()
+            .type(InvType.CHEST)
+            .layout(new String[] { "xxxxxxxxx", "xxxaaaxxx", "xxxbxcxxx" })
+            .cancelOnClick();
         this.pagination = ctx
             .buildLazyPaginationState(() -> List.of("test-1", "test-2", "test-3", "test-4"))
             .elementConfigurer((builder, text) -> {
@@ -48,9 +52,7 @@ public final class ViewExample implements ViewHandler {
     @Override
     public void onOpen(@NotNull final ContextOpen ctx) {
         final ViewConfigBuilder config = ctx.modifyConfig();
-        config
-            .layout(new String[] { "xxxxxxxxx", "xxxaaaxxx", "xxxbxcxxx" })
-            .title(this.generateTitle(ctx));
+        config.title(this.generateTitle(ctx));
     }
 
     @Override
